@@ -14,182 +14,241 @@
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #1c1410; --ink-mid: #4a3428; --ink-light: #8a6c58;
-  --parchment: #f7f3ee; --parchment-dark: #ede8e0; --parchment-mid: #dfd7cc;
-  --gold: #b5441e; --gold-light: #c8593a; --gold-pale: #f5e4dd;
-  --red-accent: #b5441e; --blue-accent: #2c5f8a; --green-accent: #2e5c38;
-  --border: rgba(80,50,30,0.13); --border-strong: rgba(80,50,30,0.26);
-  --shadow: 0 1px 14px rgba(80,50,30,0.09); --radius: 10px; --radius-sm: 6px;
-  --ff-serif: 'EB Garamond', Georgia, serif; --ff-body: 'Crimson Pro', Georgia, serif;
-  --topbar-bg: #1c1410; --topbar-border: #b5441e;
-  --topbar-title: #c8593a; --topbar-sub: rgba(247,243,238,0.45);
-  --topbar-icon: #c8593a; --badge-text: #1c1410;
-  --nav-bg: #f7f3ee; --nav-border: rgba(80,50,30,0.12);
-  --nav-active: #b5441e; --nav-inactive: rgba(28,20,16,0.32);
-  --card-front-bg: #1c1410; --card-back-bg: #ede8e0;
-  --card-root-color: #c8593a; --card-pos-color: rgba(200,89,58,0.6);
-  --card-hint-color: rgba(247,243,238,0.38);
+  --ink:#1c1410;--ink-mid:#4a3428;--ink-light:#8a6c58;
+  --parchment:#f7f3ee;--parchment-dark:#ede8e0;--parchment-mid:#dfd7cc;
+  --gold:#b5441e;--gold-light:#c8593a;--gold-pale:#f5e4dd;
+  --red-accent:#b5441e;--blue-accent:#2c5f8a;--green-accent:#2e5c38;
+  --border:rgba(80,50,30,0.13);--border-strong:rgba(80,50,30,0.26);
+  --shadow:0 1px 14px rgba(80,50,30,0.09);--radius:10px;--radius-sm:6px;
+  --ff-serif:'EB Garamond',Georgia,serif;--ff-body:'Crimson Pro',Georgia,serif;
+  --topbar-bg:#1c1410;--topbar-border:#b5441e;
+  --topbar-title:#c8593a;--topbar-sub:rgba(247,243,238,0.45);
+  --topbar-icon:#c8593a;--badge-text:#1c1410;
+  --nav-bg:#f7f3ee;--nav-border:rgba(80,50,30,0.12);
+  --nav-active:#b5441e;--nav-inactive:rgba(28,20,16,0.32);
+  --card-front-bg:#1c1410;--card-back-bg:#ede8e0;
+  --card-root-color:#c8593a;--card-pos-color:rgba(200,89,58,0.6);
+  --card-hint-color:rgba(247,243,238,0.38);
 }
-.fc-inner { transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); color: var(--ink); overflow: hidden; }
-#app { max-width: 430px; margin: 0 auto; height: 100dvh; background: var(--parchment); display: flex; flex-direction: column; position: relative; overflow: hidden; }
-#topbar { background: var(--topbar-bg); color: var(--parchment); padding: 14px 18px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom: 2px solid var(--topbar-border); }
-#topbar .title { font-family: var(--ff-serif); font-size: 18px; font-weight: 500; letter-spacing: 0.02em; color: var(--topbar-title); }
-#topbar .subtitle { font-size: 11px; color: var(--topbar-sub); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1px; }
-#streak-badge { background: var(--gold); color: var(--badge-text); font-family: var(--ff-serif); font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-#settings-btn { background: none; border: none; cursor: pointer; color: var(--topbar-icon); opacity: 0.85; padding: 2px; display: flex; align-items: center; }
-#settings-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.8; fill: none; }
-.screen { display: none; flex: 1; flex-direction: column; overflow: hidden; }
-.screen.active { display: flex; }
-#nav { background: var(--nav-bg); border-top: 1px solid var(--nav-border); display: flex; flex-shrink: 0; }
-.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 4px 10px; background: none; border: none; cursor: pointer; color: var(--nav-inactive); font-family: var(--ff-body); font-size: 10px; letter-spacing: 0.05em; transition: color 0.15s; }
-.nav-btn svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.5; fill: none; }
-.nav-btn.active { color: var(--nav-active); }
-.scroll-area { flex: 1; overflow-y: auto; padding: 16px; -webkit-overflow-scrolling: touch; }
-.scroll-area::-webkit-scrollbar { width: 0; }
-.section-title { font-family: var(--ff-serif); font-size: 13px; font-weight: 500; color: var(--ink-light); letter-spacing: 0.14em; text-transform: uppercase; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-.section-title:first-child { margin-top: 0; }
-.home-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.stat-card { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
-.stat-num { font-family: var(--ff-serif); font-size: 28px; font-weight: 500; color: var(--ink); }
-.stat-label { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
-.home-module-list { display: flex; flex-direction: column; gap: 8px; }
-.home-module-btn { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; text-align: left; width: 100%; transition: background 0.12s; }
-.home-module-btn:active { background: var(--parchment-mid); }
-.module-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--ff-serif); font-size: 20px; flex-shrink: 0; }
-.module-icon.flash { background: #e8f0e0; color: var(--green-accent); }
-.module-icon.browse { background: #e6ecf4; color: var(--blue-accent); }
-.module-icon.sound { background: var(--gold-pale); color: var(--gold); }
-.module-icon.grammar { background: #f0e4e0; color: var(--red-accent); }
-.module-icon.quiz { background: #f0eaf8; color: #4a2e7a; }
-.module-text-main { font-family: var(--ff-serif); font-size: 16px; font-weight: 500; color: var(--ink); }
-.module-text-sub { font-size: 13px; color: var(--ink-light); margin-top: 2px; }
-.fc-controls { padding: 12px 16px; display: flex; gap: 8px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-.fc-controls select { flex: 1; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 7px 10px; font-family: var(--ff-body); font-size: 14px; color: var(--ink); }
-.fc-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 16px; gap: 16px; }
-.fc-progress-text { font-size: 12px; color: var(--ink-light); letter-spacing: 0.08em; }
-.fc-card { width: 100%; max-width: 360px; min-height: 220px; background: #fff; border: 1px solid var(--border-strong); border-radius: 14px; box-shadow: var(--shadow); cursor: pointer; perspective: 1000px; position: relative; }
-.fc-inner { width: 100%; height: 100%; min-height: 220px; transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); position: relative; }
-.fc-card.flipped .fc-inner { transform: rotateY(180deg); }
-.fc-face { position: absolute; top: 0; left: 0; right: 0; bottom: 0; min-height: 220px; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border-radius: 14px; }
-.fc-front { background: var(--card-front-bg); }
-.fc-back { background: var(--card-back-bg); transform: rotateY(180deg); }
-.fc-root { font-family: var(--ff-serif); font-size: 36px; font-style: normal; color: var(--card-root-color); text-align: center; letter-spacing: 0.03em; }
-.fc-pos { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--card-pos-color); margin-top: 8px; }
-.fc-tap-hint { font-size: 12px; color: var(--card-hint-color); margin-top: 20px; }
-.fc-meaning { font-family: var(--ff-serif); font-size: 22px; font-weight: 500; color: var(--ink); text-align: center; }
-.fc-notes { font-size: 14px; color: var(--ink-light); text-align: center; margin-top: 10px; font-style: italic; }
-.fc-daughters { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
-.fc-daughter { font-size: 12px; background: var(--gold-pale); border: 1px solid rgba(154,124,63,0.25); color: var(--ink-mid); padding: 3px 8px; border-radius: 12px; }
-.fc-btns { display: flex; gap: 10px; width: 100%; max-width: 360px; }
-.fc-btn { flex: 1; padding: 13px; border-radius: var(--radius); border: 1px solid var(--border-strong); font-family: var(--ff-serif); font-size: 15px; cursor: pointer; transition: opacity 0.12s; }
-.fc-btn:active { opacity: 0.75; }
-.fc-btn.again { background: #f0e0dc; color: var(--red-accent); border-color: rgba(122,46,26,0.2); }
-.fc-btn.hard  { background: #fdf2e0; color: #7a5a1a; border-color: rgba(122,90,26,0.2); }
-.fc-btn.good  { background: #e0eedc; color: var(--green-accent); border-color: rgba(42,74,46,0.2); }
-.fc-btn.easy  { background: #dce8f0; color: var(--blue-accent); border-color: rgba(30,61,92,0.2); }
-.fc-srs-info { font-size: 12px; color: var(--ink-light); text-align: center; }
-.fc-hidden { display: none; }
-#rb-controls { padding: 10px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
-#rb-search { width: 100%; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 9px 12px; font-family: var(--ff-body); font-size: 15px; color: var(--ink); }
-#rb-search::placeholder { color: var(--ink-light); }
-.rb-filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.rb-filter { padding: 5px 12px; border-radius: 16px; border: 1px solid var(--border-strong); background: none; font-family: var(--ff-body); font-size: 13px; color: var(--ink-mid); cursor: pointer; }
-.rb-filter.active { background: var(--ink); color: var(--gold-light); border-color: var(--ink); }
-.rb-list { display: flex; flex-direction: column; gap: 8px; }
-.rb-item { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; transition: background 0.1s; }
-.rb-item:active { background: var(--parchment-mid); }
-.rb-root { font-family: var(--ff-serif); font-size: 20px; font-style: normal; color: var(--ink); }
-.rb-gloss { font-size: 14px; color: var(--ink-mid); margin-top: 3px; }
-.rb-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
-.rb-tag { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: var(--gold-pale); color: var(--ink-mid); border: 1px solid rgba(154,124,63,0.2); }
-#root-modal { display: none; position: absolute; inset: 0; background: rgba(26,20,16,0.55); z-index: 100; align-items: flex-end; }
-#root-modal.open { display: flex; }
-#root-modal-inner { background: var(--parchment); border-radius: 18px 18px 0 0; border-top: 2px solid var(--gold); width: 100%; max-height: 80dvh; overflow-y: auto; padding: 20px 18px 32px; }
-.rm-close { float: right; background: none; border: none; font-size: 22px; color: var(--ink-light); cursor: pointer; margin-top: -4px; }
-.rm-root { font-family: var(--ff-serif); font-size: 32px; font-style: normal; color: var(--ink); }
-.rm-pos { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin: 4px 0 10px; }
-.rm-meaning { font-family: var(--ff-serif); font-size: 18px; color: var(--ink-mid); margin-bottom: 14px; }
-.rm-section-title { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); margin: 14px 0 7px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
-.rm-notes { font-size: 15px; color: var(--ink-mid); font-style: italic; line-height: 1.55; }
-.rm-daughters { display: flex; flex-direction: column; gap: 5px; }
-.rm-daughter-row { display: flex; align-items: baseline; gap: 10px; }
-.rm-lang { font-size: 12px; color: var(--ink-light); width: 80px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.06em; }
-.rm-form { font-family: var(--ff-serif); font-size: 16px; font-style: normal; color: var(--ink); }
-.rm-form-gloss { font-size: 14px; color: var(--ink-light); }
-.rm-related { display: flex; flex-wrap: wrap; gap: 6px; }
-.rm-related-chip { padding: 5px 12px; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: 14px; font-family: var(--ff-serif); font-size: 14px; font-style: normal; cursor: pointer; color: var(--ink); }
-.sl-card { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
-.sl-header { padding: 12px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-.sl-name { font-family: var(--ff-serif); font-size: 17px; font-weight: 500; color: var(--ink); }
-.sl-subtitle { font-size: 13px; color: var(--ink-light); margin-top: 2px; }
-.sl-arrow { color: var(--ink-light); transition: transform 0.2s; font-size: 18px; }
-.sl-card.open .sl-arrow { transform: rotate(180deg); }
-.sl-body { display: none; border-top: 1px solid var(--border); padding: 14px; }
-.sl-card.open .sl-body { display: block; }
-.sl-rule { font-family: var(--ff-serif); font-size: 18px; text-align: center; background: var(--card-front-bg); color: var(--card-root-color); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; font-style: normal; letter-spacing: 0.04em; }
-.sl-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 12px; }
-.sl-examples { display: flex; flex-direction: column; gap: 8px; }
-.sl-example { background: var(--parchment); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
-.sl-ex-pie { font-family: var(--ff-serif); font-size: 16px; font-style: normal; color: var(--ink); }
-.sl-ex-daughter { font-family: var(--ff-serif); font-size: 16px; font-style: normal; color: var(--blue-accent); }
-.sl-ex-gloss { font-size: 13px; color: var(--ink-light); margin-top: 4px; }
-.ablaut-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
-.ablaut-table th { background: var(--ink); color: var(--gold-light); font-family: var(--ff-serif); font-weight: 500; padding: 8px 10px; text-align: left; font-size: 13px; }
-.ablaut-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--ink-mid); font-family: var(--ff-serif); font-style: normal; }
-.ablaut-table tr:last-child td { border-bottom: none; }
-.ablaut-table td:first-child { font-style: normal; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); }
-.gram-tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 16px; flex-shrink: 0; overflow-x: auto; }
-.gram-tabs::-webkit-scrollbar { height: 0; }
-.gram-tab { padding: 10px 14px; font-family: var(--ff-body); font-size: 14px; color: var(--ink-light); background: none; border: none; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-.gram-tab.active { color: var(--ink); border-bottom-color: var(--gold); }
-.decl-table-wrap { overflow-x: auto; margin-bottom: 14px; }
-.decl-table { border-collapse: collapse; font-size: 13px; min-width: 300px; }
-.decl-table th { background: var(--ink); color: var(--gold-light); font-family: var(--ff-serif); font-weight: 500; padding: 7px 12px; text-align: left; }
-.decl-table td { padding: 7px 12px; border: 1px solid var(--border); font-family: var(--ff-serif); font-style: normal; color: var(--ink-mid); }
-.decl-table td.label { font-style: normal; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-light); background: var(--parchment-dark); }
-.gram-note { background: var(--gold-pale); border-left: 3px solid var(--gold); padding: 10px 12px; font-size: 14px; color: var(--ink-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; line-height: 1.55; margin-bottom: 12px; font-style: italic; }
-.gram-para { font-size: 15px; color: var(--ink-mid); line-height: 1.65; margin-bottom: 12px; }
-.quiz-setup { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 14px; }
-.quiz-opt { width: 100%; max-width: 320px; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 15px 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: background 0.1s; font-family: var(--ff-body); font-size: 16px; color: var(--ink); }
-.quiz-opt:active { background: var(--parchment-mid); }
-.quiz-opt-icon { font-size: 24px; }
-.quiz-active { flex: 1; display: none; flex-direction: column; padding: 16px; gap: 12px; }
-.quiz-active.show { display: flex; }
-.qz-progress { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-.qz-prog-text { font-size: 13px; color: var(--ink-light); }
-.qz-score { font-family: var(--ff-serif); font-size: 15px; color: var(--green-accent); }
-.qz-bar-wrap { width: 100%; height: 4px; background: var(--parchment-mid); border-radius: 2px; }
-.qz-bar { height: 4px; background: var(--gold); border-radius: 2px; transition: width 0.3s; }
-.qz-question { background: var(--ink); border-radius: var(--radius); padding: 20px; text-align: center; min-height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.qz-q-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 8px; }
-.qz-q-text { font-family: var(--ff-serif); font-size: 28px; font-style: normal; color: var(--card-root-color); }
-.qz-q-sub { font-size: 14px; color: rgba(245,240,232,0.6); margin-top: 6px; }
-.qz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.qz-opt-btn { background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 14px 10px; font-family: var(--ff-serif); font-size: 15px; color: var(--ink); cursor: pointer; transition: background 0.1s; text-align: center; line-height: 1.35; }
-.qz-opt-btn:active { background: var(--parchment-mid); }
-.qz-opt-btn.correct { background: #d8f0d4; border-color: rgba(42,74,46,0.5); color: var(--green-accent); }
-.qz-opt-btn.wrong { background: #f0d8d4; border-color: rgba(122,46,26,0.4); color: var(--red-accent); }
-.qz-feedback { background: var(--gold-pale); border: 1px solid rgba(154,124,63,0.3); border-radius: var(--radius); padding: 12px 14px; display: none; }
-.qz-feedback.show { display: block; }
-.qz-fb-title { font-family: var(--ff-serif); font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
-.qz-fb-text { font-size: 14px; color: var(--ink-mid); line-height: 1.5; font-style: italic; }
-.qz-next-btn { background: var(--ink); color: var(--gold-light); border: none; border-radius: var(--radius); padding: 14px; font-family: var(--ff-serif); font-size: 16px; cursor: pointer; width: 100%; display: none; }
-.qz-next-btn.show { display: block; }
-.qz-results { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 28px; gap: 16px; text-align: center; }
-.qz-results.show { display: flex; }
-.qz-res-score { font-family: var(--ff-serif); font-size: 52px; color: var(--gold); }
-.qz-res-title { font-family: var(--ff-serif); font-size: 22px; color: var(--ink); }
-.qz-res-sub { font-size: 15px; color: var(--ink-light); }
-.qz-res-btn { background: var(--ink); color: var(--gold-light); border: none; border-radius: var(--radius); padding: 14px 32px; font-family: var(--ff-serif); font-size: 16px; cursor: pointer; margin-top: 8px; }
-.qz-input { width: 100%; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 12px; font-family: var(--ff-serif); font-size: 18px; font-style: italic; color: var(--ink); text-align: center; }
-.qz-submit { background: var(--ink); color: var(--gold-light); border: none; border-radius: var(--radius); padding: 12px; width: 100%; font-family: var(--ff-serif); font-size: 15px; cursor: pointer; }
-.settings-divider { height: 1px; background: var(--border); margin: 20px 0 16px; }
-.settings-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.settings-row-label { font-family: var(--ff-body); font-size: 15px; color: var(--ink); }
-.settings-row-sub { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
-.settings-reset-btn { background: #f0d8d4; border: 1px solid rgba(122,46,26,0.2); color: var(--red-accent); font-family: var(--ff-body); font-size: 14px; border-radius: var(--radius-sm); padding: 7px 14px; cursor: pointer; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--ink);font-family:var(--ff-body);color:var(--ink);overflow:hidden;}
+#app{max-width:430px;margin:0 auto;height:100dvh;background:var(--parchment);display:flex;flex-direction:column;position:relative;overflow:hidden;}
+#topbar{background:var(--topbar-bg);color:var(--parchment);padding:14px 18px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:2px solid var(--topbar-border);}
+#topbar .title{font-family:var(--ff-serif);font-size:18px;font-weight:500;letter-spacing:0.02em;color:var(--topbar-title);}
+#topbar .subtitle{font-size:11px;color:var(--topbar-sub);letter-spacing:0.12em;text-transform:uppercase;margin-top:1px;}
+#streak-badge{background:var(--gold);color:var(--badge-text);font-family:var(--ff-serif);font-size:13px;font-weight:600;padding:4px 10px;border-radius:20px;}
+#settings-btn{background:none;border:none;cursor:pointer;color:var(--topbar-icon);opacity:0.85;padding:2px;display:flex;align-items:center;}
+#settings-btn svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;}
+.screen{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.screen.active{display:flex;}
+#nav{background:var(--nav-bg);border-top:1px solid var(--nav-border);display:flex;flex-shrink:0;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px 10px;background:none;border:none;cursor:pointer;color:var(--nav-inactive);font-family:var(--ff-body);font-size:10px;letter-spacing:0.05em;transition:color 0.15s;}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.5;fill:none;}
+.nav-btn.active{color:var(--nav-active);}
+.scroll-area{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.section-title{font-family:var(--ff-serif);font-size:13px;font-weight:500;color:var(--ink-light);letter-spacing:0.14em;text-transform:uppercase;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.section-title:first-child{margin-top:0;}
+
+/* ── HOME ── */
+.wotd-card{background:var(--card-front-bg);border-radius:var(--radius);padding:18px;margin-bottom:14px;cursor:pointer;transition:opacity 0.12s;}
+.wotd-card:active{opacity:0.85;}
+.wotd-eyebrow{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--card-pos-color);margin-bottom:8px;}
+.wotd-english{font-family:var(--ff-serif);font-size:32px;color:#f7f3ee;margin-bottom:4px;}
+.wotd-root{font-family:var(--ff-serif);font-size:16px;color:var(--card-root-color);margin-bottom:8px;}
+.wotd-hook{font-size:14px;color:rgba(247,243,238,0.6);line-height:1.55;font-style:italic;}
+.wotd-tap{font-size:11px;color:rgba(247,243,238,0.3);margin-top:10px;letter-spacing:0.08em;}
+.home-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.stat-card{background:var(--parchment-dark);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;}
+.stat-num{font-family:var(--ff-serif);font-size:28px;font-weight:500;color:var(--ink);}
+.stat-label{font-size:12px;color:var(--ink-light);margin-top:2px;}
+.home-module-list{display:flex;flex-direction:column;gap:8px;}
+.home-module-btn{background:var(--parchment-dark);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left;width:100%;transition:background 0.12s;}
+.home-module-btn:active{background:var(--parchment-mid);}
+.module-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.module-icon.discover{background:#faecd4;color:#8a4010;}
+.module-icon.flash{background:#e8f0e0;color:var(--green-accent);}
+.module-icon.browse{background:#e6ecf4;color:var(--blue-accent);}
+.module-icon.sound{background:var(--gold-pale);color:var(--gold);}
+.module-icon.grammar{background:#f0e4e0;color:var(--red-accent);}
+.module-icon.quiz{background:#f0eaf8;color:#4a2e7a;}
+.module-text-main{font-family:var(--ff-serif);font-size:16px;font-weight:500;color:var(--ink);}
+.module-text-sub{font-size:13px;color:var(--ink-light);margin-top:2px;}
+
+/* ── DISCOVER ── */
+.wotd-full-card{background:var(--card-front-bg);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
+.wotd-full-word{font-family:var(--ff-serif);font-size:38px;color:#f7f3ee;margin-bottom:4px;}
+.wotd-full-root{font-family:var(--ff-serif);font-size:18px;color:var(--card-root-color);margin-bottom:10px;}
+.wotd-full-hook{font-size:15px;color:rgba(247,243,238,0.65);line-height:1.6;font-style:italic;}
+.eng-desc-grid{display:flex;flex-direction:column;gap:8px;}
+.eng-desc-item{background:var(--parchment-dark);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
+.eng-word{font-family:var(--ff-serif);font-size:20px;color:var(--ink);}
+.eng-via{font-size:13px;color:var(--ink-light);margin-top:3px;}
+.eng-meaning{font-size:14px;color:var(--ink-mid);margin-top:4px;font-style:italic;}
+.sf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.sf-card{background:var(--parchment-dark);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:background 0.1s;}
+.sf-card:active{background:var(--parchment-mid);}
+.sf-icon{font-size:24px;margin-bottom:6px;}
+.sf-name{font-family:var(--ff-serif);font-size:15px;font-weight:500;color:var(--ink);}
+.sf-count{font-size:12px;color:var(--ink-light);margin-top:2px;}
+.sf-roots-list{display:flex;flex-direction:column;gap:8px;}
+
+/* ── FLASHCARDS ── */
+.fc-controls{padding:12px 16px;display:flex;gap:8px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.fc-controls select{flex:1;background:var(--parchment-dark);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:7px 10px;font-family:var(--ff-body);font-size:14px;color:var(--ink);}
+.fc-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;gap:16px;}
+.fc-progress-text{font-size:12px;color:var(--ink-light);letter-spacing:0.08em;}
+.fc-card{width:100%;max-width:360px;min-height:240px;border:1px solid var(--border-strong);border-radius:14px;box-shadow:var(--shadow);cursor:pointer;perspective:1000px;position:relative;}
+.fc-inner{width:100%;height:100%;min-height:240px;transform-style:preserve-3d;transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);position:relative;}
+.fc-card.flipped .fc-inner{transform:rotateY(180deg);}
+.fc-face{position:absolute;top:0;left:0;right:0;bottom:0;min-height:240px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border-radius:14px;}
+.fc-front{background:var(--card-front-bg);}
+.fc-back{background:var(--card-back-bg);transform:rotateY(180deg);}
+.fc-root{font-family:var(--ff-serif);font-size:36px;font-style:normal;color:var(--card-root-color);text-align:center;letter-spacing:0.03em;}
+.fc-pos{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--card-pos-color);margin-top:8px;}
+.fc-tap-hint{font-size:12px;color:var(--card-hint-color);margin-top:20px;}
+.fc-meaning{font-family:var(--ff-serif);font-size:20px;font-weight:500;color:var(--ink);text-align:center;}
+.fc-english-words{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:10px;}
+.fc-en-word{font-family:var(--ff-serif);font-size:15px;background:var(--gold-pale);border:1px solid rgba(181,68,30,0.2);color:var(--ink);padding:3px 10px;border-radius:12px;}
+.fc-notes{font-size:13px;color:var(--ink-light);text-align:center;margin-top:8px;font-style:italic;line-height:1.45;}
+.fc-btns{display:flex;gap:10px;width:100%;max-width:360px;}
+.fc-btn{flex:1;padding:13px;border-radius:var(--radius);border:1px solid var(--border-strong);font-family:var(--ff-serif);font-size:15px;cursor:pointer;transition:opacity 0.12s;}
+.fc-btn:active{opacity:0.75;}
+.fc-btn.again{background:#f0e0dc;color:var(--red-accent);border-color:rgba(122,46,26,0.2);}
+.fc-btn.hard{background:#fdf2e0;color:#7a5a1a;border-color:rgba(122,90,26,0.2);}
+.fc-btn.good{background:#e0eedc;color:var(--green-accent);border-color:rgba(42,74,46,0.2);}
+.fc-btn.easy{background:#dce8f0;color:var(--blue-accent);border-color:rgba(30,61,92,0.2);}
+.fc-srs-info{font-size:12px;color:var(--ink-light);text-align:center;}
+.fc-hidden{display:none;}
+.fc-reverse-toggle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-light);}
+.fc-reverse-toggle input{accent-color:var(--gold);}
+
+/* ── ROOT BROWSER ── */
+#rb-controls{padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:8px;}
+#rb-search{width:100%;background:var(--parchment-dark);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:9px 12px;font-family:var(--ff-body);font-size:15px;color:var(--ink);}
+#rb-search::placeholder{color:var(--ink-light);}
+.rb-filter-row{display:flex;gap:6px;flex-wrap:wrap;}
+.rb-filter{padding:5px 12px;border-radius:16px;border:1px solid var(--border-strong);background:none;font-family:var(--ff-body);font-size:13px;color:var(--ink-mid);cursor:pointer;}
+.rb-filter.active{background:var(--ink);color:var(--gold-light);border-color:var(--ink);}
+.rb-list{display:flex;flex-direction:column;gap:8px;}
+.rb-item{background:var(--parchment-dark);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer;transition:background 0.1s;}
+.rb-item:active{background:var(--parchment-mid);}
+.rb-root{font-family:var(--ff-serif);font-size:20px;font-style:normal;color:var(--ink);}
+.rb-gloss{font-size:14px;color:var(--ink-mid);margin-top:3px;}
+.rb-english{font-size:13px;color:var(--gold-light);margin-top:4px;}
+.rb-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.rb-tag{font-size:11px;padding:2px 7px;border-radius:10px;background:var(--gold-pale);color:var(--ink-mid);border:1px solid rgba(181,68,30,0.15);}
+#root-modal{display:none;position:absolute;inset:0;background:rgba(26,20,16,0.55);z-index:100;align-items:flex-end;}
+#root-modal.open{display:flex;}
+#root-modal-inner{background:var(--parchment);border-radius:18px 18px 0 0;border-top:2px solid var(--gold);width:100%;max-height:88dvh;overflow-y:auto;padding:20px 18px 32px;}
+.rm-close{float:right;background:none;border:none;font-size:22px;color:var(--ink-light);cursor:pointer;margin-top:-4px;}
+.rm-root{font-family:var(--ff-serif);font-size:32px;font-style:normal;color:var(--ink);}
+.rm-pos{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-light);margin:4px 0 6px;}
+.rm-meaning{font-family:var(--ff-serif);font-size:18px;color:var(--ink-mid);margin-bottom:12px;}
+.rm-section-title{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.rm-english-grid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px;}
+.rm-en-chip{background:var(--card-front-bg);color:#f7f3ee;font-family:var(--ff-serif);font-size:15px;padding:5px 12px;border-radius:var(--radius-sm);}
+.rm-en-via{font-size:12px;color:var(--ink-light);margin-top:2px;}
+.rm-cognate-table{width:100%;border-collapse:collapse;font-size:14px;}
+.rm-cognate-table th{background:var(--ink);color:var(--gold-light);font-family:var(--ff-serif);font-weight:500;padding:7px 10px;text-align:left;font-size:12px;letter-spacing:0.06em;}
+.rm-cognate-table td{padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--ff-serif);}
+.rm-cognate-table td.lang-cell{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-light);}
+.rm-cognate-table td.form-cell{font-style:normal;color:var(--ink);}
+.rm-cognate-table td.gloss-cell{font-size:13px;color:var(--ink-light);font-style:italic;}
+.rm-cognate-table tr:last-child td{border-bottom:none;}
+.rm-notes{font-size:15px;color:var(--ink-mid);font-style:italic;line-height:1.55;}
+.rm-related{display:flex;flex-wrap:wrap;gap:6px;}
+.rm-related-chip{padding:5px 12px;background:var(--parchment-dark);border:1px solid var(--border-strong);border-radius:14px;font-family:var(--ff-serif);font-size:14px;cursor:pointer;color:var(--ink);}
+.sc-walkthrough{background:var(--parchment-dark);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;}
+.sc-step{display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);}
+.sc-step:last-child{border-bottom:none;}
+.sc-step-num{width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--gold-light);font-family:var(--ff-serif);font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.sc-step-content{flex:1;}
+.sc-step-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:3px;}
+.sc-step-form{font-family:var(--ff-serif);font-size:18px;color:var(--ink);}
+.sc-step-note{font-size:13px;color:var(--ink-mid);margin-top:3px;font-style:italic;}
+.sc-pick-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.sc-pick-btn{padding:6px 14px;border-radius:16px;border:1px solid var(--border-strong);background:none;font-family:var(--ff-body);font-size:13px;color:var(--ink-mid);cursor:pointer;}
+.sc-pick-btn.active{background:var(--ink);color:var(--gold-light);border-color:var(--ink);}
+
+/* ── SOUND LAWS ── */
+.sl-card{background:var(--parchment-dark);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+.sl-header{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.sl-name{font-family:var(--ff-serif);font-size:17px;font-weight:500;color:var(--ink);}
+.sl-subtitle{font-size:13px;color:var(--ink-light);margin-top:2px;}
+.sl-arrow{color:var(--ink-light);transition:transform 0.2s;font-size:18px;}
+.sl-card.open .sl-arrow{transform:rotate(180deg);}
+.sl-body{display:none;border-top:1px solid var(--border);padding:14px;}
+.sl-card.open .sl-body{display:block;}
+.sl-rule{font-family:var(--ff-serif);font-size:18px;text-align:center;background:var(--card-front-bg);color:var(--card-root-color);padding:10px;border-radius:var(--radius-sm);margin-bottom:12px;letter-spacing:0.04em;}
+.sl-desc{font-size:14px;color:var(--ink-mid);line-height:1.6;margin-bottom:12px;}
+.sl-examples{display:flex;flex-direction:column;gap:8px;}
+.sl-example{background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;}
+.sl-ex-pie{font-family:var(--ff-serif);font-size:16px;color:var(--ink);}
+.sl-ex-daughter{font-family:var(--ff-serif);font-size:16px;color:var(--blue-accent);}
+.sl-ex-gloss{font-size:13px;color:var(--ink-light);margin-top:4px;}
+.ablaut-table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px;}
+.ablaut-table th{background:var(--ink);color:var(--gold-light);font-family:var(--ff-serif);font-weight:500;padding:8px 10px;text-align:left;font-size:13px;}
+.ablaut-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--ink-mid);font-family:var(--ff-serif);}
+.ablaut-table tr:last-child td{border-bottom:none;}
+.ablaut-table td:first-child{font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-light);}
+
+/* ── GRAMMAR ── */
+.gram-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 16px;flex-shrink:0;overflow-x:auto;}
+.gram-tabs::-webkit-scrollbar{height:0;}
+.gram-tab{padding:10px 14px;font-family:var(--ff-body);font-size:14px;color:var(--ink-light);background:none;border:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.gram-tab.active{color:var(--ink);border-bottom-color:var(--gold);}
+.decl-table-wrap{overflow-x:auto;margin-bottom:14px;}
+.decl-table{border-collapse:collapse;font-size:13px;min-width:300px;}
+.decl-table th{background:var(--ink);color:var(--gold-light);font-family:var(--ff-serif);font-weight:500;padding:7px 12px;text-align:left;}
+.decl-table td{padding:7px 12px;border:1px solid var(--border);font-family:var(--ff-serif);color:var(--ink-mid);}
+.decl-table td.label{font-size:12px;text-transform:uppercase;letter-spacing:0.07em;color:var(--ink-light);background:var(--parchment-dark);}
+.gram-note{background:var(--gold-pale);border-left:3px solid var(--gold);padding:10px 12px;font-size:14px;color:var(--ink-mid);border-radius:0 var(--radius-sm) var(--radius-sm) 0;line-height:1.55;margin-bottom:12px;font-style:italic;}
+.gram-para{font-size:15px;color:var(--ink-mid);line-height:1.65;margin-bottom:12px;}
+
+/* ── QUIZ ── */
+.quiz-setup{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:14px;}
+.quiz-opt{width:100%;max-width:320px;background:var(--parchment-dark);border:1px solid var(--border-strong);border-radius:var(--radius);padding:15px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:background 0.1s;font-family:var(--ff-body);font-size:16px;color:var(--ink);}
+.quiz-opt:active{background:var(--parchment-mid);}
+.quiz-opt-icon{font-size:24px;}
+.quiz-opt-locked{opacity:0.4;cursor:default;}
+.quiz-opt-badge{font-size:11px;background:var(--gold-pale);color:var(--gold);border:1px solid rgba(181,68,30,0.2);padding:2px 7px;border-radius:10px;margin-left:auto;}
+.quiz-active{flex:1;display:none;flex-direction:column;padding:16px;gap:12px;overflow-y:auto;}
+.quiz-active.show{display:flex;}
+.qz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.qz-prog-text{font-size:13px;color:var(--ink-light);}
+.qz-score{font-family:var(--ff-serif);font-size:15px;color:var(--green-accent);}
+.qz-bar-wrap{width:100%;height:4px;background:var(--parchment-mid);border-radius:2px;}
+.qz-bar{height:4px;background:var(--gold);border-radius:2px;transition:width 0.3s;}
+.qz-question{background:var(--ink);border-radius:var(--radius);padding:20px;text-align:center;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.qz-q-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.4);margin-bottom:8px;}
+.qz-q-text{font-family:var(--ff-serif);font-size:26px;color:var(--card-root-color);}
+.qz-q-sub{font-size:14px;color:rgba(245,240,232,0.6);margin-top:6px;}
+.qz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.qz-opt-btn{background:var(--parchment-dark);border:1px solid var(--border-strong);border-radius:var(--radius);padding:14px 10px;font-family:var(--ff-serif);font-size:15px;color:var(--ink);cursor:pointer;transition:background 0.1s;text-align:center;line-height:1.35;}
+.qz-opt-btn.correct{background:#d8f0d4;border-color:rgba(42,74,46,0.5);color:var(--green-accent);}
+.qz-opt-btn.wrong{background:#f0d8d4;border-color:rgba(122,46,26,0.4);color:var(--red-accent);}
+.qz-feedback{background:var(--gold-pale);border:1px solid rgba(181,68,30,0.2);border-radius:var(--radius);padding:12px 14px;display:none;}
+.qz-feedback.show{display:block;}
+.qz-fb-title{font-family:var(--ff-serif);font-size:16px;font-weight:500;color:var(--ink);margin-bottom:5px;}
+.qz-fb-text{font-size:14px;color:var(--ink-mid);line-height:1.5;font-style:italic;}
+.qz-next-btn{background:var(--ink);color:var(--gold-light);border:none;border-radius:var(--radius);padding:14px;font-family:var(--ff-serif);font-size:16px;cursor:pointer;width:100%;display:none;}
+.qz-next-btn.show{display:block;}
+.qz-results{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;gap:16px;text-align:center;}
+.qz-results.show{display:flex;}
+.qz-res-score{font-family:var(--ff-serif);font-size:52px;color:var(--gold);}
+.qz-res-title{font-family:var(--ff-serif);font-size:22px;color:var(--ink);}
+.qz-res-sub{font-size:15px;color:var(--ink-light);}
+.qz-res-btn{background:var(--ink);color:var(--gold-light);border:none;border-radius:var(--radius);padding:14px 32px;font-family:var(--ff-serif);font-size:16px;cursor:pointer;margin-top:8px;}
+.qz-input{width:100%;background:var(--parchment-dark);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:12px;font-family:var(--ff-serif);font-size:18px;font-style:italic;color:var(--ink);text-align:center;}
+.qz-submit{background:var(--ink);color:var(--gold-light);border:none;border-radius:var(--radius);padding:12px;width:100%;font-family:var(--ff-serif);font-size:15px;cursor:pointer;}
+
+/* ── SETTINGS ── */
+.settings-divider{height:1px;background:var(--border);margin:20px 0 16px;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+.settings-row-label{font-family:var(--ff-body);font-size:15px;color:var(--ink);}
+.settings-row-sub{font-size:12px;color:var(--ink-light);margin-top:2px;}
+.settings-reset-btn{background:#f0d8d4;border:1px solid rgba(122,46,26,0.2);color:var(--red-accent);font-family:var(--ff-body);font-size:14px;border-radius:var(--radius-sm);padding:7px 14px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -210,6 +269,13 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
   <!-- HOME -->
   <div id="home-screen" class="screen active">
     <div class="scroll-area">
+      <div id="wotd-home-card" class="wotd-card" onclick="switchScreen('discover')">
+        <div class="wotd-eyebrow">Word of the Day</div>
+        <div class="wotd-english" id="wotd-english">father</div>
+        <div class="wotd-root" id="wotd-root">*ph&#x2082;t&#x1e17;r</div>
+        <div class="wotd-hook" id="wotd-hook">The word your ancestors used 6,000 years ago is still on your lips today.</div>
+        <div class="wotd-tap">Tap to explore &rarr;</div>
+      </div>
       <div class="section-title">Progress</div>
       <div class="home-stat-row">
         <div class="stat-card"><div class="stat-num" id="stat-learned">0</div><div class="stat-label">Roots learned</div></div>
@@ -219,16 +285,52 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
       </div>
       <div class="section-title">Study Modules</div>
       <div class="home-module-list">
-        <button class="home-module-btn" onclick="switchScreen('fc')"><div class="module-icon flash">&#9889;</div><div><div class="module-text-main">Flashcards</div><div class="module-text-sub">Spaced repetition &middot; 30+ roots</div></div></button>
-        <button class="home-module-btn" onclick="switchScreen('rb')"><div class="module-icon browse">&#x1F4D6;</div><div><div class="module-text-main">Root Browser</div><div class="module-text-sub">Full lexicon &middot; etymology &middot; daughter forms</div></div></button>
-        <button class="home-module-btn" onclick="switchScreen('sl')"><div class="module-icon sound">&#12316;</div><div><div class="module-text-main">Sound Laws</div><div class="module-text-sub">Grimm&rsquo;s, Verner&rsquo;s, ablaut, laryngeals</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('discover')"><div class="module-icon discover">&#x1F30D;</div><div><div class="module-text-main">Discover</div><div class="module-text-sub">Word of the day &middot; semantic fields &middot; etymology</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('fc')"><div class="module-icon flash">&#9889;</div><div><div class="module-text-main">Flashcards</div><div class="module-text-sub">Spaced repetition &middot; forward &amp; reverse</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('rb')"><div class="module-icon browse">&#x1F4D6;</div><div><div class="module-text-main">Root Browser</div><div class="module-text-sub">Full lexicon &middot; cognate families &middot; English descendants</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('sl')"><div class="module-icon sound">&#12316;</div><div><div class="module-text-main">Sound Laws</div><div class="module-text-sub">Grimm&rsquo;s, Verner&rsquo;s, ablaut &middot; interactive walkthroughs</div></div></button>
         <button class="home-module-btn" onclick="switchScreen('gr')"><div class="module-icon grammar">&#8734;</div><div><div class="module-text-main">Grammar</div><div class="module-text-sub">Declensions &middot; verb system &middot; morphology</div></div></button>
-        <button class="home-module-btn" onclick="switchScreen('qz')"><div class="module-icon quiz">&#10022;</div><div><div class="module-text-main">Quizzes</div><div class="module-text-sub">Multiple choice &middot; fill-in &middot; daughter match</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('qz')"><div class="module-icon quiz">&#10022;</div><div><div class="module-text-main">Quizzes</div><div class="module-text-sub">6 modes &middot; from recognition to production</div></div></button>
       </div>
-      <div class="section-title" style="margin-top:20px;">What is Proto-Indo-European?</div>
-      <p style="font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:12px;">Proto-Indo-European (PIE) is the reconstructed ancestor of the Indo-European language family &mdash; a group that includes Sanskrit, Greek, Latin, Germanic, Celtic, Slavic, Baltic, Iranian, Armenian, Albanian, and more.</p>
-      <p style="font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:12px;">Spoken approximately 4,500&ndash;3,500 BCE, PIE left no written records; it is reconstructed through the <em>comparative method</em>, comparing regular correspondences across daughter languages.</p>
-      <p style="font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:20px;">Reconstructed forms are conventionally marked with an asterisk: <em style="font-family:var(--ff-serif);">*p&#x1E53;ds</em> &ldquo;foot.&rdquo;</p>
+    </div>
+  </div>
+
+  <!-- DISCOVER -->
+  <div id="discover-screen" class="screen">
+    <div class="scroll-area">
+      <div class="section-title">Word of the Day</div>
+      <div class="wotd-full-card">
+        <div class="wotd-full-word" id="wotd-full-english">father</div>
+        <div class="wotd-full-root" id="wotd-full-root">*ph&#x2082;t&#x1e17;r &mdash; noun (m.)</div>
+        <div class="wotd-full-hook" id="wotd-full-hook">The word your ancestors used 6,000 years ago is still on your lips today.</div>
+      </div>
+      <div class="section-title">English Descendants</div>
+      <div class="eng-desc-grid" id="wotd-eng-descs"></div>
+      <div class="section-title" style="margin-top:20px;">Cognate Family</div>
+      <div id="wotd-cognate-wrap"></div>
+      <div class="section-title" style="margin-top:16px;">Sound Change: PIE &rarr; English</div>
+      <div id="wotd-walkthrough"></div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <button onclick="openRootModal(getTodaysRoot())" style="background:none;border:none;color:var(--gold-light);font-family:var(--ff-serif);font-size:15px;cursor:pointer;">Full root entry &rarr;</button>
+      </div>
+
+      <div class="section-title" style="margin-top:20px;">Semantic Fields</div>
+      <p style="font-size:14px;color:var(--ink-light);line-height:1.6;margin-bottom:14px;">Vocabulary sticks best in clusters. Explore PIE roots by the conceptual world they inhabited.</p>
+      <div class="sf-grid" id="sf-grid"></div>
+    </div>
+  </div>
+
+  <!-- SEMANTIC FIELD DETAIL (modal-style overlay) -->
+  <div id="sf-modal" style="display:none;position:absolute;inset:0;background:var(--parchment);z-index:50;flex-direction:column;">
+    <div style="background:var(--topbar-bg);padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--topbar-border);flex-shrink:0;">
+      <button onclick="closeSfModal()" style="background:none;border:none;color:var(--topbar-icon);cursor:pointer;font-size:22px;line-height:1;">&larr;</button>
+      <div>
+        <div id="sf-modal-title" style="font-family:var(--ff-serif);font-size:17px;font-weight:500;color:var(--topbar-title);"></div>
+        <div id="sf-modal-sub" style="font-size:11px;color:var(--topbar-sub);letter-spacing:0.1em;text-transform:uppercase;margin-top:1px;"></div>
+      </div>
+    </div>
+    <div class="scroll-area">
+      <div class="sf-roots-list" id="sf-modal-list"></div>
     </div>
   </div>
 
@@ -237,12 +339,14 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
     <div class="fc-controls">
       <select id="fc-category" onchange="initFlashcards()">
         <option value="all">All categories</option>
-        <option value="body">Body &amp; person</option>
-        <option value="nature">Nature &amp; cosmos</option>
+        <option value="body">Body</option>
+        <option value="nature">Nature</option>
         <option value="family">Kinship</option>
         <option value="animals">Animals</option>
-        <option value="verbs">Core verbs</option>
+        <option value="verbs">Verbs</option>
         <option value="numbers">Numbers</option>
+        <option value="society">Society</option>
+        <option value="landscape">Landscape</option>
       </select>
       <select id="fc-mode">
         <option value="srs">SRS review</option>
@@ -250,19 +354,25 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
         <option value="all">All cards</option>
       </select>
     </div>
+    <div style="padding:8px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <label class="fc-reverse-toggle">
+        <input type="checkbox" id="fc-reverse-toggle" onchange="initFlashcards()">
+        Reverse mode (English &rarr; PIE)
+      </label>
+    </div>
     <div class="fc-area">
       <div class="fc-progress-text" id="fc-progress">Card 1 of 20</div>
       <div class="fc-card" id="fc-card" onclick="flipCard()">
-        <div class="fc-inner" id="fc-inner">
+        <div class="fc-inner">
           <div class="fc-face fc-front">
-            <div class="fc-root" id="fc-root">*d&#x1E97;&#x0301;gw&#x02B0;-</div>
+            <div class="fc-root" id="fc-root">*b&#x02B0;er-</div>
             <div class="fc-pos" id="fc-pos">verb root</div>
-            <div class="fc-tap-hint">tap to reveal</div>
+            <div class="fc-tap-hint" id="fc-tap-hint">tap to reveal</div>
           </div>
           <div class="fc-face fc-back">
-            <div class="fc-meaning" id="fc-meaning">to burn</div>
-            <div class="fc-notes" id="fc-notes">cf. day, dawn; fire imagery</div>
-            <div class="fc-daughters" id="fc-daughters"></div>
+            <div class="fc-meaning" id="fc-meaning">to carry, bear</div>
+            <div class="fc-english-words" id="fc-english-words"></div>
+            <div class="fc-notes" id="fc-notes"></div>
           </div>
         </div>
       </div>
@@ -279,7 +389,7 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
   <!-- ROOT BROWSER -->
   <div id="rb-screen" class="screen">
     <div id="rb-controls">
-      <input type="search" id="rb-search" placeholder="Search roots, meanings&#x2026;" oninput="filterRoots()" autocomplete="off">
+      <input type="search" id="rb-search" placeholder="Search roots, meanings, English words&#x2026;" oninput="filterRoots()" autocomplete="off">
       <div class="rb-filter-row">
         <button class="rb-filter active" onclick="setRbFilter('all',this)">All</button>
         <button class="rb-filter" onclick="setRbFilter('body',this)">Body</button>
@@ -288,6 +398,8 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
         <button class="rb-filter" onclick="setRbFilter('animals',this)">Animals</button>
         <button class="rb-filter" onclick="setRbFilter('verbs',this)">Verbs</button>
         <button class="rb-filter" onclick="setRbFilter('numbers',this)">Numbers</button>
+        <button class="rb-filter" onclick="setRbFilter('society',this)">Society</button>
+        <button class="rb-filter" onclick="setRbFilter('landscape',this)">Land</button>
       </div>
     </div>
     <div class="scroll-area"><div class="rb-list" id="rb-list"></div></div>
@@ -297,11 +409,14 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
         <div class="rm-root" id="rm-root"></div>
         <div class="rm-pos" id="rm-pos"></div>
         <div class="rm-meaning" id="rm-meaning"></div>
+        <div class="rm-section-title">English Descendants</div>
+        <div id="rm-english-grid" class="rm-english-grid"></div>
+        <div id="rm-english-detail" style="margin-top:8px;display:flex;flex-direction:column;gap:5px;"></div>
+        <div class="rm-section-title">Cognate Family</div>
+        <table class="rm-cognate-table"><thead><tr><th>Language</th><th>Form</th><th>Meaning</th></tr></thead><tbody id="rm-cognates"></tbody></table>
         <div class="rm-section-title">Notes</div>
         <div class="rm-notes" id="rm-notes"></div>
-        <div class="rm-section-title">Daughter Language Reflexes</div>
-        <div class="rm-daughters" id="rm-daughters"></div>
-        <div class="rm-section-title" id="rm-related-title" style="display:none">Related Roots</div>
+        <div class="rm-section-title" id="rm-related-title" style="display:none;">Related Roots</div>
         <div class="rm-related" id="rm-related"></div>
       </div>
     </div>
@@ -310,7 +425,12 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
   <!-- SOUND LAWS -->
   <div id="sl-screen" class="screen">
     <div class="scroll-area">
-      <div class="section-title">Consonant Shifts</div>
+      <div class="section-title">Interactive Walkthrough</div>
+      <p style="font-size:14px;color:var(--ink-light);line-height:1.6;margin-bottom:12px;">Pick a root to see exactly how PIE sounds became English through Grimm's Law.</p>
+      <div class="sc-pick-row" id="sc-pick-row"></div>
+      <div id="sc-walkthrough-area"></div>
+
+      <div class="section-title" style="margin-top:8px;">Consonant Shifts</div>
       <div id="sl-list"></div>
       <div class="section-title">Ablaut (Vowel Alternation)</div>
       <div class="sl-card">
@@ -322,11 +442,11 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
           <div class="gram-note">Ablaut is a systematic vowel alternation inherited from PIE, still visible in English <em>sing / sang / sung</em> and Greek <em>le&iacute;p- / loip- / lip-</em>.</div>
           <table class="ablaut-table">
             <tr><th>Grade</th><th>Vowel</th><th>Example (*peth&#x2082;-)</th><th>Gloss</th></tr>
-            <tr><td>Full (e-grade)</td><td>e</td><td>*p&eacute;th&#x2082;-</td><td>to fly (pres.)</td></tr>
-            <tr><td>O-grade</td><td>o</td><td>*poth&#x2082;-</td><td>to fly (perf.)</td></tr>
-            <tr><td>Zero grade</td><td>&#8709;</td><td>*pth&#x2082;-</td><td>to fly (aor.)</td></tr>
-            <tr><td>Lengthened e</td><td>&#275;</td><td>*p&#275;th&#x2082;-</td><td>(derived nouns)</td></tr>
-            <tr><td>Lengthened o</td><td>&#333;</td><td>*p&#333;th&#x2082;-</td><td>(derived nouns)</td></tr>
+            <tr><td>Full (e-grade)</td><td>e</td><td>*p&eacute;th&#x2082;-</td><td>fly (pres.)</td></tr>
+            <tr><td>O-grade</td><td>o</td><td>*poth&#x2082;-</td><td>fly (perf.)</td></tr>
+            <tr><td>Zero grade</td><td>&#8709;</td><td>*pth&#x2082;-</td><td>fly (aor.)</td></tr>
+            <tr><td>Lengthened e</td><td>&#275;</td><td>*p&#275;th&#x2082;-</td><td>derived nouns</td></tr>
+            <tr><td>Lengthened o</td><td>&#333;</td><td>*p&#333;th&#x2082;-</td><td>derived nouns</td></tr>
           </table>
         </div>
       </div>
@@ -337,11 +457,11 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
           <div class="sl-arrow">&#9662;</div>
         </div>
         <div class="sl-body">
-          <div class="gram-note">PIE had three &ldquo;laryngeal&rdquo; consonants (h&#x2081;, h&#x2082;, h&#x2083;) that disappeared in most daughter languages but left traces &mdash; coloring adjacent vowels and lengthening them when adjacent to *e.</div>
+          <div class="gram-note">PIE had three &ldquo;laryngeal&rdquo; consonants that disappeared in most daughter languages but left traces &mdash; colouring adjacent vowels and lengthening them.</div>
           <div class="sl-examples">
-            <div class="sl-example"><div><span class="sl-ex-pie">h&#x2082;</span> colors *e &rarr; *a: <em>*h&#x2082;&aacute;nti</em> &ldquo;in front&rdquo; &rarr; Latin <em>ante</em></div></div>
-            <div class="sl-example"><div><span class="sl-ex-pie">h&#x2083;</span> colors *e &rarr; *o: <em>*h&#x2083;r&#x1e96;&eacute;&#x01B5;s</em> &ldquo;king&rdquo; &rarr; Latin <em>r&#275;x</em></div></div>
-            <div class="sl-example"><div>Preserved in Hittite: <em>*h&#x2082;ster-</em> &ldquo;star&rdquo; appears as Hittite <em>&#x1e25;asterz</em></div></div>
+            <div class="sl-example"><div><span class="sl-ex-pie">h&#x2082;</span> colours *e &rarr; *a: <em>*h&#x2082;&aacute;nti</em> &ldquo;in front&rdquo; &rarr; Latin <em>ante</em></div></div>
+            <div class="sl-example"><div><span class="sl-ex-pie">h&#x2083;</span> colours *e &rarr; *o: <em>*h&#x2083;r&#x1e96;&eacute;&#x01B5;s</em> &ldquo;king&rdquo; &rarr; Latin <em>r&#275;x</em></div></div>
+            <div class="sl-example"><div>Preserved in Hittite: <em>*h&#x2082;ster-</em> &ldquo;star&rdquo; &rarr; Hittite <em>&#x1e25;asterz</em></div></div>
           </div>
         </div>
       </div>
@@ -363,11 +483,14 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
   <!-- QUIZ -->
   <div id="qz-screen" class="screen">
     <div class="quiz-setup" id="quiz-setup">
-      <h2 style="font-family:var(--ff-serif)">Choose a Quiz</h2>
-      <button class="quiz-opt" onclick="startQuiz('mc')"><span class="quiz-opt-icon">&#x1F4DD;</span><div><div style="font-weight:500;">Multiple Choice</div><div style="font-size:13px;color:var(--ink-light);">10 questions &middot; root &rarr; meaning</div></div></button>
-      <button class="quiz-opt" onclick="startQuiz('reverse')"><span class="quiz-opt-icon">&#x1F501;</span><div><div style="font-weight:500;">Reverse Quiz</div><div style="font-size:13px;color:var(--ink-light);">Given meaning &rarr; identify root</div></div></button>
-      <button class="quiz-opt" onclick="startQuiz('fillin')"><span class="quiz-opt-icon">&#x270D;&#xFE0F;</span><div><div style="font-weight:500;">Fill-in-the-blank</div><div style="font-size:13px;color:var(--ink-light);">Type the PIE root</div></div></button>
-      <button class="quiz-opt" onclick="startQuiz('daughter')"><span class="quiz-opt-icon">&#x1F333;</span><div><div style="font-weight:500;">Daughter Match</div><div style="font-size:13px;color:var(--ink-light);">Match daughter form to PIE root</div></div></button>
+      <h2 style="font-family:var(--ff-serif);margin-bottom:4px;">Choose a Quiz</h2>
+      <p style="font-size:13px;color:var(--ink-light);margin-bottom:8px;">Modes unlock as you learn more roots.</p>
+      <button class="quiz-opt" onclick="startQuiz('engToRoot')"><span class="quiz-opt-icon">&#x1F1EC;&#x1F1E7;</span><div><div style="font-weight:500;">English &rarr; Root</div><div style="font-size:13px;color:var(--ink-light);">Which root gave us this English word?</div></div></button>
+      <button class="quiz-opt" onclick="startQuiz('rootToEng')"><span class="quiz-opt-icon">&#x1F500;</span><div><div style="font-weight:500;">Root &rarr; English</div><div style="font-size:13px;color:var(--ink-light);">Which English words descend from this root?</div></div></button>
+      <button class="quiz-opt" onclick="startQuiz('mc')"><span class="quiz-opt-icon">&#x1F4DD;</span><div><div style="font-weight:500;">Root &rarr; Meaning</div><div style="font-size:13px;color:var(--ink-light);">Multiple choice, 10 questions</div></div></button>
+      <button class="quiz-opt" onclick="startQuiz('reverse')"><span class="quiz-opt-icon">&#x1F501;</span><div><div style="font-weight:500;">Meaning &rarr; Root</div><div style="font-size:13px;color:var(--ink-light);">Identify the root from its gloss</div></div></button>
+      <button class="quiz-opt" id="qz-opt-predict" onclick="startQuiz('predict')"><span class="quiz-opt-icon">&#x1F52E;</span><div><div style="font-weight:500;">Predict the Descendant</div><div style="font-size:13px;color:var(--ink-light);">Apply sound laws to guess the English word</div></div><span class="quiz-opt-badge" id="qz-predict-badge"></span></button>
+      <button class="quiz-opt" onclick="startQuiz('fillin')"><span class="quiz-opt-icon">&#x270D;&#xFE0F;</span><div><div style="font-weight:500;">Fill-in-the-blank</div><div style="font-size:13px;color:var(--ink-light);">Type the PIE root from meaning</div></div></button>
     </div>
     <div class="quiz-active" id="quiz-active">
       <div class="qz-progress">
@@ -377,12 +500,12 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
       <div class="qz-bar-wrap"><div class="qz-bar" id="qz-bar" style="width:10%"></div></div>
       <div class="qz-question">
         <div class="qz-q-label" id="qz-label">Root</div>
-        <div class="qz-q-text" id="qz-q-text">*h&#x2081;eg&#x02B0;&#x02B0;-</div>
+        <div class="qz-q-text" id="qz-q-text"></div>
         <div class="qz-q-sub" id="qz-q-sub"></div>
       </div>
       <div class="qz-options" id="qz-options"></div>
       <div id="qz-fillin-area" style="display:none;flex-direction:column;gap:8px;">
-        <input class="qz-input" id="qz-input" placeholder="Type the root&#x2026;" autocomplete="off">
+        <input class="qz-input" id="qz-input" placeholder="Type here&#x2026;" autocomplete="off">
         <button class="qz-submit" onclick="submitFillIn()">Submit</button>
       </div>
       <div class="qz-feedback" id="qz-feedback">
@@ -394,7 +517,7 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
     <div class="qz-results" id="qz-results">
       <div class="qz-res-score" id="qz-res-score">8/10</div>
       <div class="qz-res-title" id="qz-res-title">Well done!</div>
-      <div class="qz-res-sub" id="qz-res-sub">Your study is bearing fruit.</div>
+      <div class="qz-res-sub" id="qz-res-sub"></div>
       <button class="qz-res-btn" onclick="resetQuiz()">Study Again</button>
     </div>
   </div>
@@ -404,168 +527,417 @@ html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); 
     <div class="scroll-area">
       <div class="section-title">Data</div>
       <div class="settings-row">
-        <div>
-          <div class="settings-row-label">Reset all progress</div>
-          <div class="settings-row-sub">Clears SRS data, streak, and stats</div>
-        </div>
+        <div><div class="settings-row-label">Reset all progress</div><div class="settings-row-sub">Clears SRS data, streak, and stats</div></div>
         <button class="settings-reset-btn" onclick="confirmReset()">Reset</button>
       </div>
-
       <div class="settings-divider"></div>
       <div class="section-title">About</div>
-      <p style="font-size:14px;color:var(--ink-light);line-height:1.65;margin-bottom:10px;">PIE Study is a spaced-repetition companion for reconstructed Proto-Indo-European, covering roots, sound laws, grammar, and quizzes.</p>
-      <p style="font-size:13px;color:var(--ink-light);">Roots and data compiled from standard scholarly sources including Mallory &amp; Adams, Fortson, and the LIV.</p>
+      <p style="font-size:14px;color:var(--ink-light);line-height:1.65;margin-bottom:10px;">PIE Study is a spaced-repetition companion for reconstructed Proto-Indo-European, built around the principle that every root is best understood through the English words it explains.</p>
+      <p style="font-size:13px;color:var(--ink-light);">Data compiled from Mallory &amp; Adams, Fortson, and the LIV.</p>
     </div>
   </div>
 
   <nav id="nav">
     <button class="nav-btn active" onclick="switchScreen('home')" data-screen="home">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Home
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+    </button>
+    <button class="nav-btn" onclick="switchScreen('discover')" data-screen="discover">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Discover
     </button>
     <button class="nav-btn" onclick="switchScreen('fc')" data-screen="fc">
-      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-      Cards
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="12" x2="22" y2="12"/></svg>Cards
     </button>
     <button class="nav-btn" onclick="switchScreen('rb')" data-screen="rb">
-      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-      Roots
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Roots
     </button>
     <button class="nav-btn" onclick="switchScreen('sl')" data-screen="sl">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Sound
-    </button>
-    <button class="nav-btn" onclick="switchScreen('gr')" data-screen="gr">
-      <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="17" y2="18"/></svg>
-      Grammar
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Sound
     </button>
     <button class="nav-btn" onclick="switchScreen('qz')" data-screen="qz">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Quiz
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Quiz
     </button>
   </nav>
 </div>
 <script>
+// ═══════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════
+// Each root has:
+//   english: [{word, via, meaning}]  — modern English descendants
+//   walkthrough: [{label, form, note}]  — PIE→English sound change steps
+//   daughters: [{lang, form, gloss}]  — cognate family
+//   semantic: string  — semantic field key (for Discover grouping)
+
 var ROOTS=[
-{root:'*h\u2081\u00e9smi',pos:'verb',gloss:'to be',cat:'verbs',notes:'The PIE verb "to be" \u2014 one of the most widespread roots across all IE languages.',daughters:[{lang:'Sanskrit',form:'\u00e1smi',gloss:'I am'},{lang:'Greek',form:'eim\u00ed',gloss:'I am'},{lang:'Latin',form:'sum',gloss:'I am'},{lang:'English',form:'am',gloss:'I am'}],related:[]},
-{root:'*p\u1e53ds',pos:'noun (m.)',gloss:'foot',cat:'body',notes:'Gives Latin p\u0113s/pedis, Greek po\u00fas, English foot via Germanic.',daughters:[{lang:'Sanskrit',form:'p\u0101da-',gloss:'foot'},{lang:'Greek',form:'po\u00fas',gloss:'foot'},{lang:'Latin',form:'p\u0113s',gloss:'foot'},{lang:'English',form:'foot',gloss:'foot'}],related:['*ped-']},
-{root:'*h\u2081\u1e54k\u02b7s',pos:'noun (m.)',gloss:'eye',cat:'body',notes:'From *h\u2081ok\u02b7- "to see"; the dual form was common for paired body parts.',daughters:[{lang:'Sanskrit',form:'\u00e1k\u1e63i',gloss:'eye'},{lang:'Greek',form:'\u00f3sse',gloss:'eyes (dual)'},{lang:'Latin',form:'oculus',gloss:'eye'},{lang:'English',form:'eye',gloss:'eye'}],related:[]},
-{root:'*k\u00e9rd',pos:'noun (n.)',gloss:'heart',cat:'body',notes:'PIE *kerd- gives Greek kard\u00ed\u0101 (cardiac), Latin cor/cordis (cordial), English heart.',daughters:[{lang:'Sanskrit',form:'\u015brad-',gloss:'heart, trust'},{lang:'Greek',form:'kard\u00ed\u0101',gloss:'heart'},{lang:'Latin',form:'cor',gloss:'heart'},{lang:'English',form:'heart',gloss:'heart'}],related:[]},
-{root:'*d\u00f3nts',pos:'noun (m.)',gloss:'tooth',cat:'body',notes:'Participle of *h\u2081ed- "to eat"; the tooth as "the biting one."',daughters:[{lang:'Sanskrit',form:'d\u00e1nt-',gloss:'tooth'},{lang:'Greek',form:'odo\u00fas',gloss:'tooth'},{lang:'Latin',form:'d\u0113ns',gloss:'tooth'},{lang:'English',form:'tooth',gloss:'tooth'}],related:['*h\u2081ed-']},
-{root:'*ph\u2082t\u1e17r',pos:'noun (m.)',gloss:'father',cat:'family',notes:'Among the most stable PIE roots; kinship terms formed a remarkably consistent paradigm.',daughters:[{lang:'Sanskrit',form:'pit\u0101\u0301',gloss:'father'},{lang:'Greek',form:'pat\u1e17r',gloss:'father'},{lang:'Latin',form:'pater',gloss:'father'},{lang:'English',form:'father',gloss:'father'},{lang:'Persian',form:'pedar',gloss:'father'}],related:['*m\u00e9h\u2082t\u0113r']},
-{root:'*m\u00e9h\u2082t\u0113r',pos:'noun (f.)',gloss:'mother',cat:'family',notes:'Likely a nursery word (*m\u0101-) elevated into the formal kinship system.',daughters:[{lang:'Sanskrit',form:'m\u0101t\u0101\u0301',gloss:'mother'},{lang:'Greek',form:'m\u1e17t\u0113r',gloss:'mother'},{lang:'Latin',form:'m\u0101ter',gloss:'mother'},{lang:'English',form:'mother',gloss:'mother'}],related:['*ph\u2082t\u1e17r']},
-{root:'*b\u02b0r\u00e9h\u2082t\u0113r',pos:'noun (m.)',gloss:'brother',cat:'family',notes:'Possibly from *b\u02b0er- "to carry"; the "one who carries (the family burden)."',daughters:[{lang:'Sanskrit',form:'b\u02b0r\u0101\u0301t\u0101',gloss:'brother'},{lang:'Greek',form:'p\u02b0r\u00e1t\u0113r',gloss:'kinsman'},{lang:'Latin',form:'fr\u0101ter',gloss:'brother'},{lang:'English',form:'brother',gloss:'brother'},{lang:'Russian',form:'brat',gloss:'brother'}],related:[]},
-{root:'*sw\u00e9s\u014fr',pos:'noun (f.)',gloss:'sister',cat:'family',notes:'Possibly related to *s(w)e- (reflexive), the "one of the self/family group."',daughters:[{lang:'Sanskrit',form:'sv\u00e1sar-',gloss:'sister'},{lang:'Latin',form:'soror',gloss:'sister'},{lang:'English',form:'sister',gloss:'sister'},{lang:'Russian',form:'sestra',gloss:'sister'}],related:[]},
-{root:'*dy\u1e17ws',pos:'noun (m.)',gloss:'sky, day',cat:'nature',notes:'The sky-god; gives Zeus, Jupiter (Dy\u0113us-ph\u2082t\u0113r "sky-father"), Sanskrit Dy\u0101u\u1e63, Latvian Dievs.',daughters:[{lang:'Sanskrit',form:'Dy\u0101u\u1e63',gloss:'sky-god'},{lang:'Greek',form:'Ze\u00fas',gloss:'Zeus'},{lang:'Latin',form:'di\u0113s',gloss:'day'},{lang:'Latvian',form:'Dievs',gloss:'God'}],related:[]},
-{root:'*h\u2082ster-',pos:'noun (n.)',gloss:'star',cat:'nature',notes:'Preserved in Hittite as \u1e25asterz; gives Greek ast\u1e17r (astronomy), Latin stella.',daughters:[{lang:'Hittite',form:'\u1e25asterz',gloss:'star'},{lang:'Sanskrit',form:'st\u00e1r-',gloss:'star'},{lang:'Greek',form:'ast\u1e17r',gloss:'star'},{lang:'Latin',form:'stella',gloss:'star'},{lang:'English',form:'star',gloss:'star'}],related:[]},
-{root:'*seh\u2082wl\u0325',pos:'noun (n.)',gloss:'sun',cat:'nature',notes:'The PIE sun was grammatically neuter; solar deity worship is attested across IE cultures.',daughters:[{lang:'Sanskrit',form:'s\u016brya-',gloss:'sun'},{lang:'Greek',form:'h\u1e17lios',gloss:'sun'},{lang:'Latin',form:'s\u014fl',gloss:'sun'},{lang:'English',form:'sun',gloss:'sun'}],related:[]},
-{root:'*p\u00e9h\u2082wr\u0325',pos:'noun (n.)',gloss:'fire',cat:'nature',notes:'PIE had two fire words: *p\u00e9h\u2082wr\u0325 (material fire) and *h\u2081ng\u02b7nis (fire as deity/force).',daughters:[{lang:'Hittite',form:'pa\u1e25\u1e25ur',gloss:'fire'},{lang:'Greek',form:'p\u00fbr',gloss:'fire'},{lang:'Armenian',form:'hur',gloss:'fire'}],related:['*h\u2081ng\u02b7nis']},
-{root:'*h\u2081ng\u02b7nis',pos:'noun (m.)',gloss:'fire, fire-deity',cat:'nature',notes:'The animate "fire" \u2014 often deified. Sanskrit Agni is still worshipped; Latin ignis is his reflex.',daughters:[{lang:'Sanskrit',form:'agn\u00ed-',gloss:'fire, Agni'},{lang:'Latin',form:'ignis',gloss:'fire'},{lang:'Lithuanian',form:'ugnis',gloss:'fire'},{lang:'Russian',form:'ogon\'',gloss:'fire'}],related:['*p\u00e9h\u2082wr\u0325']},
-{root:'*wl\u0325\u0301k\u02b7os',pos:'noun (m.)',gloss:'wolf',cat:'animals',notes:'One of the most geographically widespread PIE words, attested from India to Iceland.',daughters:[{lang:'Sanskrit',form:'vr\u0325ka-',gloss:'wolf'},{lang:'Greek',form:'l\u00fakos',gloss:'wolf'},{lang:'Latin',form:'lupus',gloss:'wolf'},{lang:'English',form:'wolf',gloss:'wolf'},{lang:'Russian',form:'volk',gloss:'wolf'}],related:[]},
-{root:'*h\u2081\u00e9k\u02b7os',pos:'noun (m.)',gloss:'horse',cat:'animals',notes:'The PIE horse was central to IE expansion. The Kurgan hypothesis links horse domestication to PIE spread.',daughters:[{lang:'Sanskrit',form:'\u00e1\u015bva-',gloss:'horse'},{lang:'Greek',form:'h\u00edppos',gloss:'horse'},{lang:'Latin',form:'equus',gloss:'horse'},{lang:'Gaulish',form:'epos',gloss:'horse'}],related:[]},
-{root:'*g\u02b7\u1e40ws',pos:'noun (m./f.)',gloss:'cow, ox',cat:'animals',notes:'Key to PIE economy; the word for "wealth" (*peku-) originally meant "cattle."',daughters:[{lang:'Sanskrit',form:'g\u00e1u-',gloss:'cow'},{lang:'Greek',form:'bo\u00fbs',gloss:'ox'},{lang:'Latin',form:'b\u014fs',gloss:'ox'},{lang:'English',form:'cow',gloss:'cow'}],related:[]},
-{root:'*\u00f3wis',pos:'noun (m./f.)',gloss:'sheep',cat:'animals',notes:'Among the earliest domesticated animals; the root is remarkably stable across IE.',daughters:[{lang:'Sanskrit',form:'\u00e1vi-',gloss:'sheep'},{lang:'Greek',form:'o\u00efs',gloss:'sheep'},{lang:'Latin',form:'ovis',gloss:'sheep'},{lang:'English',form:'ewe',gloss:'female sheep'}],related:[]},
-{root:'*g\u02b7em-',pos:'verb',gloss:'to go, come',cat:'verbs',notes:'Gives English "come," Greek ba\u00edn\u014d (with metathesis), Latin ven\u012bre.',daughters:[{lang:'Sanskrit',form:'g\u00e1cchati',gloss:'goes'},{lang:'Greek',form:'ba\u00edn\u014d',gloss:'go'},{lang:'Latin',form:'veni\u014d',gloss:'come'},{lang:'English',form:'come',gloss:'come'}],related:[]},
-{root:'*b\u02b0er-',pos:'verb',gloss:'to carry, bear',cat:'verbs',notes:'Extremely productive root: English bear/birth/burden, Latin ferre/fertile, Greek ph\u00e9r\u014d.',daughters:[{lang:'Sanskrit',form:'b\u02b0\u00e1rati',gloss:'carries'},{lang:'Greek',form:'ph\u00e9r\u014d',gloss:'carry'},{lang:'Latin',form:'fer\u014d',gloss:'carry'},{lang:'English',form:'bear',gloss:'carry'}],related:[]},
-{root:'*deh\u2083-',pos:'verb',gloss:'to give',cat:'verbs',notes:'Root of Latin d\u014fnum "gift," Greek d\u014dron, English donate/data.',daughters:[{lang:'Sanskrit',form:'d\u00e1d\u0101ti',gloss:'gives'},{lang:'Greek',form:'d\u00edd\u014dmi',gloss:'give'},{lang:'Latin',form:'d\u014d',gloss:'give'},{lang:'Russian',form:'dat\'',gloss:'give'}],related:[]},
-{root:'*h\u2081ed-',pos:'verb',gloss:'to eat',cat:'verbs',notes:'English eat, Latin ed\u014d (edible), Greek \u00e9d\u014d \u2014 and *d\u00f3nts "tooth" is its participle.',daughters:[{lang:'Sanskrit',form:'\u00e1dmi',gloss:'I eat'},{lang:'Greek',form:'\u00e9d\u014d',gloss:'eat'},{lang:'Latin',form:'ed\u014d',gloss:'eat'},{lang:'English',form:'eat',gloss:'eat'}],related:['*d\u00f3nts']},
-{root:'*\u00f3ynos',pos:'numeral',gloss:'one',cat:'numbers',notes:'Latin \u016bnus, Greek o\u00eenos (on a die), English one/only/once.',daughters:[{lang:'Latin',form:'\u016bnus',gloss:'one'},{lang:'Greek',form:'o\u00eenos',gloss:'one (on dice)'},{lang:'English',form:'one',gloss:'one'},{lang:'Lithuanian',form:'vienas',gloss:'one'}],related:[]},
-{root:'*dw\u00f3h\u2081',pos:'numeral',gloss:'two',cat:'numbers',notes:'One of the most stable PIE words; the dual number category in grammar reflects its importance.',daughters:[{lang:'Sanskrit',form:'dv\u0101',gloss:'two'},{lang:'Greek',form:'d\u00fao',gloss:'two'},{lang:'Latin',form:'duo',gloss:'two'},{lang:'English',form:'two',gloss:'two'},{lang:'Russian',form:'dva',gloss:'two'}],related:[]},
-{root:'*tr\u00e9yes',pos:'numeral',gloss:'three',cat:'numbers',notes:'Gives English three, Latin tr\u0113s, Greek tre\u00efs, Sanskrit tr\u012b\u1e47i.',daughters:[{lang:'Sanskrit',form:'tr\u012b\u1e47i',gloss:'three'},{lang:'Greek',form:'tre\u00efs',gloss:'three'},{lang:'Latin',form:'tr\u0113s',gloss:'three'},{lang:'English',form:'three',gloss:'three'}],related:[]},
-{root:'*k\u02b7etw\u00f3res',pos:'numeral',gloss:'four',cat:'numbers',notes:'The labiovelar *k\u02b7 gives Latin qu- (quattuor), Greek t- (t\u00e9ttares), Germanic f- (four).',daughters:[{lang:'Sanskrit',form:'catv\u0101ras',gloss:'four'},{lang:'Greek',form:'t\u00e9ttares',gloss:'four'},{lang:'Latin',form:'quattuor',gloss:'four'},{lang:'English',form:'four',gloss:'four'}],related:[]},
-{root:'*p\u00e9nk\u02b7e',pos:'numeral',gloss:'five',cat:'numbers',notes:'Gives Greek p\u00e9nte (pentagon), Latin qu\u012bnque, Sanskrit pa\u00f1ca, English five.',daughters:[{lang:'Sanskrit',form:'pa\u00f1ca',gloss:'five'},{lang:'Greek',form:'p\u00e9nte',gloss:'five'},{lang:'Latin',form:'qu\u012bnque',gloss:'five'},{lang:'English',form:'five',gloss:'five'}],related:[]},
-{root:'*d\u00e9k\u0329mt\u0325',pos:'numeral',gloss:'ten',cat:'numbers',notes:'Gives Greek d\u00e9ka (decade), Latin decem (December), Sanskrit d\u00e1\u015ba, English ten.',daughters:[{lang:'Sanskrit',form:'d\u00e1\u015ba',gloss:'ten'},{lang:'Greek',form:'d\u00e9ka',gloss:'ten'},{lang:'Latin',form:'decem',gloss:'ten'},{lang:'English',form:'ten',gloss:'ten'}],related:[]}
+{root:'*h\u2081\u00e9smi',pos:'verb',gloss:'to be',cat:'verbs',semantic:'existence',
+ english:[{word:'is',via:'Old English',meaning:'third person singular of "be"'},{word:'am',via:'Old English',meaning:'first person singular of "be"'},{word:'was',via:'Old English w\u00e6s',meaning:'past tense of "be"'}],
+ walkthrough:[{label:'PIE root',form:'*h\u2081es-',note:'the basic "be" root'},{label:'Proto-Germanic',form:'*isti',note:'laryngeal lost, regular development'},{label:'Old English',form:'is',note:'consonant simplification'},{label:'Modern English',form:'is',note:'unchanged from Old English'}],
+ notes:'The PIE verb "to be" is one of the most stable roots across all IE languages. Its suppletive forms (am/is/was/were) reflect different PIE roots merged into one paradigm.',
+ daughters:[{lang:'Sanskrit',form:'\u00e1sti',gloss:'is'},{lang:'Greek',form:'est\u00ed',gloss:'is'},{lang:'Latin',form:'est',gloss:'is'},{lang:'Russian',form:'yest\'',gloss:'is'},{lang:'Hittite',form:'e\u1e63zi',gloss:'is'}],related:[]},
+
+{root:'*p\u1e53ds',pos:'noun (m.)',gloss:'foot',cat:'body',semantic:'body',
+ english:[{word:'foot',via:'Old English f\u014dt',meaning:'the extremity of the leg'},{word:'feet',via:'Old English f\u0113t',meaning:'plural of foot (ablaut)'},{word:'fetter',via:'Old English fetor',meaning:'a shackle for the foot'},{word:'pedestrian',via:'Latin pedester',meaning:'one who goes on foot'},{word:'pedal',via:'Latin pedalis',meaning:'of or for the foot'},{word:'pedigree',via:'Old French',meaning:'line of descent (lit. crane\'s foot)'},{word:'expedition',via:'Latin expedire',meaning:'to free the feet; set out'},{word:'impede',via:'Latin impedire',meaning:'to shackle the feet; obstruct'}],
+ walkthrough:[{label:'PIE root',form:'*p\u014fd-',note:'o-grade stem'},{label:'Grimm\'s Law',form:'*f\u014ft-',note:'PIE *p \u2192 Germanic *f'},{label:'Proto-Germanic',form:'*f\u014dts',note:'regular vowel development'},{label:'Old English',form:'f\u014dt',note:'case ending lost'},{label:'Modern English',form:'foot',note:'vowel shortening in standard dialect'}],
+ notes:'Latin \u2192 ped- (keep PIE *p), Germanic \u2192 foot (Grimm\'s p\u2192f). The same root explains pedestrian, pedal, pedigree, impede, and expedition.',
+ daughters:[{lang:'Sanskrit',form:'p\u0101da-',gloss:'foot'},{lang:'Greek',form:'po\u00fas',gloss:'foot'},{lang:'Latin',form:'p\u0113s',gloss:'foot'},{lang:'English',form:'foot',gloss:'foot'},{lang:'Armenian',form:'otn',gloss:'foot'}],related:['*ped-']},
+
+{root:'*h\u2081\u1e54k\u02b7s',pos:'noun (m.)',gloss:'eye',cat:'body',semantic:'body',
+ english:[{word:'eye',via:'Old English \u0113age',meaning:'the organ of sight'},{word:'window',via:'Old Norse vindauga',meaning:'lit. wind-eye'},{word:'daisy',via:'Old English d\u00e6ges \u0113age',meaning:'day\'s eye'}],
+ walkthrough:[{label:'PIE root',form:'*h\u2081ok\u02b7-',note:'"to see, eye"'},{label:'Proto-Germanic',form:'*aug\u014dn\u014d',note:'labiovelar simplified'},{label:'Old English',form:'\u0113age',meaning:'regular vowel shift'},{label:'Modern English',form:'eye',note:''}],
+ notes:'Latin \u2192 oculus (with diminutive suffix), Greek \u2192 \u00f3sse (dual, both eyes). The Old English word also appears in "daisy" (day\'s eye) and indirectly in "window" (wind-eye in Norse).',
+ daughters:[{lang:'Sanskrit',form:'\u00e1k\u1e63i',gloss:'eye'},{lang:'Greek',form:'\u00f3sse',gloss:'eyes (dual)'},{lang:'Latin',form:'oculus',gloss:'eye'},{lang:'Gothic',form:'aug\u014d',gloss:'eye'}],related:[]},
+
+{root:'*k\u00e9rd',pos:'noun (n.)',gloss:'heart',cat:'body',semantic:'body',
+ english:[{word:'heart',via:'Old English heorte',meaning:'the organ; centre of emotion'},{word:'cardiac',via:'Greek kardia',meaning:'of the heart'},{word:'cordial',via:'Latin cor',meaning:'warm-hearted; a warming drink'},{word:'courage',via:'Old French corage',meaning:'the heart as seat of bravery'},{word:'record',via:'Latin recordari',meaning:'to call back to heart/mind'}],
+ walkthrough:[{label:'PIE root',form:'*k\u00e9rd-',note:'"heart"'},{label:'Grimm\'s Law',form:'*hert-',note:'PIE *k \u2192 Germanic *h'},{label:'Proto-Germanic',form:'*hert\u014dn\u014d',note:''},{label:'Old English',form:'heorte',note:'breaking of e before r'},{label:'Modern English',form:'heart',note:''}],
+ notes:'PIE *kerd- gives Greek kardia (cardiac, cardiogram), Latin cor/cord- (cordial, accord, discord, record, courage via Old French coeur), and Germanic heart.',
+ daughters:[{lang:'Greek',form:'kard\u00ed\u0101',gloss:'heart'},{lang:'Latin',form:'cor',gloss:'heart'},{lang:'English',form:'heart',gloss:'heart'},{lang:'Old Irish',form:'cride',gloss:'heart'},{lang:'Russian',form:'serdtse',gloss:'heart'}],related:[]},
+
+{root:'*ph\u2082t\u1e17r',pos:'noun (m.)',gloss:'father',cat:'family',semantic:'kinship',
+ english:[{word:'father',via:'Old English f\u00e6der',meaning:'male parent'},{word:'paternal',via:'Latin paternus',meaning:'of or like a father'},{word:'patron',via:'Latin patronus',meaning:'a protector; lit. "father-figure"'},{word:'patrimony',via:'Latin patrimonium',meaning:'inherited from one\'s father'},{word:'patriot',via:'Greek patriotes',meaning:'one devoted to the fatherland'},{word:'Jupiter',via:'Latin Iuppiter',meaning:'sky-father (Dyeus + pater)'}],
+ walkthrough:[{label:'PIE root',form:'*ph\u2082t\u1e17r',note:'the kinship term for father'},{label:'Grimm\'s + Verner\'s',form:'*fader',note:'*p\u2192f (Grimm\'s); *t voiced \u2192 *d because accent followed (Verner\'s)'},{label:'Old English',form:'f\u00e6der',note:'vowel fronting'},{label:'Middle English',form:'fader',note:''},{label:'Modern English',form:'father',note:'th from spelling pronunciation; d\u2192\u00f0 shift'}],
+ notes:'The "d" in English "father" (not "th") is explained by Verner\'s Law: the accent fell on the second syllable in PIE, so Grimm\'s *t became voiced *d rather than *\u03b8. Compare Latin pater (keeps PIE *p and *t unchanged).',
+ daughters:[{lang:'Sanskrit',form:'pit\u0101',gloss:'father'},{lang:'Greek',form:'pat\u1e17r',gloss:'father'},{lang:'Latin',form:'pater',gloss:'father'},{lang:'Persian',form:'pedar',gloss:'father'},{lang:'Russian',form:'otets',gloss:'father'}],related:['*m\u00e9h\u2082t\u0113r']},
+
+{root:'*m\u00e9h\u2082t\u0113r',pos:'noun (f.)',gloss:'mother',cat:'family',semantic:'kinship',
+ english:[{word:'mother',via:'Old English m\u014dder',meaning:'female parent'},{word:'maternal',via:'Latin maternus',meaning:'of or like a mother'},{word:'matrix',via:'Latin matrix',meaning:'womb; source'},{word:'matter',via:'Latin materia',meaning:'material; lit. "of the mother wood"'},{word:'metropolis',via:'Greek m\u0113tr\u00f3polis',meaning:'mother city'}],
+ walkthrough:[{label:'PIE',form:'*m\u0101t\u0113r',note:'likely from nursery word *m\u0101'},{label:'Proto-Germanic',form:'*m\u014dd\u0113r',note:'Verner\'s Law voices *t \u2192 *d'},{label:'Old English',form:'m\u014dder',note:''},{label:'Modern English',form:'mother',note:''}],
+ notes:'The "th" in mother also reflects Verner\'s Law, just like "father." Latin mater (maternal, matrix, matter) keeps the original *t unchanged.',
+ daughters:[{lang:'Sanskrit',form:'m\u0101t\u0101',gloss:'mother'},{lang:'Greek',form:'m\u1e17t\u0113r',gloss:'mother'},{lang:'Latin',form:'m\u0101ter',gloss:'mother'},{lang:'Armenian',form:'mayr',gloss:'mother'}],related:['*ph\u2082t\u1e17r']},
+
+{root:'*b\u02b0r\u00e9h\u2082t\u0113r',pos:'noun (m.)',gloss:'brother',cat:'family',semantic:'kinship',
+ english:[{word:'brother',via:'Old English br\u014d\u00f0or',meaning:'male sibling'},{word:'friar',via:'Latin frater via Old French',meaning:'a member of a religious brotherhood'},{word:'fraternal',via:'Latin fraternus',meaning:'of brothers; brotherly'}],
+ walkthrough:[{label:'PIE',form:'*b\u02b0r\u0101t\u0113r',note:''},{label:'Grimm\'s Law',form:'*br\u014d\u00feor',note:'*b\u02b0\u2192b; *t\u2192\u00fe'},{label:'Old English',form:'br\u014d\u00f0or',note:''},{label:'Modern English',form:'brother',note:''}],
+ notes:'The initial accent in PIE meant Grimm\'s *t \u2192 \u00fe (th) rather than d (contrast father/mother where accent was later). Latin frater gives friar, fraternal, fraternize.',
+ daughters:[{lang:'Sanskrit',form:'bhr\u0101t\u0101',gloss:'brother'},{lang:'Greek',form:'phr\u00e1t\u0113r',gloss:'kinsman'},{lang:'Latin',form:'fr\u0101ter',gloss:'brother'},{lang:'Russian',form:'brat',gloss:'brother'}],related:[]},
+
+{root:'*dy\u1e17ws',pos:'noun (m.)',gloss:'sky, day, sky-god',cat:'nature',semantic:'sky',
+ english:[{word:'Tuesday',via:'Old English T\u012bwes d\u00e6g',meaning:'day of Tiw (the sky-god)'},{word:'divine',via:'Latin divinus',meaning:'of the gods'},{word:'deity',via:'Latin deus',meaning:'a god'},{word:'diary',via:'Latin diarium',meaning:'daily record'},{word:'journey',via:'Old French jorn\u00e9e',meaning:'a day\'s travel'},{word:'Jupiter',via:'Latin Iuppiter',meaning:'sky-father'}],
+ walkthrough:[{label:'PIE',form:'*dy\u0113us',note:'the sky, the bright daytime heaven'},{label:'Proto-Germanic',form:'*T\u012bwaz',note:'becomes the god Tiw/T\u00fdr'},{label:'Old English',form:'T\u012bwes',note:'genitive; T\u012bwes d\u00e6g = Tuesday'},{label:'Modern English',form:'Tuesday',note:''}],
+ notes:'PIE *dyeus was the sky-god of the IE peoples. He survives as Zeus (Greek), Jupiter/Deus (Latin), T\u012bw/T\u00fdr (Germanic), and Dyaus (Sanskrit). Tuesday is literally "T\u012bw\'s day," a translation of Latin Dies Martis.',
+ daughters:[{lang:'Sanskrit',form:'Dy\u0101u\u1e63',gloss:'sky-god'},{lang:'Greek',form:'Ze\u00fas',gloss:'Zeus'},{lang:'Latin',form:'di\u0113s/deus',gloss:'day/god'},{lang:'Old Norse',form:'T\u00fdr',gloss:'sky-god'}],related:[]},
+
+{root:'*h\u2082ster-',pos:'noun (n.)',gloss:'star',cat:'nature',semantic:'sky',
+ english:[{word:'star',via:'Old English steorra',meaning:'a luminous body in the night sky'},{word:'stellar',via:'Latin stella',meaning:'of or like a star'},{word:'astronomy',via:'Greek astron',meaning:'the study of stars'},{word:'asterisk',via:'Greek asteriskos',meaning:'little star'},{word:'disaster',via:'Italian disastro',meaning:'ill-starred; bad star omen'},{word:'Esther',via:'Persian/Hebrew',meaning:'possibly "star"'}],
+ walkthrough:[{label:'PIE',form:'*h\u2082ster-',note:'laryngeal preserved in Hittite \u1e25asterz'},{label:'Proto-Germanic',form:'*sterr\u014dn\u014d',note:'laryngeal lost; metathesis'},{label:'Old English',form:'steorra',note:''},{label:'Modern English',form:'star',note:''}],
+ notes:'The laryngeal h\u2082 is preserved only in Hittite. Greek gives asterisk, astronomy, disaster (ill-starred). Latin stella (< *sterla) gives stellar, constellation.',
+ daughters:[{lang:'Hittite',form:'\u1e25asterz',gloss:'star'},{lang:'Sanskrit',form:'st\u00e1r-',gloss:'star'},{lang:'Greek',form:'ast\u1e17r',gloss:'star'},{lang:'Latin',form:'stella',gloss:'star'}],related:[]},
+
+{root:'*seh\u2082wl\u0325',pos:'noun (n.)',gloss:'sun',cat:'nature',semantic:'sky',
+ english:[{word:'sun',via:'Old English sunne',meaning:'the star at the centre of our solar system'},{word:'solar',via:'Latin sol',meaning:'of the sun'},{word:'south',via:'Old English s\u016b\u00fe',meaning:'the direction of the sun at noon (in northern hemisphere)'},{word:'Sunday',via:'Old English Sunnand\u00e6g',meaning:'day of the sun'}],
+ walkthrough:[{label:'PIE',form:'*s\u0101wol',note:'animate/neuter alternation'},{label:'Proto-Germanic',form:'*sunnon',note:''},{label:'Old English',form:'sunne',note:''},{label:'Modern English',form:'sun',note:''}],
+ notes:'Latin sol (solar, solstice) and Greek helios (heliocentric, helium) reflect the same root. Sunday is a translation of Latin Dies Solis.',
+ daughters:[{lang:'Sanskrit',form:'s\u016brya',gloss:'sun'},{lang:'Greek',form:'h\u1e17lios',gloss:'sun'},{lang:'Latin',form:'s\u014fl',gloss:'sun'},{lang:'Welsh',form:'haul',gloss:'sun'}],related:[]},
+
+{root:'*wl\u0325\u0301k\u02b7os',pos:'noun (m.)',gloss:'wolf',cat:'animals',semantic:'animals',
+ english:[{word:'wolf',via:'Old English wulf',meaning:'the wild canine predator'},{word:'lupine',via:'Latin lupus',meaning:'of or like a wolf'},{word:'Ralph',via:'Old Norse Hr\u00f3lfr',meaning:'wolf-counsel (name)'},{word:'werewolf',via:'Old English werwulf',meaning:'man-wolf'}],
+ walkthrough:[{label:'PIE',form:'*wlk\u02b7os',note:'labiovelar *k\u02b7'},{label:'Grimm\'s Law',form:'*wulfaz',note:'*k\u02b7 \u2192 *f before back vowel'},{label:'Old English',form:'wulf',note:''},{label:'Modern English',form:'wolf',note:''}],
+ notes:'Latin lupus (lupine, lupus the disease, named for the rash that "devours" skin) and Greek lukos (lycanthropy) preserve PIE *p. Germanic has Grimm\'s shift *k\u02b7 \u2192 *f.',
+ daughters:[{lang:'Sanskrit',form:'v\u1e5bka-',gloss:'wolf'},{lang:'Greek',form:'l\u00fakos',gloss:'wolf'},{lang:'Latin',form:'lupus',gloss:'wolf'},{lang:'Russian',form:'volk',gloss:'wolf'}],related:[]},
+
+{root:'*h\u2081\u00e9k\u02b7os',pos:'noun (m.)',gloss:'horse',cat:'animals',semantic:'animals',
+ english:[{word:'equine',via:'Latin equus',meaning:'of or like a horse'},{word:'equestrian',via:'Latin eques',meaning:'a horse-rider'},{word:'mare',via:'Old English mere',meaning:'a female horse (different grade)'},{word:'cavalry',via:'Italian cavallo',meaning:'horse soldiers'}],
+ walkthrough:[{label:'PIE',form:'*h\u2081ek\u02b7os',note:'labiovelar *k\u02b7'},{label:'Proto-Germanic',form:'*ehwaz',note:'*k\u02b7 \u2192 *hw before front vowel'},{label:'Old English',form:'eoh',note:'archaic; lost by Middle English'},{label:'Modern English',form:'(horse from separate root)',note:'*h\u2081ek\u02b7os lost in English'}],
+ notes:'The PIE horse word survived directly in Latin (equus: equine, equestrian) and Sanskrit (a\u015bva), but was replaced in English by "horse" from a different root. The labiovelar explains why Latin has equ- but Greek has hipp- (*h\u2081ek\u02b7os \u2192 *ek\u02b7os \u2192 hikk\u014ds).',
+ daughters:[{lang:'Sanskrit',form:'\u00e1\u015bva-',gloss:'horse'},{lang:'Greek',form:'h\u00edppos',gloss:'horse'},{lang:'Latin',form:'equus',gloss:'horse'},{lang:'Gaulish',form:'epos',gloss:'horse'}],related:[]},
+
+{root:'*g\u02b7em-',pos:'verb',gloss:'to go, come',cat:'verbs',semantic:'motion',
+ english:[{word:'come',via:'Old English cuman',meaning:'to move toward'},{word:'become',via:'Old English becuman',meaning:'to come to be'},{word:'welcome',via:'Old English wilcuma',meaning:'one who comes agreeably'}],
+ walkthrough:[{label:'PIE',form:'*g\u02b7em-',note:'labiovelar initial'},{label:'Grimm\'s Law',form:'*k\u02b7eman',note:'*g\u02b7 \u2192 *k\u02b7'},{label:'Proto-Germanic',form:'*kweman',note:''},{label:'Old English',form:'cuman',note:'kw \u2192 c before back vowel'},{label:'Modern English',form:'come',note:''}],
+ notes:'Latin venire (advent, convention, event) reflects a different grade of the same root via lengthened *g\u02b7\u0113-. Greek baino (basis, acrobat) shows the labiovelar became plain b in Greek before a front vowel.',
+ daughters:[{lang:'Sanskrit',form:'g\u00e1cchati',gloss:'goes'},{lang:'Greek',form:'ba\u00edn\u014d',gloss:'go'},{lang:'Latin',form:'veni\u014d',gloss:'come'},{lang:'Gothic',form:'qiman',gloss:'come'}],related:[]},
+
+{root:'*b\u02b0er-',pos:'verb',gloss:'to carry, bear',cat:'verbs',semantic:'action',
+ english:[{word:'bear',via:'Old English beran',meaning:'to carry; to give birth (to carry young)'},{word:'birth',via:'Old Norse bur\u00f0r',meaning:'the act of being born; brought forth'},{word:'burden',via:'Old English byr\u00f0en',meaning:'a load to be carried'},{word:'born',via:'Old English boren',meaning:'brought forth, carried out'},{word:'bier',via:'Old English b\u0101r',meaning:'a frame for carrying a coffin'},{word:'fertile',via:'Latin fertilis',meaning:'bearing fruit; productive'},{word:'transfer',via:'Latin transferre',meaning:'to carry across'},{word:'refer',via:'Latin referre',meaning:'to carry back'}],
+ walkthrough:[{label:'PIE',form:'*b\u02b0er-',note:'aspirated *b\u02b0'},{label:'Proto-Germanic',form:'*beran',note:'aspiration lost, becomes plain *b'},{label:'Old English',form:'beran',note:''},{label:'Modern English',form:'bear',note:''}],
+ notes:'One of the most productive PIE roots in English. Latin ferre (< *b\u02b0er- with Grassmann\'s dissimilation) gives transfer, refer, conference, differ, offer, suffer, prefer. The same root gives birth, burden, bier, and fertile.',
+ daughters:[{lang:'Sanskrit',form:'b\u02b0\u00e1rati',gloss:'carries'},{lang:'Greek',form:'ph\u00e9r\u014d',gloss:'carry'},{lang:'Latin',form:'fer\u014d',gloss:'carry'},{lang:'Russian',form:'brat\'',gloss:'take'}],related:[]},
+
+{root:'*deh\u2083-',pos:'verb',gloss:'to give',cat:'verbs',semantic:'action',
+ english:[{word:'data',via:'Latin data',meaning:'things given; given facts'},{word:'donate',via:'Latin donare',meaning:'to give as a gift'},{word:'dose',via:'Greek dosis',meaning:'a given portion (of medicine)'},{word:'tradition',via:'Latin traditio',meaning:'a handing over, handing down'},{word:'pardon',via:'Latin perdonare',meaning:'to give completely; forgive'},{word:'antidote',via:'Greek antidoton',meaning:'given against (poison)'}],
+ walkthrough:[{label:'PIE',form:'*deh\u2083-',note:'h\u2083 colours *e \u2192 *o in some forms'},{label:'Proto-Germanic',form:'*(lost)',note:'root not preserved directly in Germanic'},{label:'Latin',form:'dare/datum',note:'gives English via Romance'},{label:'Modern English',form:'data, donate',note:'borrowed from Latin'}],
+ notes:'English has no native Germanic reflex of this root (it was replaced). Instead, English borrowed data, donate, tradition, and dose from Latin and Greek. Russian dat\' and Polish da\u0107 preserve the root natively.',
+ daughters:[{lang:'Sanskrit',form:'d\u00e1d\u0101ti',gloss:'gives'},{lang:'Greek',form:'d\u00edd\u014dmi',gloss:'give'},{lang:'Latin',form:'d\u014d',gloss:'give'},{lang:'Russian',form:'dat\'',gloss:'give'}],related:[]},
+
+{root:'*h\u2081ed-',pos:'verb',gloss:'to eat',cat:'verbs',semantic:'action',
+ english:[{word:'eat',via:'Old English etan',meaning:'to consume food'},{word:'edible',via:'Latin edibilis',meaning:'fit to be eaten'},{word:'obese',via:'Latin obesus',meaning:'eaten up; overfed'},{word:'tooth',via:'Old English t\u014d\u00fe',meaning:'the biter; PIE *d\u00f3nts is the participle "the eating one"'}],
+ walkthrough:[{label:'PIE',form:'*h\u2081ed-',note:'laryngeal lost in all daughters'},{label:'Proto-Germanic',form:'*etan',note:''},{label:'Old English',form:'etan',note:''},{label:'Modern English',form:'eat',note:''}],
+ notes:'Latin edere (edible, obese) retains the PIE *e unchanged. The word "tooth" is literally the PIE participle *d\u00f3nts, "the eating one." German essen and French manger come from different roots.',
+ daughters:[{lang:'Sanskrit',form:'\u00e1dmi',gloss:'I eat'},{lang:'Greek',form:'\u00e9d\u014d',gloss:'eat'},{lang:'Latin',form:'ed\u014d',gloss:'eat'},{lang:'German',form:'essen',gloss:'eat'}],related:[]},
+
+{root:'*\u01b5neh\u2081-',pos:'verb',gloss:'to know, recognise',cat:'verbs',semantic:'mind',
+ english:[{word:'know',via:'Old English cnawan',meaning:'to have knowledge of'},{word:'knowledge',via:'Middle English',meaning:'what is known'},{word:'can',via:'Old English cunnan',meaning:'to be able to; to know how'},{word:'gnosis',via:'Greek gn\u014dsis',meaning:'knowledge, especially spiritual'},{word:'diagnosis',via:'Greek diagnoskein',meaning:'to know apart; distinguish'},{word:'noble',via:'Latin nobilis',meaning:'well-known; of high birth'},{word:'notorious',via:'Latin notorius',meaning:'well-known (usually for bad reasons)'}],
+ walkthrough:[{label:'PIE',form:'*\u01b5neh\u2081-',note:'zero grade *\u01b5n- in Germanic'},{label:'Proto-Germanic',form:'*kann\u014djan',note:'nasal infix form'},{label:'Old English',form:'cnawan / cunnan',note:'two different formations'},{label:'Modern English',form:'know / can',note:'silent k from Old English cn-'}],
+ notes:'The silent k in "know" and "knight" was pronounced in Old English. German kennen/k\u00f6nnen and English know/can both descend from this root. Latin nobilis (noble, notorious) is literally "well-known."',
+ daughters:[{lang:'Sanskrit',form:'j\u0101n\u0101ti',gloss:'knows'},{lang:'Greek',form:'gign\u014dsk\u014d',gloss:'know'},{lang:'Latin',form:'(g)n\u014dsc\u014d',gloss:'come to know'},{lang:'Russian',form:'znat\'',gloss:'know'}],related:[]},
+
+{root:'*\u00f3ynos',pos:'numeral',gloss:'one',cat:'numbers',semantic:'numbers',
+ english:[{word:'one',via:'Old English \u0101n',meaning:'the number 1'},{word:'only',via:'Old English \u0101nlic',meaning:'alone; sole'},{word:'once',via:'Old English \u0101nes',meaning:'one time'},{word:'alone',via:'Middle English al one',meaning:'entirely one; by oneself'},{word:'any',via:'Old English \u00e6ni\u0121',meaning:'one (of many)'},{word:'atone',via:'at + one',meaning:'to become at one with; reconcile'}],
+ walkthrough:[{label:'PIE',form:'*\u00f3ynos',note:''},{label:'Proto-Germanic',form:'*ainaz',note:''},{label:'Old English',form:'\u0101n',note:''},{label:'Modern English',form:'one / a(n)',note:'the indefinite article "a" is a weakened form of "one"'}],
+ notes:'The indefinite article "a/an" in English is just a weakened form of "one." Latin unus (unique, unite, union, uniform) reflects the same root with a different prefix.',
+ daughters:[{lang:'Latin',form:'\u016bnus',gloss:'one'},{lang:'Greek',form:'o\u00eenos',gloss:'one (on dice)'},{lang:'Gothic',form:'ains',gloss:'one'},{lang:'Lithuanian',form:'vienas',gloss:'one'}],related:[]},
+
+{root:'*dw\u00f3h\u2081',pos:'numeral',gloss:'two',cat:'numbers',semantic:'numbers',
+ english:[{word:'two',via:'Old English tw\u0101',meaning:'the number 2'},{word:'twice',via:'Old English twi\u0121es',meaning:'two times'},{word:'twin',via:'Old English twinn',meaning:'double; one of a pair'},{word:'between',via:'Old English betw\u0113onum',meaning:'in the two-space; among two'},{word:'twelve',via:'Old English tw\u0113lf',meaning:'two left (over ten)'},{word:'double',via:'Latin duplus',meaning:'twofold'},{word:'dual',via:'Latin dualis',meaning:'of two'},{word:'doubt',via:'Latin dubitare',meaning:'to be in two minds'}],
+ walkthrough:[{label:'PIE',form:'*dw\u00f3h\u2081',note:'dual number'},{label:'Proto-Germanic',form:'*tw\u014dz',note:''},{label:'Old English',form:'tw\u0101',note:''},{label:'Modern English',form:'two',note:'w became silent in the 17th century; spelling retained'}],
+ notes:'The silent w in "two" was pronounced in Old English (tw\u0101). Latin duo gives double, dual, doubt (to be in two minds), duel, duplicate. The word "between" contains "two" inside it.',
+ daughters:[{lang:'Sanskrit',form:'dv\u0101',gloss:'two'},{lang:'Greek',form:'d\u00fao',gloss:'two'},{lang:'Latin',form:'duo',gloss:'two'},{lang:'Russian',form:'dva',gloss:'two'}],related:[]},
+
+{root:'*tr\u00e9yes',pos:'numeral',gloss:'three',cat:'numbers',semantic:'numbers',
+ english:[{word:'three',via:'Old English \u00fere\u014f',meaning:'the number 3'},{word:'thirteen',via:'Old English \u00fere\u014ftene',meaning:'three and ten'},{word:'thirty',via:'Old English \u00feri\u0121',meaning:'three tens'},{word:'third',via:'Old English \u00feridda',meaning:'ordinal of three'},{word:'triple',via:'Latin triplus',meaning:'threefold'},{word:'trio',via:'Italian trio',meaning:'a group of three'},{word:'trivial',via:'Latin trivialis',meaning:'of the crossroads (three-ways); commonplace'}],
+ walkthrough:[{label:'PIE',form:'*tr\u00e9yes',note:''},{label:'Proto-Germanic',form:'*\u00feri\u017daz',note:'*t \u2192 \u00fe (Grimm\'s)'},{label:'Old English',form:'\u00fere\u014f',note:''},{label:'Modern English',form:'three',note:''}],
+ notes:'Latin tres/tria (triple, trio, triangle, trivial) keeps PIE *t; Germanic shifts it to th (three, thirty, third). Trivial originally meant "of the crossroads (trivium = three roads)".',
+ daughters:[{lang:'Sanskrit',form:'tr\u012b\u1e47i',gloss:'three'},{lang:'Greek',form:'tre\u00efs',gloss:'three'},{lang:'Latin',form:'tr\u0113s',gloss:'three'},{lang:'Russian',form:'tri',gloss:'three'}],related:[]},
+
+{root:'*p\u00e9nk\u02b7e',pos:'numeral',gloss:'five',cat:'numbers',semantic:'numbers',
+ english:[{word:'five',via:'Old English f\u012bf',meaning:'the number 5'},{word:'fist',via:'Old English f\u0233st',meaning:'the five fingers closed'},{word:'finger',via:'Old English finger',meaning:'one of the five digits'},{word:'pentagon',via:'Greek pente',meaning:'five-sided figure'},{word:'punch',via:'Hindi p\u0101\u00f1c',meaning:'five (ingredients in the drink)'}],
+ walkthrough:[{label:'PIE',form:'*p\u00e9nk\u02b7e',note:'labiovelar *k\u02b7'},{label:'Grimm\'s Law',form:'*f\u012bf',note:'*p\u2192f, *k\u02b7\u2192*f (two Grimm\'s shifts!)'},{label:'Old English',form:'f\u012bf',note:''},{label:'Modern English',form:'five',note:''}],
+ notes:'Five underwent two applications of Grimm\'s Law: *p\u2192f AND *k\u02b7\u2192f, which is why *penkwe became "five." The word "fist" likely means "five fingers." Greek pente gives pentagon, pentagram. Latin quinque gives quintet.',
+ daughters:[{lang:'Sanskrit',form:'pa\u00f1ca',gloss:'five'},{lang:'Greek',form:'p\u00e9nte',gloss:'five'},{lang:'Latin',form:'qu\u012bnque',gloss:'five'},{lang:'Russian',form:'pyat\'',gloss:'five'}],related:[]},
+
+{root:'*d\u00e9k\u0329mt\u0325',pos:'numeral',gloss:'ten',cat:'numbers',semantic:'numbers',
+ english:[{word:'ten',via:'Old English tien',meaning:'the number 10'},{word:'teen',via:'Old English suffix -t\u012bene',meaning:'"ten more" (thirteen = three-ten)'},{word:'tithe',via:'Old English teo\u00f0a',meaning:'a tenth part'},{word:'December',via:'Latin decem',meaning:'tenth month (in original Roman calendar)'},{word:'decade',via:'Greek deka',meaning:'a group of ten'},{word:'decimal',via:'Latin decimalis',meaning:'of tenths'},{word:'dime',via:'Latin decima',meaning:'a tenth (of a dollar)'}],
+ walkthrough:[{label:'PIE',form:'*d\u00e9kmt',note:''},{label:'Grimm\'s Law',form:'*tehun',note:'*d\u2192t, *k\u2192h'},{label:'Old English',form:'tien / t\u012bn',note:''},{label:'Modern English',form:'ten / -teen',note:''}],
+ notes:'Latin decem (December, decimal, dime, decimate) and Greek deka (decade, decagon) keep PIE unchanged. Grimm\'s Law turns *d\u2192t and *k\u2192h, giving Germanic "ten."',
+ daughters:[{lang:'Sanskrit',form:'d\u00e1\u015ba',gloss:'ten'},{lang:'Greek',form:'d\u00e9ka',gloss:'ten'},{lang:'Latin',form:'decem',gloss:'ten'},{lang:'Russian',form:'desyat\'',gloss:'ten'}],related:[]},
+
+{root:'*p\u00e9h\u2082wr\u0325',pos:'noun (n.)',gloss:'fire',cat:'nature',semantic:'elements',
+ english:[{word:'fire',via:'Old English f\u00fdr',meaning:'combustion; flames'},{word:'fuel',via:'Old French fouaille',meaning:'material for fire'}],
+ walkthrough:[{label:'PIE',form:'*p\u00e9h\u2082wr\u0325',note:'neuter noun; material fire'},{label:'Proto-Germanic',form:'*f\u016br',note:'Grimm\'s *p\u2192f'},{label:'Old English',form:'f\u00fdr',note:''},{label:'Modern English',form:'fire',note:''}],
+ notes:'PIE had two fire words: *p\u00e9h\u2082wr\u0325 (the material, neuter) and *h\u2081ng\u02b7nis (the animate divine fire). Greek pyr (pyre, pyromaniac) and Hittite pa\u1e25\u1e25ur directly reflect this root.',
+ daughters:[{lang:'Greek',form:'p\u00fbr',gloss:'fire'},{lang:'Hittite',form:'pa\u1e25\u1e25ur',gloss:'fire'},{lang:'Armenian',form:'hur',gloss:'fire'}],related:[]},
+
+{root:'*h\u2081ng\u02b7nis',pos:'noun (m.)',gloss:'fire (animate)',cat:'nature',semantic:'elements',
+ english:[{word:'ignite',via:'Latin ignire',meaning:'to set on fire'},{word:'ignition',via:'Latin ignitio',meaning:'the act of setting on fire'}],
+ walkthrough:[{label:'PIE',form:'*h\u2081ng\u02b7nis',note:'animate fire; often deified'},{label:'Latin',form:'ignis',note:'laryngeal lost'},{label:'English',form:'ignite',note:'borrowed from Latin; no Germanic reflex'}],
+ notes:'Sanskrit Agni is still worshipped as the fire-god in Hindu ritual. Latin ignis (ignite, ignition) is his reflex in that branch. Germanic had no direct heir of this word.',
+ daughters:[{lang:'Sanskrit',form:'agni-',gloss:'fire; the fire-god'},{lang:'Latin',form:'ignis',gloss:'fire'},{lang:'Lithuanian',form:'ugnis',gloss:'fire'}],related:[]},
+
+{root:'*\u01b5neh\u2082-',pos:'verb',gloss:'to breathe; spirit, life',cat:'verbs',semantic:'existence',
+ english:[{word:'animal',via:'Latin animalis',meaning:'a living, breathing creature'},{word:'animate',via:'Latin animare',meaning:'to give life to; to breathe life into'},{word:'soul',via:'Old English sawol',meaning:'the vital spirit (possibly related)'},{word:'animus',via:'Latin animus',meaning:'the mind; spirit; intention'},{word:'unanimous',via:'Latin unanimus',meaning:'of one spirit/mind'}],
+ walkthrough:[{label:'PIE',form:'*h\u2082en-',note:'"breathe, blow"'},{label:'Latin',form:'anima/animus',note:'breath, soul, mind'},{label:'English',form:'animal, animate',note:'borrowed from Latin'}],
+ notes:'Animal literally means "a breathing thing." The same root gives animate, unanimous (one-spirited), magnanimous (great-spirited). Old English sawol (soul) may be related.',
+ daughters:[{lang:'Latin',form:'anima',gloss:'breath, soul'},{lang:'Greek',form:'anemos',gloss:'wind'},{lang:'Sanskrit',form:'aniti',gloss:'breathes'}],related:[]},
+
+{root:'*kw\u00e9p-',pos:'verb',gloss:'to smoke, steam, cook',cat:'verbs',semantic:'action',
+ english:[{word:'heat',via:'Old English h\u00e6tu',meaning:'warmth; high temperature'},{word:'hot',via:'Old English h\u0101t',meaning:'having a high temperature'}],
+ walkthrough:[{label:'PIE',form:'*kwep-',note:'"steam, smoke"'},{label:'Proto-Germanic',form:'*haita-',note:'labiovelar development'},{label:'Old English',form:'h\u0101t',note:''},{label:'Modern English',form:'hot',note:''}],
+ notes:'Latin vapour (vapour/vapor, evaporate) reflects this root. The connection between cooking, steam, and heat is the semantic thread.',
+ daughters:[{lang:'Latin',form:'vapor',gloss:'steam, vapour'},{lang:'Greek',form:'kapnos',gloss:'smoke'},{lang:'Sanskrit',form:'kv\u00e1thati',gloss:'boils'}],related:[]},
+
+{root:'*\u0121\u02b0m\u00f3n',pos:'noun (m.)',gloss:'earth, soil; person',cat:'nature',semantic:'earth',
+ english:[{word:'human',via:'Latin humanus',meaning:'of or belonging to mankind'},{word:'humble',via:'Latin humilis',meaning:'low to the ground; meek'},{word:'humus',via:'Latin humus',meaning:'the organic layer of soil'},{word:'exhume',via:'Latin exhumare',meaning:'to dig out of the earth'},{word:'bridegroom',via:'Old English brydguma',meaning:'bride\'s man (guma = man)'}],
+ walkthrough:[{label:'PIE',form:'*\u0121\u02b0m\u014dn',note:'"earth-creature = person"'},{label:'Latin',form:'homo/humus',note:'humankind and soil are the same word'},{label:'Old English',form:'guma',note:'archaic word for man'},{label:'Modern English',form:'bridegroom',note:'groom is a corruption of guma (man)'}],
+ notes:'In PIE, the word for "person" was literally "earth-creature." Latin homo/humus (human, humble, humus, exhume) keeps this connection explicit. The "groom" in bridegroom was originally "guma" meaning man.',
+ daughters:[{lang:'Latin',form:'homo',gloss:'person, man'},{lang:'Gothic',form:'guma',gloss:'man'},{lang:'Lithuanian',form:'\u017emuo',gloss:'person'}],related:[]},
+
+{root:'*wod\u02b0-',pos:'noun (n.)',gloss:'water',cat:'nature',semantic:'elements',
+ english:[{word:'water',via:'Old English w\u00e6ter',meaning:'H\u2082O; the liquid'},{word:'wet',via:'Old English w\u00e6t',meaning:'covered in water'},{word:'otter',via:'Old English otor',meaning:'the water animal'},{word:'vodka',via:'Russian voda',meaning:'little water'},{word:'whisky',via:'Scottish Gaelic uisce beatha',meaning:'water of life'},{word:'hydraulic',via:'Greek hydor',meaning:'of water-power'},{word:'hydrogen',via:'Greek hydor + genes',meaning:'water-producer'}],
+ walkthrough:[{label:'PIE',form:'*wod\u02b0-',note:'"water"'},{label:'Proto-Germanic',form:'*wat\u014dr',note:''},{label:'Old English',form:'w\u00e6ter',note:''},{label:'Modern English',form:'water',note:''}],
+ notes:'Greek hydor (hydraulic, hydrogen, hydrant) and Russian voda (vodka) reflect the same root. Otter is literally "the water animal." Whisky comes from "water of life."',
+ daughters:[{lang:'Greek',form:'hyd\u014dr',gloss:'water'},{lang:'Russian',form:'voda',gloss:'water'},{lang:'Sanskrit',form:'udan-',gloss:'water'},{lang:'Hittite',form:'watar',gloss:'water'}],related:[]},
 ];
 
+// SEMANTIC FIELDS
+var SEMANTIC_FIELDS=[
+  {key:'kinship',name:'Kinship',icon:'&#x1F46A;',desc:'Family terms — the most stable PIE vocabulary',roots:['*ph\u2082t\u1e17r','*m\u00e9h\u2082t\u0113r','*b\u02b0r\u00e9h\u2082t\u0113r']},
+  {key:'body',name:'The Body',icon:'&#x1FAB4;',desc:'Parts of the human body',roots:['*p\u1e53ds','*h\u2081\u1e54k\u02b7s','*k\u00e9rd']},
+  {key:'sky',name:'Sky & Cosmos',icon:'&#x2728;',desc:'The PIE people\'s celestial vocabulary',roots:['*dy\u1e17ws','*h\u2082ster-','*seh\u2082wl\u0325']},
+  {key:'elements',name:'Earth & Elements',icon:'&#x1F30A;',desc:'Fire, water, earth — the fundamental forces',roots:['*p\u00e9h\u2082wr\u0325','*h\u2081ng\u02b7nis','*wod\u02b0-','*\u0121\u02b0m\u00f3n']},
+  {key:'animals',name:'Animals',icon:'&#x1F43A;',desc:'The fauna of the PIE world',roots:['*wl\u0325\u0301k\u02b7os','*h\u2081\u00e9k\u02b7os']},
+  {key:'motion',name:'Motion & Action',icon:'&#x1F3C3;',desc:'Core verbs of movement and activity',roots:['*g\u02b7em-','*b\u02b0er-','*deh\u2083-','*h\u2081ed-']},
+  {key:'mind',name:'Mind & Knowledge',icon:'&#x1F9E0;',desc:'Thinking, knowing, spirit',roots:['*\u01b5neh\u2082-','\u01b5neh\u2081-','*\u0121\u02b0m\u00f3n']},
+  {key:'numbers',name:'Numbers',icon:'&#x1F522;',desc:'The PIE decimal counting system',roots:['*\u00f3ynos','*dw\u00f3h\u2081','*tr\u00e9yes','*p\u00e9nk\u02b7e','*d\u00e9k\u0329mt\u0325']},
+  {key:'existence',name:'Being & Life',icon:'&#x1F331;',desc:'Existence, breath, and the life-force',roots:['*h\u2081\u00e9smi','*\u01b5neh\u2082-']},
+];
+
+// WORD OF THE DAY — seeded by date so it changes daily
+function getTodaysRoot(){
+  var d=new Date();
+  var seed=d.getFullYear()*10000+d.getMonth()*100+d.getDate();
+  return ROOTS[seed%ROOTS.length];
+}
+
+// SOUND LAW DATA
 var SOUND_LAWS=[
-{name:"Grimm's Law",subtitle:"PIE stops \u2192 Germanic consonants",rule:"*p t k \u2192 f \u03b8 x (voiceless stops \u2192 fricatives)",desc:"Jacob Grimm (1822) identified a systematic shift of all PIE voiceless stops to fricatives in Proto-Germanic. This is why English has f/th/h where Latin and Greek have p/t/c.",examples:[{pie:"*p\u1e53ds",daughter:"English foot (f < PIE *p)",gloss:"versus Latin p\u0113s, Greek po\u00fas"},{pie:"*tr\u00e9yes",daughter:"English three (th < PIE *t)",gloss:"versus Latin tr\u0113s, Greek tre\u00efs"}]},
-{name:"Verner's Law",subtitle:"Exceptions to Grimm's, explained by accent",rule:"Grimm's fricatives voiced when PIE accent followed",desc:"Karl Verner (1875) explained apparent exceptions to Grimm's Law: when the PIE accent fell on the following syllable, the fricatives became voiced. This accounts for alternations like English was/were.",examples:[{pie:"*ph\u2082t\u1e17r",daughter:"father (d, not th, accent was on -t\u1e17r)",gloss:"accent shifted before Grimm's shift applied"}]},
-{name:"Grassmann's Law",subtitle:"Dissimilation of aspirates in Greek & Sanskrit",rule:"Two aspirates in successive syllables: the first loses aspiration",desc:"Hermann Grassmann (1863) described how Greek and Sanskrit independently eliminated a sequence of two aspirated consonants by de-aspirating the first one.",examples:[{pie:"*b\u02b0eud\u02b0-",daughter:"Greek pe\u00fathomai (b de-aspirated)",gloss:"to learn"},{pie:"*d\u02b0i-d\u02b0eh\u2081-",daughter:"Greek t\u00edt\u02b0\u0113mi (first aspiration lost)",gloss:"to place"}]},
-{name:"Palatalization (Centum / Satem)",subtitle:"IE velars split into three series",rule:"*k\u02b7 / *k / *k\u0301 \u2192 different outcomes in centum vs satem branches",desc:"PIE had three dorsal stops: plain velars *k, labiovelars *k\u02b7 (with lip rounding), and palatovelars *k\u0301. In satem languages (Indo-Iranian, Slavic, Baltic) *k\u0301 became a sibilant; in centum languages (Greek, Latin, Germanic, Celtic) palatovelars merged with plain velars.",examples:[{pie:"*k\u0301m\u0329t\u00f3m",daughter:"Latin centum vs Avestan sat\u0259m",gloss:'one hundred \u2014 gives the centum/satem division its name'},{pie:"*k\u02b7etw\u00f3res",daughter:"Greek t\u00e9ttares (k\u02b7 \u2192 t before front vowel)",gloss:"four"}]}
+  {name:"Grimm's Law",subtitle:"PIE stops \u2192 Germanic consonants",rule:"*p t k \u2192 f \u03b8 x \u00b7 *b d g \u2192 p t k \u00b7 *b\u02b0 d\u02b0 g\u02b0 \u2192 b d g",
+   desc:"Jacob Grimm (1822) identified a systematic rotation of all PIE stops in Proto-Germanic. Voiceless stops became fricatives, voiced stops became voiceless, and aspirates lost their aspiration.",
+   examples:[{pie:"*p\u1e53ds",daughter:"English foot (f < PIE *p)",gloss:"Latin p\u0113s keeps *p; Germanic shifts to f"},{pie:"*tr\u00e9yes",daughter:"English three (th < PIE *t)",gloss:"Latin tr\u0113s keeps *t; Germanic shifts to \u00fe"},{pie:"*d\u00e9kmt",daughter:"English ten (t < PIE *d)",gloss:"Latin decem keeps *d; Germanic shifts to t"},{pie:"*p\u00e9nk\u02b7e",daughter:"English five (f...f < PIE *p...*k\u02b7)",gloss:"Two Grimm shifts in one word"}]},
+  {name:"Verner's Law",subtitle:"Accent-conditioned voicing",rule:"Grimm's fricatives \u2192 voiced when PIE accent followed",
+   desc:"Karl Verner (1875) explained exceptions to Grimm: when the PIE accent fell after the consonant, the resulting fricative became voiced instead. This explains why 'father' has d (not th) while 'brother' has th.",
+   examples:[{pie:"*ph\u2082t\u1e17r",daughter:"English father (d, not th)",gloss:"Accent on -t\u1e17r \u2192 *t voiced to *d by Verner"},{pie:"*b\u02b0r\u00e9h\u2082t\u0113r",daughter:"English brother (th, not d)",gloss:"Accent on initial *b\u02b0r- \u2192 *t stays \u00fe by Grimm"}]},
+  {name:"Grassmann's Law",subtitle:"Dissimilation of aspirates in Greek & Sanskrit",rule:"Two aspirates in sequence \u2192 first loses aspiration",
+   desc:"When two aspirated consonants appeared in successive syllables in Greek or Sanskrit, the first was de-aspirated. This happened independently in both languages.",
+   examples:[{pie:"*b\u02b0eud\u02b0-",daughter:"Greek pe\u00fathomai (b\u02b0 \u2192 p)",gloss:"Second aspirate d\u02b0 triggers de-aspiration of first"},{pie:"*d\u02b0i-d\u02b0eh\u2081-",daughter:"Greek t\u00edt\u02b0\u0113mi (first d\u02b0 \u2192 t)",gloss:"Reduplication creates two aspirates; first loses aspiration"}]},
+  {name:"Palatalization (Centum / Satem)",subtitle:"The great IE dialect split",rule:"*k\u0301 (palatal velar) \u2192 sibilant in satem \u00b7 merges with *k in centum",
+   desc:"PIE had three velar series. In 'satem' languages (Indo-Iranian, Slavic, Baltic) the palatal velars became sibilants. In 'centum' languages (Greek, Latin, Germanic, Celtic) they merged with plain velars. The split is named after the word for 100.",
+   examples:[{pie:"*k\u0301m\u0329t\u00f3m",daughter:"Latin centum vs Avestan sat\u0259m",gloss:"The very isogloss that names the split"},{pie:"*k\u02b7etwores",daughter:"Greek t\u00e9ttares (k\u02b7\u2192t before front vowel)",gloss:"Labiovelar loses lip-rounding before front vowels"}]},
 ];
 
+// GRAMMAR PANELS
 var GRAM_PANELS={
-overview:'<div class="section-title">The PIE Language</div><p class="gram-para">Proto-Indo-European was a richly inflected synthetic language. Nouns, pronouns, and adjectives were declined for <em>eight cases</em>, three genders (masculine, feminine, neuter), and three numbers (singular, dual, plural). Verbs were conjugated for person, number, tense, aspect, mood, and voice.</p><div class="gram-note">PIE reconstruction uses conventional symbols: *asterisk marks a reconstructed form, \u2081\u2082\u2083 subscripts mark laryngeals, and diacritics mark accent (acute \u00b4) and length (macron \u00af).</div><div class="section-title">The Eight Cases</div><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Function</th><th>Example meaning</th></tr><tr><td class="label">Nominative</td><td>Subject</td><td>The wolf sees</td></tr><tr><td class="label">Accusative</td><td>Direct object</td><td>sees the wolf</td></tr><tr><td class="label">Genitive</td><td>Possession / source</td><td>the wolf&#x2019;s howl</td></tr><tr><td class="label">Dative</td><td>Indirect object</td><td>give to the wolf</td></tr><tr><td class="label">Instrumental</td><td>Means / accompaniment</td><td>with a wolf</td></tr><tr><td class="label">Ablative</td><td>Separation / origin</td><td>away from the wolf</td></tr><tr><td class="label">Locative</td><td>Location</td><td>in/at the wolf</td></tr><tr><td class="label">Vocative</td><td>Direct address</td><td>O wolf!</td></tr></table></div><div class="section-title">Three Genders</div><p class="gram-para">PIE distinguished masculine, feminine, and neuter. The feminine may have developed from a collective/abstract suffix *-h\u2082. Neuter nouns have identical nominative and accusative forms.</p><div class="section-title">Word Order</div><p class="gram-para">PIE was likely SOV (Subject\u2013Object\u2013Verb) with modifiers preceding their heads, as reconstructed from the oldest attested daughters (Vedic, Hittite, Tocharian). Word order was relatively free due to the heavy case system.</p>',
-nouns:'<div class="section-title">Thematic Stems (*-o/e-)</div><p class="gram-para">The most productive PIE noun class. Masculine and neuter nouns formed with the thematic vowel *-o-. Most Latin second declension and Greek omicron-stem nouns derive from here.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Masc. *wl\u0325\u0301k\u02b7o-s</th><th>Neut. *yug\u00f3m</th></tr><tr><td class="label">Nom.</td><td>*wl\u0325\u0301k\u02b7os</td><td>*yug\u00f3m</td></tr><tr><td class="label">Acc.</td><td>*wl\u0325\u0301k\u02b7om</td><td>*yug\u00f3m</td></tr><tr><td class="label">Gen.</td><td>*wl\u0325\u0301k\u02b7osyo</td><td>*yug\u00f3syo</td></tr><tr><td class="label">Dat.</td><td>*wl\u0325\u0301k\u02b7\u014fi</td><td>*yug\u1e51i</td></tr><tr><td class="label">Inst.</td><td>*wl\u0325\u0301k\u02b7oh\u2081</td><td>*yug\u00e9h\u2081</td></tr><tr><td class="label">Abl.</td><td>*wl\u0325\u0301k\u02b7\u014fd</td><td>*yug\u1e51d</td></tr><tr><td class="label">Loc.</td><td>*wl\u0325\u0301k\u02b7ei</td><td>*yug\u00e9i</td></tr><tr><td class="label">Voc.</td><td>*wl\u0325\u0301k\u02b7e</td><td>*yug\u00f3m</td></tr></table></div><div class="section-title">Athematic (Root) Nouns</div><p class="gram-para">Many ancient PIE nouns were formed directly from the root without a thematic vowel. These show ablaut alternations in the case paradigm.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>*p\u1e53ds &ldquo;foot&rdquo;</th></tr><tr><td class="label">Nom.</td><td>*p\u1e53ds</td></tr><tr><td class="label">Acc.</td><td>*p\u00f3dm\u0325</td></tr><tr><td class="label">Gen.</td><td>*ped\u00f3s</td></tr><tr><td class="label">Dat.</td><td>*ped\u00e9i</td></tr><tr><td class="label">Loc.</td><td>*p\u00e9di</td></tr></table></div><div class="gram-note">Note the ablaut alternation: *p\u1e53d- (lengthened o-grade) in nominative, *pod- (o-grade) in accusative, *ped- (e-grade) in oblique cases.</div>',
-pronouns:'<div class="section-title">Personal Pronouns</div><p class="gram-para">PIE personal pronouns were suppletive (built from different roots for different forms, like English I / me / my). There was no third-person pronoun; demonstratives (*so, *t\u00f3-) filled that role.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>1sg &ldquo;I&rdquo;</th><th>2sg &ldquo;you&rdquo;</th><th>1pl &ldquo;we&rdquo;</th></tr><tr><td class="label">Nom.</td><td>*\u00e9g\u02b0\u2082</td><td>*t\u00fah\u2082</td><td>*w\u00e9y</td></tr><tr><td class="label">Acc.</td><td>*m\u00e9/m\u0325</td><td>*tw\u00e9/m\u0325</td><td>*n\u0325sm\u00e9</td></tr><tr><td class="label">Gen.</td><td>*m\u00e9ne</td><td>*t\u00e9we</td><td>*n\u0325s\u00f3m</td></tr><tr><td class="label">Dat.</td><td>*m\u00e9g\u02b0io</td><td>*t\u00e9b\u02b0io</td><td>*n\u0325sm\u00f3i</td></tr></table></div><div class="section-title">Demonstrative *so / *t\u00f3-</div><p class="gram-para">The demonstrative *so (masc. nom. sg.) / *seh\u2082 (fem.) / *t\u00f3d (neut.) gave rise to the definite article in Greek and to pronouns in Germanic (English that/the/they).</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Masc.</th><th>Fem.</th><th>Neut.</th></tr><tr><td class="label">Nom.</td><td>*so</td><td>*seh\u2082</td><td>*t\u00f3d</td></tr><tr><td class="label">Acc.</td><td>*t\u00f3m</td><td>*t\u0101\u0301m</td><td>*t\u00f3d</td></tr><tr><td class="label">Gen.</td><td>*t\u00f3syo</td><td>*t\u00f3syeh\u2082s</td><td>*t\u00f3syo</td></tr></table></div>',
-verbs:'<div class="section-title">The PIE Verb System</div><p class="gram-para">PIE verbs were conjugated for <em>person</em> (1st/2nd/3rd), <em>number</em> (sg/dual/pl), <em>tense/aspect</em> (present, aorist, perfect), <em>mood</em> (indicative, subjunctive, optative, imperative), and <em>voice</em> (active, middle-passive).</p><div class="section-title">Present Active Endings (Thematic)</div><div class="decl-table-wrap"><table class="decl-table"><tr><th>Person</th><th>Singular</th><th>Plural</th></tr><tr><td class="label">1st</td><td>*-oh\u2082</td><td>*-omos</td></tr><tr><td class="label">2nd</td><td>*-esi</td><td>*-ete</td></tr><tr><td class="label">3rd</td><td>*-eti</td><td>*-onti</td></tr></table></div><div class="gram-note">Example: *b\u02b0er- &ldquo;to carry&rdquo; \u2192 *b\u02b0\u00e9roh\u2082 &ldquo;I carry&rdquo;, *b\u02b0\u00e9resi &ldquo;you carry&rdquo;, *b\u02b0\u00e9reti &ldquo;he/she carries&rdquo;</div><div class="section-title">Aspect: The Three Stems</div><p class="gram-para">PIE distinguished three aspectual bases: the <em>present</em> (ongoing action), the <em>aorist</em> (simple/punctual), and the <em>perfect</em> (state resulting from action).</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Stem</th><th>Example (*b\u02b0er-)</th><th>Meaning</th></tr><tr><td class="label">Present</td><td>*b\u02b0\u00e9reti</td><td>is carrying</td></tr><tr><td class="label">Aorist</td><td>*\u00e9-b\u02b0r\u0325-t</td><td>carried (once)</td></tr><tr><td class="label">Perfect</td><td>*b\u02b0eb\u02b0\u00f3re</td><td>has carried (result)</td></tr></table></div><div class="section-title">Middle Voice</div><p class="gram-para">The PIE middle voice expressed actions affecting the subject themselves. Greek -mai, Sanskrit -e, and Latin deponent verbs reflect this system.</p>',
-numbers:'<div class="section-title">The PIE Numeral System</div><p class="gram-para">PIE had a fully developed decimal numeral system with unique forms for 1\u201310, a separate word for 100 (*k\u0301m\u0329t\u00f3m), and compounds for higher numbers.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>#</th><th>PIE</th><th>Sanskrit</th><th>Greek</th><th>Latin</th><th>English</th></tr><tr><td class="label">1</td><td>*\u00f3ynos</td><td>\u00e9ka</td><td>h\u00e9is</td><td>\u016bnus</td><td>one</td></tr><tr><td class="label">2</td><td>*dw\u00f3h\u2081</td><td>dv\u0101</td><td>d\u00fao</td><td>duo</td><td>two</td></tr><tr><td class="label">3</td><td>*tr\u00e9yes</td><td>tr\u012b\u1e47i</td><td>tre\u00efs</td><td>tr\u0113s</td><td>three</td></tr><tr><td class="label">4</td><td>*k\u02b7etw\u00f3res</td><td>catv\u0101ras</td><td>t\u00e9ttares</td><td>quattuor</td><td>four</td></tr><tr><td class="label">5</td><td>*p\u00e9nk\u02b7e</td><td>pa\u00f1ca</td><td>p\u00e9nte</td><td>qu\u012bnque</td><td>five</td></tr><tr><td class="label">6</td><td>*sw\u00e9k\u0301s</td><td>\u1e63\u00e1\u1e6d</td><td>h\u00e9x</td><td>sex</td><td>six</td></tr><tr><td class="label">7</td><td>*septm\u0325\u0301</td><td>sapt\u00e1</td><td>hept\u00e1</td><td>septem</td><td>seven</td></tr><tr><td class="label">8</td><td>*ok\u0301t\u1e51w</td><td>a\u1e63\u1e6d\u0101\u0301u</td><td>okt\u1e51</td><td>oct\u014f</td><td>eight</td></tr><tr><td class="label">9</td><td>*h\u2081newn\u0325</td><td>n\u00e1va</td><td>enn\u00e9a</td><td>novem</td><td>nine</td></tr><tr><td class="label">10</td><td>*d\u00e9k\u0329mt\u0325</td><td>d\u00e1\u015ba</td><td>d\u00e9ka</td><td>decem</td><td>ten</td></tr><tr><td class="label">100</td><td>*k\u0301m\u0329t\u00f3m</td><td>\u015bat\u00e1m</td><td>hekat\u00f3n</td><td>centum</td><td>(hundred)</td></tr></table></div><div class="gram-note">The centum/satem isogloss takes its name from the word for 100: Latin <em>centum</em> (velar c) vs. Avestan <em>sat\u0259m</em> (sibilant s), reflecting the treatment of PIE palatovelars.</div>'
+overview:'<div class="section-title">The PIE Language</div><p class="gram-para">Proto-Indo-European was a richly inflected synthetic language. Nouns, pronouns, and adjectives were declined for <em>eight cases</em>, three genders (masculine, feminine, neuter), and three numbers (singular, dual, plural). Verbs conjugated for person, number, tense, aspect, mood, and voice.</p><div class="gram-note">PIE reconstruction uses conventional symbols: *asterisk marks a reconstructed form; \u2081\u2082\u2083 subscripts mark laryngeals; diacritics mark accent (acute \u00b4) and length (macron \u00af).</div><div class="section-title">The Eight Cases</div><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Function</th><th>Example meaning</th></tr><tr><td class="label">Nominative</td><td>Subject</td><td>The wolf sees</td></tr><tr><td class="label">Accusative</td><td>Direct object</td><td>sees the wolf</td></tr><tr><td class="label">Genitive</td><td>Possession / source</td><td>the wolf\u2019s howl</td></tr><tr><td class="label">Dative</td><td>Indirect object</td><td>give to the wolf</td></tr><tr><td class="label">Instrumental</td><td>Means / accompaniment</td><td>with a wolf</td></tr><tr><td class="label">Ablative</td><td>Separation / origin</td><td>away from the wolf</td></tr><tr><td class="label">Locative</td><td>Location</td><td>in/at the wolf</td></tr><tr><td class="label">Vocative</td><td>Direct address</td><td>O wolf!</td></tr></table></div><div class="section-title">Three Genders</div><p class="gram-para">PIE distinguished masculine, feminine, and neuter. The feminine likely developed from a collective/abstract suffix *-h\u2082. Neuter nouns have identical nominative and accusative forms.</p><div class="section-title">Word Order</div><p class="gram-para">PIE was likely SOV (Subject\u2013Object\u2013Verb) with modifiers preceding their heads, as reconstructed from the oldest attested daughters (Vedic, Hittite, Tocharian).</p>',
+nouns:'<div class="section-title">Thematic Stems (*-o/e-)</div><p class="gram-para">The most productive PIE noun class, formed with thematic vowel *-o-. Most Latin second declension and Greek omicron-stem nouns derive from this class.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Masc. *wl\u0325\u0301k\u02b7os</th><th>Neut. *yug\u00f3m</th></tr><tr><td class="label">Nom.</td><td>*wl\u0325\u0301k\u02b7os</td><td>*yug\u00f3m</td></tr><tr><td class="label">Acc.</td><td>*wl\u0325\u0301k\u02b7om</td><td>*yug\u00f3m</td></tr><tr><td class="label">Gen.</td><td>*wl\u0325\u0301k\u02b7osyo</td><td>*yug\u00f3syo</td></tr><tr><td class="label">Dat.</td><td>*wl\u0325\u0301k\u02b7\u014fi</td><td>*yug\u1e51i</td></tr><tr><td class="label">Inst.</td><td>*wl\u0325\u0301k\u02b7oh\u2081</td><td>*yug\u00e9h\u2081</td></tr><tr><td class="label">Abl.</td><td>*wl\u0325\u0301k\u02b7\u014fd</td><td>*yug\u1e51d</td></tr><tr><td class="label">Loc.</td><td>*wl\u0325\u0301k\u02b7ei</td><td>*yug\u00e9i</td></tr><tr><td class="label">Voc.</td><td>*wl\u0325\u0301k\u02b7e</td><td>*yug\u00f3m</td></tr></table></div><div class="section-title">Athematic (Root) Nouns</div><p class="gram-para">Ancient PIE nouns formed directly from the root, showing ablaut alternations across the paradigm.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>*p\u1e53ds \u201cfoot\u201d</th></tr><tr><td class="label">Nom.</td><td>*p\u1e53ds</td></tr><tr><td class="label">Acc.</td><td>*p\u00f3dm\u0325</td></tr><tr><td class="label">Gen.</td><td>*ped\u00f3s</td></tr><tr><td class="label">Dat.</td><td>*ped\u00e9i</td></tr><tr><td class="label">Loc.</td><td>*p\u00e9di</td></tr></table></div><div class="gram-note">Note the ablaut alternation: *p\u1e53d- (lengthened o-grade) in nominative, *pod- (o-grade) in accusative, *ped- (e-grade) in oblique cases. This is why Latin has p\u0113s (nominative) but ped- in all other forms (pedestrian, pedal).</div>',
+pronouns:'<div class="section-title">Personal Pronouns</div><p class="gram-para">PIE pronouns were suppletive \u2014 built from different roots for different forms, like English I / me / my from three separate sources.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>1sg \u201cI\u201d</th><th>2sg \u201cyou\u201d</th><th>1pl \u201cwe\u201d</th></tr><tr><td class="label">Nom.</td><td>*\u00e9g\u02b0\u2082</td><td>*t\u00fah\u2082</td><td>*w\u00e9y</td></tr><tr><td class="label">Acc.</td><td>*m\u00e9/m\u0325</td><td>*tw\u00e9/m\u0325</td><td>*n\u0325sm\u00e9</td></tr><tr><td class="label">Gen.</td><td>*m\u00e9ne</td><td>*t\u00e9we</td><td>*n\u0325s\u00f3m</td></tr><tr><td class="label">Dat.</td><td>*m\u00e9g\u02b0io</td><td>*t\u00e9b\u02b0io</td><td>*n\u0325sm\u00f3i</td></tr></table></div><div class="gram-note">Compare: English I (< *eg\u02b0\u2082) \u2014 German ich \u2014 Latin ego \u2014 Greek eg\u014d \u2014 Sanskrit ah\u00e1m. Five languages, one word, 6,000 years apart.</div><div class="section-title">Demonstrative *so / *t\u00f3-</div><p class="gram-para">The demonstrative *so gave rise to the Greek definite article (ho/h\u0113/t\u00f3) and to pronouns in Germanic (English that/the/they).</p>',
+verbs:'<div class="section-title">The PIE Verb System</div><p class="gram-para">PIE verbs conjugated for <em>person</em> (1st/2nd/3rd), <em>number</em> (sg/dual/pl), <em>tense/aspect</em> (present, aorist, perfect), <em>mood</em> (indicative, subjunctive, optative, imperative), and <em>voice</em> (active, middle-passive).</p><div class="section-title">Present Active Endings (Thematic)</div><div class="decl-table-wrap"><table class="decl-table"><tr><th>Person</th><th>Singular</th><th>Plural</th></tr><tr><td class="label">1st</td><td>*-oh\u2082</td><td>*-omos</td></tr><tr><td class="label">2nd</td><td>*-esi</td><td>*-ete</td></tr><tr><td class="label">3rd</td><td>*-eti</td><td>*-onti</td></tr></table></div><div class="gram-note">Example: *b\u02b0er- \u201cto carry\u201d \u2192 *b\u02b0\u00e9roh\u2082 \u201cI carry\u201d \u2192 *b\u02b0\u00e9resi \u201cyou carry\u201d \u2192 *b\u02b0\u00e9reti \u201che/she carries\u201d</div><div class="section-title">The Three Aspects</div><div class="decl-table-wrap"><table class="decl-table"><tr><th>Stem</th><th>Example (*b\u02b0er-)</th><th>Meaning</th></tr><tr><td class="label">Present</td><td>*b\u02b0\u00e9reti</td><td>is carrying</td></tr><tr><td class="label">Aorist</td><td>*\u00e9-b\u02b0r\u0325-t</td><td>carried (once)</td></tr><tr><td class="label">Perfect</td><td>*b\u02b0eb\u02b0\u00f3re</td><td>has carried (state)</td></tr></table></div>',
+numbers:'<div class="section-title">The PIE Numeral System</div><p class="gram-para">PIE had a fully developed decimal system. The numerals 1\u20134 were declined for case and gender; 5\u201310 were generally indeclinable.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>#</th><th>PIE</th><th>Sanskrit</th><th>Greek</th><th>Latin</th><th>English</th></tr><tr><td class="label">1</td><td>*\u00f3ynos</td><td>\u00e9ka</td><td>h\u00e9is</td><td>\u016bnus</td><td>one</td></tr><tr><td class="label">2</td><td>*dw\u00f3h\u2081</td><td>dv\u0101</td><td>d\u00fao</td><td>duo</td><td>two</td></tr><tr><td class="label">3</td><td>*tr\u00e9yes</td><td>tr\u012b\u1e47i</td><td>tre\u00efs</td><td>tr\u0113s</td><td>three</td></tr><tr><td class="label">4</td><td>*k\u02b7etw\u00f3res</td><td>catv\u0101ras</td><td>t\u00e9ttares</td><td>quattuor</td><td>four</td></tr><tr><td class="label">5</td><td>*p\u00e9nk\u02b7e</td><td>pa\u00f1ca</td><td>p\u00e9nte</td><td>qu\u012bnque</td><td>five</td></tr><tr><td class="label">6</td><td>*sw\u00e9k\u0301s</td><td>\u1e63\u00e1\u1e6d</td><td>h\u00e9x</td><td>sex</td><td>six</td></tr><tr><td class="label">7</td><td>*septm\u0325</td><td>sapt\u00e1</td><td>hept\u00e1</td><td>septem</td><td>seven</td></tr><tr><td class="label">8</td><td>*ok\u0301t\u1e51w</td><td>a\u1e63\u1e6d\u0101u</td><td>okt\u1e51</td><td>oct\u014f</td><td>eight</td></tr><tr><td class="label">9</td><td>*h\u2081newn\u0325</td><td>n\u00e1va</td><td>enn\u00e9a</td><td>novem</td><td>nine</td></tr><tr><td class="label">10</td><td>*d\u00e9kmt</td><td>d\u00e1\u015ba</td><td>d\u00e9ka</td><td>decem</td><td>ten</td></tr><tr><td class="label">100</td><td>*k\u0301m\u0329t\u00f3m</td><td>\u015bat\u00e1m</td><td>hekat\u00f3n</td><td>centum</td><td>(hundred)</td></tr></table></div><div class="gram-note">The centum/satem isogloss takes its name from this word: Latin <em>centum</em> (velar) vs Avestan <em>sat\u0259m</em> (sibilant). Hundred itself comes from a compound *km\u0329t\u00f3m + *d\u00e9kmt ("ten tens").</div>'
 };
 
-var state={currentScreen:'home',streak:0,sessions:0,totalCorrect:0,totalAnswered:0,cardData:{}};
-function loadState(){try{var s=localStorage.getItem('pie_state');if(s)state=Object.assign(state,JSON.parse(s));}catch(e){}}
-function saveState(){try{localStorage.setItem('pie_state',JSON.stringify(state));}catch(e){}}
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+var state={streak:0,sessions:0,totalCorrect:0,totalAnswered:0,cardData:{}};
+function loadState(){try{var s=localStorage.getItem('pie_state2');if(s)state=Object.assign(state,JSON.parse(s));}catch(e){}}
+function saveState(){try{localStorage.setItem('pie_state2',JSON.stringify(state));}catch(e){}}
 loadState();
 
-var screenMap={home:'home-screen',fc:'fc-screen',rb:'rb-screen',sl:'sl-screen',gr:'gr-screen',qz:'qz-screen',settings:'settings-screen'};
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+var screenMap={home:'home-screen',discover:'discover-screen',fc:'fc-screen',rb:'rb-screen',sl:'sl-screen',gr:'gr-screen',qz:'qz-screen',settings:'settings-screen'};
 function switchScreen(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById(screenMap[id]).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.screen===id);});
-  state.currentScreen=id;
   if(id==='rb')renderRootBrowser();
-  if(id==='sl')renderSoundLaws();
+  if(id==='sl'){renderSoundLaws();renderWalkthroughs();}
   if(id==='gr')renderGrammar();
   if(id==='home')updateHomeStats();
+  if(id==='discover')renderDiscover();
+  if(id==='qz')updateQuizLocks();
 }
 
-function confirmReset(){
-  if(confirm('Reset all study progress? This cannot be undone.')){
-    state.cardData={};state.streak=0;state.sessions=0;state.totalCorrect=0;state.totalAnswered=0;
-    saveState();updateHomeStats();
-    alert('Progress reset.');
-  }
-}
-
+// ═══════════════════════════════════════════════════════════════
+// HOME & WORD OF THE DAY
+// ═══════════════════════════════════════════════════════════════
 function updateHomeStats(){
   var now=Date.now();
   var learned=Object.values(state.cardData).filter(function(c){return c.reps>0;}).length;
-  var due=ROOTS.filter(function(r){var cd=state.cardData[r.root];if(!cd)return false;return cd.due<=now;}).length;
+  var due=ROOTS.filter(function(r){var cd=state.cardData[r.root];return cd&&cd.due<=now;}).length;
   document.getElementById('stat-learned').textContent=learned;
   document.getElementById('stat-due').textContent=due;
   document.getElementById('stat-sessions').textContent=state.sessions;
   var acc=state.totalAnswered>0?Math.round(100*state.totalCorrect/state.totalAnswered)+'%':'—';
   document.getElementById('stat-accuracy').textContent=acc;
   document.getElementById('streak-count').textContent=state.streak;
+  // populate home wotd teaser
+  var r=getTodaysRoot();
+  document.getElementById('wotd-english').textContent=r.english&&r.english.length?r.english[0].word:r.gloss;
+  document.getElementById('wotd-root').textContent=r.root+' — '+r.gloss;
+  document.getElementById('wotd-hook').textContent=r.notes.length>100?r.notes.slice(0,100)+'…':r.notes;
 }
 
+function renderDiscover(){
+  var r=getTodaysRoot();
+  document.getElementById('wotd-full-english').textContent=r.english&&r.english.length?r.english[0].word:r.gloss;
+  document.getElementById('wotd-full-root').textContent=r.root+' — '+r.pos;
+  document.getElementById('wotd-full-hook').textContent=r.notes;
+  // English descendants
+  var engEl=document.getElementById('wotd-eng-descs');engEl.innerHTML='';
+  (r.english||[]).forEach(function(e){
+    var div=document.createElement('div');div.className='eng-desc-item';
+    div.innerHTML='<div class="eng-word">'+e.word+'</div><div class="eng-via">via '+e.via+'</div><div class="eng-meaning">'+e.meaning+'</div>';
+    engEl.appendChild(div);
+  });
+  // Cognate table
+  var cogEl=document.getElementById('wotd-cognate-wrap');cogEl.innerHTML='';
+  if(r.daughters&&r.daughters.length){
+    var tbl='<table class="rm-cognate-table"><thead><tr><th>Language</th><th>Form</th><th>Meaning</th></tr></thead><tbody>';
+    r.daughters.forEach(function(d){tbl+='<tr><td class="lang-cell">'+d.lang+'</td><td class="form-cell">'+d.form+'</td><td class="gloss-cell">'+(d.gloss||'')+'</td></tr>';});
+    tbl+='</tbody></table>';
+    cogEl.innerHTML=tbl;
+  }
+  // Walkthrough
+  var wkEl=document.getElementById('wotd-walkthrough');wkEl.innerHTML='';
+  if(r.walkthrough&&r.walkthrough.length){
+    var wDiv=document.createElement('div');wDiv.className='sc-walkthrough';
+    r.walkthrough.forEach(function(step,i){
+      var s=document.createElement('div');s.className='sc-step';
+      s.innerHTML='<div class="sc-step-num">'+(i+1)+'</div><div class="sc-step-content"><div class="sc-step-label">'+step.label+'</div><div class="sc-step-form">'+step.form+'</div>'+(step.note?'<div class="sc-step-note">'+step.note+'</div>':'')+'</div>';
+      wDiv.appendChild(s);
+    });
+    wkEl.appendChild(wDiv);
+  }
+  // Semantic fields grid
+  var sfEl=document.getElementById('sf-grid');sfEl.innerHTML='';
+  SEMANTIC_FIELDS.forEach(function(sf){
+    var count=ROOTS.filter(function(r){return r.semantic===sf.key;}).length;
+    var div=document.createElement('div');div.className='sf-card';
+    div.innerHTML='<div class="sf-icon">'+sf.icon+'</div><div class="sf-name">'+sf.name+'</div><div class="sf-count">'+count+' roots</div>';
+    div.addEventListener('click',function(){openSfModal(sf);});
+    sfEl.appendChild(div);
+  });
+}
+
+function openSfModal(sf){
+  document.getElementById('sf-modal-title').textContent=sf.name;
+  document.getElementById('sf-modal-sub').textContent=sf.desc;
+  var listEl=document.getElementById('sf-modal-list');listEl.innerHTML='';
+  var roots=ROOTS.filter(function(r){return r.semantic===sf.key;});
+  roots.forEach(function(r){
+    var div=document.createElement('div');div.className='rb-item';
+    var enWords=(r.english||[]).slice(0,3).map(function(e){return e.word;}).join(', ');
+    div.innerHTML='<div class="rb-root">'+r.root+'</div><div class="rb-gloss">'+r.gloss+' <span style="color:var(--ink-light);font-size:13px;">&middot; '+r.pos+'</span></div>'+(enWords?'<div class="rb-english">'+enWords+'</div>':'');
+    div.addEventListener('click',function(){closeSfModal();openRootModal(r);});
+    listEl.appendChild(div);
+  });
+  document.getElementById('sf-modal').style.display='flex';
+}
+function closeSfModal(){document.getElementById('sf-modal').style.display='none';}
+
+// ═══════════════════════════════════════════════════════════════
+// FLASHCARDS (SM-2)
+// ═══════════════════════════════════════════════════════════════
 var fcDeck=[],fcIndex=0,fcFlipped=false;
 function getCardData(root){if(!state.cardData[root])state.cardData[root]={interval:1,ease:2.5,due:0,reps:0};return state.cardData[root];}
 function initFlashcards(){
   var cat=document.getElementById('fc-category').value;
   var mode=document.getElementById('fc-mode').value;
+  var reverse=document.getElementById('fc-reverse-toggle').checked;
   var now=Date.now();
   var pool=cat==='all'?ROOTS.slice():ROOTS.filter(function(r){return r.cat===cat;});
-  if(mode==='srs'){
-    var filtered=pool.filter(function(r){var cd=getCardData(r.root);return cd.reps===0||cd.due<=now;});
-    if(filtered.length>0)pool=filtered;
-  }else if(mode==='new'){
-    var filtered2=pool.filter(function(r){return getCardData(r.root).reps===0;});
-    if(filtered2.length>0)pool=filtered2;
-  }
+  if(mode==='srs'){var f=pool.filter(function(r){var cd=getCardData(r.root);return cd.reps===0||cd.due<=now;});if(f.length)pool=f;}
+  else if(mode==='new'){var f2=pool.filter(function(r){return getCardData(r.root).reps===0;});if(f2.length)pool=f2;}
   fcDeck=pool.sort(function(){return Math.random()-0.5;}).slice(0,20);
   fcIndex=0;fcFlipped=false;
-  renderFCCard();
+  renderFCCard(reverse);
   state.sessions++;saveState();
 }
-function renderFCCard(){
+function renderFCCard(rev){
+  var reverse=rev!==undefined?rev:document.getElementById('fc-reverse-toggle').checked;
   if(fcIndex>=fcDeck.length){
-    document.getElementById('fc-root').textContent='✓ Session complete';
+    document.getElementById('fc-root').textContent='✓ Done';
     document.getElementById('fc-pos').textContent=fcDeck.length+' cards reviewed';
-    document.getElementById('fc-progress').textContent='Done!';
+    document.getElementById('fc-tap-hint').textContent='';
+    document.getElementById('fc-meaning').textContent='';
+    document.getElementById('fc-english-words').innerHTML='';
+    document.getElementById('fc-notes').textContent='Great work!';
+    document.getElementById('fc-progress').textContent='Complete';
     document.getElementById('fc-btns').classList.add('fc-hidden');
-    document.getElementById('fc-srs-info').textContent='Great work! Check Home for stats.';
+    document.getElementById('fc-srs-info').textContent='Session finished. Check Home for stats.';
     document.getElementById('fc-card').classList.remove('flipped');
     return;
   }
   var card=fcDeck[fcIndex];
   var cd=getCardData(card.root);
-  document.getElementById('fc-root').textContent=card.root;
-  document.getElementById('fc-pos').textContent=card.pos;
-  document.getElementById('fc-meaning').textContent=card.gloss;
-  document.getElementById('fc-notes').textContent=card.notes;
-  var dEl=document.getElementById('fc-daughters');dEl.innerHTML='';
-  (card.daughters||[]).slice(0,4).forEach(function(d){var span=document.createElement('span');span.className='fc-daughter';span.textContent=d.lang+': '+d.form;dEl.appendChild(span);});
+  if(!reverse){
+    document.getElementById('fc-root').textContent=card.root;
+    document.getElementById('fc-pos').textContent=card.pos;
+    document.getElementById('fc-tap-hint').textContent='tap to reveal';
+    document.getElementById('fc-meaning').textContent=card.gloss;
+    var enEl=document.getElementById('fc-english-words');enEl.innerHTML='';
+    (card.english||[]).slice(0,5).forEach(function(e){var sp=document.createElement('span');sp.className='fc-en-word';sp.textContent=e.word;enEl.appendChild(sp);});
+    document.getElementById('fc-notes').textContent=card.notes.length>80?card.notes.slice(0,80)+'…':card.notes;
+  }else{
+    var enWords=(card.english||[]).slice(0,3).map(function(e){return e.word;}).join(' · ');
+    document.getElementById('fc-root').textContent=enWords||card.gloss;
+    document.getElementById('fc-pos').textContent='Which PIE root?';
+    document.getElementById('fc-tap-hint').textContent='tap to reveal';
+    document.getElementById('fc-meaning').textContent=card.root;
+    var enEl2=document.getElementById('fc-english-words');enEl2.innerHTML='';
+    var sp=document.createElement('span');sp.className='fc-en-word';sp.textContent=card.gloss;enEl2.appendChild(sp);
+    document.getElementById('fc-notes').textContent=card.notes.length>80?card.notes.slice(0,80)+'…':card.notes;
+  }
   document.getElementById('fc-progress').textContent='Card '+(fcIndex+1)+' of '+fcDeck.length;
   var nt=cd.reps>0?'Due in '+cd.interval+' day'+(cd.interval!==1?'s':''):'New card';
   document.getElementById('fc-srs-info').textContent=nt;
@@ -573,7 +945,10 @@ function renderFCCard(){
   document.getElementById('fc-btns').classList.add('fc-hidden');
   fcFlipped=false;
 }
-function flipCard(){if(fcIndex>=fcDeck.length)return;if(!fcFlipped){document.getElementById('fc-card').classList.add('flipped');document.getElementById('fc-btns').classList.remove('fc-hidden');fcFlipped=true;}}
+function flipCard(){
+  if(fcIndex>=fcDeck.length)return;
+  if(!fcFlipped){document.getElementById('fc-card').classList.add('flipped');document.getElementById('fc-btns').classList.remove('fc-hidden');fcFlipped=true;}
+}
 function rateCard(rating){
   if(fcIndex>=fcDeck.length)return;
   var card=fcDeck[fcIndex];var cd=getCardData(card.root);var DAY=86400000;
@@ -585,42 +960,55 @@ function rateCard(rating){
   fcIndex++;fcFlipped=false;saveState();renderFCCard();
 }
 
+// ═══════════════════════════════════════════════════════════════
+// ROOT BROWSER
+// ═══════════════════════════════════════════════════════════════
 var rbFilter='all';
 function setRbFilter(f,btn){rbFilter=f;document.querySelectorAll('.rb-filter').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');filterRoots();}
 function filterRoots(){
   var q=(document.getElementById('rb-search').value||'').toLowerCase();
   var list=ROOTS.filter(function(r){
     var catOk=rbFilter==='all'||r.cat===rbFilter;
-    var searchOk=!q||r.root.toLowerCase().includes(q)||r.gloss.toLowerCase().includes(q)||r.notes.toLowerCase().includes(q);
+    var enWords=(r.english||[]).map(function(e){return e.word;}).join(' ');
+    var searchOk=!q||r.root.toLowerCase().includes(q)||r.gloss.toLowerCase().includes(q)||r.notes.toLowerCase().includes(q)||enWords.toLowerCase().includes(q);
     return catOk&&searchOk;
   });
-  renderRootList(list);
-}
-function renderRootBrowser(){filterRoots();}
-function renderRootList(roots){
   var el=document.getElementById('rb-list');el.innerHTML='';
-  if(roots.length===0){el.innerHTML='<p style="color:var(--ink-light);font-size:15px;padding:12px 0;">No roots found.</p>';return;}
-  roots.forEach(function(r){
+  if(!list.length){el.innerHTML='<p style="color:var(--ink-light);font-size:15px;padding:12px 0;">No roots found.</p>';return;}
+  list.forEach(function(r){
     var div=document.createElement('div');div.className='rb-item';
-    div.innerHTML='<div class="rb-root">'+r.root+'</div><div class="rb-gloss">'+r.gloss+' <span style="color:var(--ink-light);font-size:13px;"> · '+r.pos+'</span></div><div class="rb-tags">'+
-      (r.daughters||[]).slice(0,4).map(function(d){return '<span class="rb-tag">'+d.lang+'</span>';}).join('')+'</div>';
+    var enWords=(r.english||[]).slice(0,4).map(function(e){return e.word;}).join(', ');
+    div.innerHTML='<div class="rb-root">'+r.root+'</div><div class="rb-gloss">'+r.gloss+'<span style="color:var(--ink-light);font-size:13px;"> &middot; '+r.pos+'</span></div>'+(enWords?'<div class="rb-english">&#x1F1EC;&#x1F1E7; '+enWords+'</div>':'')+'<div class="rb-tags">'+(r.daughters||[]).slice(0,4).map(function(d){return'<span class="rb-tag">'+d.lang+'</span>';}).join('')+'</div>';
     div.addEventListener('click',function(){openRootModal(r);});
     el.appendChild(div);
   });
 }
+function renderRootBrowser(){filterRoots();}
+
 function openRootModal(r){
   document.getElementById('rm-root').textContent=r.root;
   document.getElementById('rm-pos').textContent=r.pos;
   document.getElementById('rm-meaning').textContent=r.gloss;
   document.getElementById('rm-notes').textContent=r.notes;
-  var dEl=document.getElementById('rm-daughters');dEl.innerHTML='';
-  (r.daughters||[]).forEach(function(d){
-    var row=document.createElement('div');row.className='rm-daughter-row';
-    row.innerHTML='<span class="rm-lang">'+d.lang+'</span><span class="rm-form">'+d.form+'</span><span class="rm-form-gloss">'+(d.gloss?' — '+d.gloss:'')+'</span>';
-    dEl.appendChild(row);
+  // English descendants grid
+  var enGrid=document.getElementById('rm-english-grid');enGrid.innerHTML='';
+  var enDetail=document.getElementById('rm-english-detail');enDetail.innerHTML='';
+  (r.english||[]).forEach(function(e){
+    var chip=document.createElement('div');chip.className='rm-en-chip';chip.textContent=e.word;enGrid.appendChild(chip);
+    var row=document.createElement('div');row.style.cssText='display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--border);';
+    row.innerHTML='<span style="font-family:var(--ff-serif);font-size:16px;color:var(--ink);min-width:90px;">'+e.word+'</span><span style="font-size:13px;color:var(--ink-light);">'+e.via+' &mdash; <em>'+e.meaning+'</em></span>';
+    enDetail.appendChild(row);
   });
+  // Cognate table
+  var tbody=document.getElementById('rm-cognates');tbody.innerHTML='';
+  (r.daughters||[]).forEach(function(d){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td class="lang-cell">'+d.lang+'</td><td class="form-cell">'+d.form+'</td><td class="gloss-cell">'+(d.gloss||'')+'</td>';
+    tbody.appendChild(tr);
+  });
+  // Related
   var relEl=document.getElementById('rm-related');var relTitle=document.getElementById('rm-related-title');relEl.innerHTML='';
-  if(r.related&&r.related.length>0){
+  if(r.related&&r.related.length){
     relTitle.style.display='';
     r.related.forEach(function(rel){
       var chip=document.createElement('div');chip.className='rm-related-chip';chip.textContent=rel;
@@ -634,53 +1022,132 @@ function openRootModal(r){
 function closeRootModal(e){if(e.target===document.getElementById('root-modal'))document.getElementById('root-modal').classList.remove('open');}
 function closeRootModalBtn(){document.getElementById('root-modal').classList.remove('open');}
 
+// ═══════════════════════════════════════════════════════════════
+// SOUND LAWS + WALKTHROUGHS
+// ═══════════════════════════════════════════════════════════════
 var slRendered=false;
 function renderSoundLaws(){
   if(slRendered)return;slRendered=true;
   var el=document.getElementById('sl-list');
   SOUND_LAWS.forEach(function(sl){
     var div=document.createElement('div');div.className='sl-card';
-    var exHtml=sl.examples.map(function(ex){return '<div class="sl-example"><div><span class="sl-ex-pie">'+ex.pie+'</span> &rarr; <span class="sl-ex-daughter">'+ex.daughter+'</span></div><div class="sl-ex-gloss">'+ex.gloss+'</div></div>';}).join('');
+    var exHtml=sl.examples.map(function(ex){return'<div class="sl-example"><div><span class="sl-ex-pie">'+ex.pie+'</span> &rarr; <span class="sl-ex-daughter">'+ex.daughter+'</span></div><div class="sl-ex-gloss">'+ex.gloss+'</div></div>';}).join('');
     div.innerHTML='<div class="sl-header" onclick="toggleSl(this)"><div><div class="sl-name">'+sl.name+'</div><div class="sl-subtitle">'+sl.subtitle+'</div></div><div class="sl-arrow">&#9662;</div></div><div class="sl-body"><div class="sl-rule">'+sl.rule+'</div><div class="sl-desc">'+sl.desc+'</div><div class="sl-examples">'+exHtml+'</div></div>';
     el.appendChild(div);
   });
 }
 function toggleSl(header){header.closest('.sl-card').classList.toggle('open');}
 
+var selectedWalkthrough=null;
+function renderWalkthroughs(){
+  var pickRow=document.getElementById('sc-pick-row');
+  if(pickRow.children.length)return;
+  // Only roots that have walkthroughs with interesting Grimm's changes
+  var interesting=['*p\u1e53ds','*ph\u2082t\u1e17r','*tr\u00e9yes','*p\u00e9nk\u02b7e','*d\u00e9k\u0329mt\u0325','*k\u00e9rd','*b\u02b0er-','*m\u00e9h\u2082t\u0113r'];
+  interesting.forEach(function(rootStr,i){
+    var r=ROOTS.find(function(x){return x.root===rootStr;});
+    if(!r)return;
+    var btn=document.createElement('button');btn.className='sc-pick-btn'+(i===0?' active':'');
+    btn.textContent=r.root;
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.sc-pick-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      renderWalkthrough(r);
+    });
+    pickRow.appendChild(btn);
+  });
+  var first=ROOTS.find(function(x){return x.root===interesting[0];});
+  if(first)renderWalkthrough(first);
+}
+function renderWalkthrough(r){
+  var area=document.getElementById('sc-walkthrough-area');area.innerHTML='';
+  if(!r.walkthrough||!r.walkthrough.length){area.innerHTML='<p style="font-size:14px;color:var(--ink-light);padding:8px 0;">No walkthrough available for this root.</p>';return;}
+  var wrap=document.createElement('div');wrap.className='sc-walkthrough';
+  // English descendants header
+  var enWords=(r.english||[]).slice(0,3).map(function(e){return e.word;}).join(', ');
+  if(enWords){var hdr=document.createElement('div');hdr.style.cssText='font-family:var(--ff-serif);font-size:14px;color:var(--ink-light);margin-bottom:10px;font-style:italic;';hdr.textContent='PIE '+r.root+' \u2192 English "'+enWords+'"';wrap.appendChild(hdr);}
+  r.walkthrough.forEach(function(step,i){
+    var s=document.createElement('div');s.className='sc-step';
+    s.innerHTML='<div class="sc-step-num">'+(i+1)+'</div><div class="sc-step-content"><div class="sc-step-label">'+step.label+'</div><div class="sc-step-form">'+step.form+'</div>'+(step.note?'<div class="sc-step-note">'+step.note+'</div>':'')+'</div>';
+    wrap.appendChild(s);
+  });
+  area.appendChild(wrap);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GRAMMAR
+// ═══════════════════════════════════════════════════════════════
 var currentGramTab='overview';
 function renderGrammar(){document.getElementById('gram-content').innerHTML=GRAM_PANELS[currentGramTab]||'';}
 function switchGramTab(tab,btn){currentGramTab=tab;document.querySelectorAll('.gram-tab').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderGrammar();}
 
+// ═══════════════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════════════
+function learnedCount(){return Object.values(state.cardData).filter(function(c){return c.reps>0;}).length;}
+
+function updateQuizLocks(){
+  var n=learnedCount();
+  var predictBtn=document.getElementById('qz-opt-predict');
+  var badge=document.getElementById('qz-predict-badge');
+  if(n>=10){predictBtn.classList.remove('quiz-opt-locked');badge.textContent='';predictBtn.onclick=function(){startQuiz('predict');};}
+  else{predictBtn.classList.add('quiz-opt-locked');badge.textContent='Unlock at 10 roots';predictBtn.onclick=null;}
+}
+
 var qzType='',qzQuestions=[],qzCurrent=0,qzScore=0,qzAnswered=false;
+
 function startQuiz(type){
-  qzType=type;qzQuestions=buildQuestions(type);qzCurrent=0;qzScore=0;qzAnswered=false;
+  if(type==='predict'&&learnedCount()<10)return;
+  qzType=type;qzQuestions=buildQuestions(type);
+  if(!qzQuestions.length){alert('Not enough data yet. Study some flashcards first!');return;}
+  qzCurrent=0;qzScore=0;qzAnswered=false;
   document.getElementById('quiz-setup').style.display='none';
   document.getElementById('quiz-active').classList.add('show');
   document.getElementById('qz-results').classList.remove('show');
   renderQzQuestion();
 }
+
 function buildQuestions(type){
   var pool=ROOTS.slice().sort(function(){return Math.random()-0.5;}).slice(0,10);
   return pool.map(function(r){
     if(type==='mc'){
       var dist=ROOTS.filter(function(x){return x.root!==r.root;}).sort(function(){return Math.random()-0.5;}).slice(0,3);
       var opts=[r.gloss].concat(dist.map(function(d){return d.gloss;})).sort(function(){return Math.random()-0.5;});
-      return{q:r.root,qLabel:'Root',qSub:'('+r.pos+')',correct:r.gloss,opts:opts,feedback:r.notes,answer:r};
+      return{q:r.root,qLabel:'Root',qSub:'('+r.pos+')',correct:r.gloss,opts:opts,feedback:r.notes};
     }else if(type==='reverse'){
       var dist=ROOTS.filter(function(x){return x.root!==r.root;}).sort(function(){return Math.random()-0.5;}).slice(0,3);
       var opts=[r.root].concat(dist.map(function(d){return d.root;})).sort(function(){return Math.random()-0.5;});
-      return{q:r.gloss,qLabel:'Meaning',qSub:'('+r.pos+')',correct:r.root,opts:opts,feedback:r.notes,answer:r};
+      return{q:r.gloss,qLabel:'Meaning',qSub:'('+r.pos+')',correct:r.root,opts:opts,feedback:r.notes};
     }else if(type==='fillin'){
-      return{q:r.gloss,qLabel:'Meaning',qSub:'Type the PIE root',correct:r.root,opts:null,feedback:'The root is '+r.root+'. '+r.notes,answer:r};
-    }else{
-      var daughters=r.daughters||[];
-      var d=daughters.length>0?daughters[Math.floor(Math.random()*daughters.length)]:{form:r.root,lang:'PIE'};
+      return{q:r.gloss,qLabel:'Meaning — type the PIE root',qSub:'',correct:r.root,opts:null,feedback:'The root is '+r.root+'. '+r.notes};
+    }else if(type==='engToRoot'){
+      if(!r.english||!r.english.length)return null;
+      var e=r.english[Math.floor(Math.random()*r.english.length)];
       var dist=ROOTS.filter(function(x){return x.root!==r.root;}).sort(function(){return Math.random()-0.5;}).slice(0,3);
-      var opts=[r.root].concat(dist.map(function(x){return x.root;})).sort(function(){return Math.random()-0.5;});
-      return{q:d.form+' ('+d.lang+')',qLabel:'Daughter form',qSub:'Which PIE root?',correct:r.root,opts:opts,feedback:d.form+' reflects PIE '+r.root+'. '+r.notes,answer:r};
+      var opts=[r.root].concat(dist.map(function(d){return d.root;})).sort(function(){return Math.random()-0.5;});
+      return{q:e.word,qLabel:'English word',qSub:'Which PIE root gave us this?',correct:r.root,opts:opts,feedback:'"'+e.word+'" came via '+e.via+'. '+r.notes};
+    }else if(type==='rootToEng'){
+      if(!r.english||!r.english.length)return null;
+      var correct=r.english[0].word;
+      var allEnWords=ROOTS.filter(function(x){return x.root!==r.root&&x.english&&x.english.length;}).sort(function(){return Math.random()-0.5;}).slice(0,3).map(function(x){return x.english[0].word;});
+      var opts=[correct].concat(allEnWords).sort(function(){return Math.random()-0.5;});
+      return{q:r.root,qLabel:'PIE root',qSub:'Which English word descends from this?',correct:correct,opts:opts,feedback:(r.english||[]).map(function(e){return e.word;}).join(', ')+'. '+r.notes};
+    }else if(type==='predict'){
+      // Apply sound law: given PIE root + known law, predict the English descendant
+      var withWT=ROOTS.filter(function(x){return x.walkthrough&&x.walkthrough.length&&x.english&&x.english.length;});
+      if(!withWT.length)return null;
+      r=withWT[Math.floor(Math.random()*withWT.length)];
+      var correct=r.english[0].word;
+      var allEn=ROOTS.filter(function(x){return x.root!==r.root&&x.english&&x.english.length;}).sort(function(){return Math.random()-0.5;}).slice(0,3).map(function(x){return x.english[0].word;});
+      var opts=[correct].concat(allEn).sort(function(){return Math.random()-0.5;});
+      var wt=r.walkthrough;
+      var hint=wt.length>=2?wt[0].form+' → '+wt[wt.length-1].form:'';
+      return{q:r.root,qLabel:'PIE root',qSub:'Applying sound laws: '+hint+' \u2014 what\'s the English word?',correct:correct,opts:opts,feedback:'The chain: '+wt.map(function(s){return s.form;}).join(' \u2192 ')+'. '+r.notes};
     }
-  });
+    return null;
+  }).filter(Boolean);
 }
+
 function renderQzQuestion(){
   if(qzCurrent>=qzQuestions.length){showResults();return;}
   var q=qzQuestions[qzCurrent];qzAnswered=false;
@@ -748,9 +1215,21 @@ function resetQuiz(){
   document.getElementById('quiz-setup').style.display='';
 }
 
+// SETTINGS
+function confirmReset(){
+  if(confirm('Reset all study progress? This cannot be undone.')){
+    state.cardData={};state.streak=0;state.sessions=0;state.totalCorrect=0;state.totalAnswered=0;
+    saveState();updateHomeStats();alert('Progress reset.');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
 updateHomeStats();
 initFlashcards();
 renderGrammar();
+updateQuizLocks();
 </script>
 </body>
 </html>
