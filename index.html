@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PIE Study">
+<meta name="theme-color" content="#1a1410">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Proto-Indo-European Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1410;
+  --ink-mid: #3d3328;
+  --ink-light: #6b5c4a;
+  --parchment: #f5f0e8;
+  --parchment-dark: #ede5d5;
+  --parchment-mid: #e0d5c0;
+  --gold: #9a7c3f;
+  --gold-light: #c9a96e;
+  --gold-pale: #f0e6c8;
+  --red-accent: #7a2e1a;
+  --blue-accent: #1e3d5c;
+  --green-accent: #2a4a2e;
+  --border: rgba(100,80,50,0.18);
+  --border-strong: rgba(100,80,50,0.35);
+  --shadow: 0 2px 16px rgba(26,20,16,0.10);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --ff-serif: 'EB Garamond', Georgia, serif;
+  --ff-body: 'Crimson Pro', Georgia, serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: var(--ink); font-family: var(--ff-body); color: var(--ink); overflow: hidden; }
+#app { max-width: 430px; margin: 0 auto; height: 100dvh; background: var(--parchment); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+#topbar { background: var(--ink); color: var(--parchment); padding: 14px 18px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom: 2px solid var(--gold); }
+#topbar .title { font-family: var(--ff-serif); font-size: 18px; font-weight: 500; letter-spacing: 0.02em; color: var(--gold-light); }
+#topbar .subtitle { font-size: 11px; color: rgba(245,240,232,0.55); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1px; }
+#streak-badge { background: var(--gold); color: var(--ink); font-family: var(--ff-serif); font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.screen { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+.screen.active { display: flex; }
+#nav { background: var(--ink); border-top: 1px solid rgba(154,124,63,0.3); display: flex; flex-shrink: 0; }
+.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 4px 10px; background: none; border: none; cursor: pointer; color: rgba(245,240,232,0.4); font-family: var(--ff-body); font-size: 10px; letter-spacing: 0.05em; transition: color 0.15s; }
+.nav-btn svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+.nav-btn.active { color: var(--gold-light); }
+.scroll-area { flex: 1; overflow-y: auto; padding: 16px; -webkit-overflow-scrolling: touch; }
+.scroll-area::-webkit-scrollbar { width: 0; }
+.section-title { font-family: var(--ff-serif); font-size: 13px; font-weight: 500; color: var(--ink-light); letter-spacing: 0.14em; text-transform: uppercase; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.section-title:first-child { margin-top: 0; }
+.home-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat-card { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
+.stat-num { font-family: var(--ff-serif); font-size: 28px; font-weight: 500; color: var(--ink); }
+.stat-label { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
+.home-module-list { display: flex; flex-direction: column; gap: 8px; }
+.home-module-btn { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; text-align: left; width: 100%; transition: background 0.12s; }
+.home-module-btn:active { background: var(--parchment-mid); }
+.module-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--ff-serif); font-size: 20px; flex-shrink: 0; }
+.module-icon.flash { background: #e8f0e0; color: var(--green-accent); }
+.module-icon.browse { background: #e6ecf4; color: var(--blue-accent); }
+.module-icon.sound { background: var(--gold-pale); color: var(--gold); }
+.module-icon.grammar { background: #f0e4e0; color: var(--red-accent); }
+.module-icon.quiz { background: #f0eaf8; color: #4a2e7a; }
+.module-text-main { font-family: var(--ff-serif); font-size: 16px; font-weight: 500; color: var(--ink); }
+.module-text-sub { font-size: 13px; color: var(--ink-light); margin-top: 2px; }
+.fc-controls { padding: 12px 16px; display: flex; gap: 8px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.fc-controls select { flex: 1; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 7px 10px; font-family: var(--ff-body); font-size: 14px; color: var(--ink); }
+.fc-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 16px; gap: 16px; }
+.fc-progress-text { font-size: 12px; color: var(--ink-light); letter-spacing: 0.08em; }
+.fc-card { width: 100%; max-width: 360px; min-height: 220px; background: #fff; border: 1px solid var(--border-strong); border-radius: 14px; box-shadow: var(--shadow); cursor: pointer; perspective: 1000px; position: relative; }
+.fc-inner { width: 100%; height: 100%; min-height: 220px; transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); position: relative; }
+.fc-card.flipped .fc-inner { transform: rotateY(180deg); }
+.fc-face { position: absolute; top: 0; left: 0; right: 0; bottom: 0; min-height: 220px; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border-radius: 14px; }
+.fc-front { background: var(--ink); }
+.fc-back { background: var(--parchment-dark); transform: rotateY(180deg); }
+.fc-root { font-family: var(--ff-serif); font-size: 36px; font-style: italic; color: var(--gold-light); text-align: center; letter-spacing: 0.03em; }
+.fc-pos { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(201,169,110,0.65); margin-top: 8px; }
+.fc-tap-hint { font-size: 12px; color: rgba(245,240,232,0.35); margin-top: 20px; }
+.fc-meaning { font-family: var(--ff-serif); font-size: 22px; font-weight: 500; color: var(--ink); text-align: center; }
+.fc-notes { font-size: 14px; color: var(--ink-light); text-align: center; margin-top: 10px; font-style: italic; }
+.fc-daughters { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
+.fc-daughter { font-size: 12px; background: var(--gold-pale); border: 1px solid rgba(154,124,63,0.25); color: var(--ink-mid); padding: 3px 8px; border-radius: 12px; }
+.fc-btns { display: flex; gap: 10px; width: 100%; max-width: 360px; }
+.fc-btn { flex: 1; padding: 13px; border-radius: var(--radius); border: 1px solid var(--border-strong); font-family: var(--ff-serif); font-size: 15px; cursor: pointer; transition: opacity 0.12s; }
+.fc-btn:active { opacity: 0.75; }
+.fc-btn.again { background: #f0e0dc; color: var(--red-accent); border-color: rgba(122,46,26,0.2); }
+.fc-btn.hard  { background: #fdf2e0; color: #7a5a1a; border-color: rgba(122,90,26,0.2); }
+.fc-btn.good  { background: #e0eedc; color: var(--green-accent); border-color: rgba(42,74,46,0.2); }
+.fc-btn.easy  { background: #dce8f0; color: var(--blue-accent); border-color: rgba(30,61,92,0.2); }
+.fc-srs-info { font-size: 12px; color: var(--ink-light); text-align: center; }
+.fc-hidden { display: none; }
+#rb-controls { padding: 10px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+#rb-search { width: 100%; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 9px 12px; font-family: var(--ff-body); font-size: 15px; color: var(--ink); }
+#rb-search::placeholder { color: var(--ink-light); }
+.rb-filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.rb-filter { padding: 5px 12px; border-radius: 16px; border: 1px solid var(--border-strong); background: none; font-family: var(--ff-body); font-size: 13px; color: var(--ink-mid); cursor: pointer; }
+.rb-filter.active { background: var(--ink); color: var(--gold-light); border-color: var(--ink); }
+.rb-list { display: flex; flex-direction: column; gap: 8px; }
+.rb-item { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; transition: background 0.1s; }
+.rb-item:active { background: var(--parchment-mid); }
+.rb-root { font-family: var(--ff-serif); font-size: 20px; font-style: italic; color: var(--ink); }
+.rb-gloss { font-size: 14px; color: var(--ink-mid); margin-top: 3px; }
+.rb-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
+.rb-tag { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: var(--gold-pale); color: var(--ink-mid); border: 1px solid rgba(154,124,63,0.2); }
+#root-modal { display: none; position: absolute; inset: 0; background: rgba(26,20,16,0.55); z-index: 100; align-items: flex-end; }
+#root-modal.open { display: flex; }
+#root-modal-inner { background: var(--parchment); border-radius: 18px 18px 0 0; border-top: 2px solid var(--gold); width: 100%; max-height: 80dvh; overflow-y: auto; padding: 20px 18px 32px; }
+.rm-close { float: right; background: none; border: none; font-size: 22px; color: var(--ink-light); cursor: pointer; margin-top: -4px; }
+.rm-root { font-family: var(--ff-serif); font-size: 32px; font-style: italic; color: var(--ink); }
+.rm-pos { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin: 4px 0 10px; }
+.rm-meaning { font-family: var(--ff-serif); font-size: 18px; color: var(--ink-mid); margin-bottom: 14px; }
+.rm-section-title { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); margin: 14px 0 7px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+.rm-notes { font-size: 15px; color: var(--ink-mid); font-style: italic; line-height: 1.55; }
+.rm-daughters { display: flex; flex-direction: column; gap: 5px; }
+.rm-daughter-row { display: flex; align-items: baseline; gap: 10px; }
+.rm-lang { font-size: 12px; color: var(--ink-light); width: 80px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.06em; }
+.rm-form { font-family: var(--ff-serif); font-size: 16px; font-style: italic; color: var(--ink); }
+.rm-form-gloss { font-size: 14px; color: var(--ink-light); }
+.rm-related { display: flex; flex-wrap: wrap; gap: 6px; }
+.rm-related-chip { padding: 5px 12px; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: 14px; font-family: var(--ff-serif); font-size: 14px; font-style: italic; cursor: pointer; color: var(--ink); }
+.sl-card { background: var(--parchment-dark); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.sl-header { padding: 12px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.sl-name { font-family: var(--ff-serif); font-size: 17px; font-weight: 500; color: var(--ink); }
+.sl-subtitle { font-size: 13px; color: var(--ink-light); margin-top: 2px; }
+.sl-arrow { color: var(--ink-light); transition: transform 0.2s; font-size: 18px; }
+.sl-card.open .sl-arrow { transform: rotate(180deg); }
+.sl-body { display: none; border-top: 1px solid var(--border); padding: 14px; }
+.sl-card.open .sl-body { display: block; }
+.sl-rule { font-family: var(--ff-serif); font-size: 18px; text-align: center; background: var(--ink); color: var(--gold-light); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; font-style: italic; letter-spacing: 0.04em; }
+.sl-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 12px; }
+.sl-examples { display: flex; flex-direction: column; gap: 8px; }
+.sl-example { background: var(--parchment); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
+.sl-ex-pie { font-family: var(--ff-serif); font-size: 16px; font-style: italic; color: var(--ink); }
+.sl-ex-daughter { font-family: var(--ff-serif); font-size: 16px; font-style: italic; color: var(--blue-accent); }
+.sl-ex-gloss { font-size: 13px; color: var(--ink-light); margin-top: 4px; }
+.ablaut-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+.ablaut-table th { background: var(--ink); color: var(--gold-light); font-family: var(--ff-serif); font-weight: 500; padding: 8px 10px; text-align: left; font-size: 13px; }
+.ablaut-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--ink-mid); font-family: var(--ff-serif); font-style: italic; }
+.ablaut-table tr:last-child td { border-bottom: none; }
+.ablaut-table td:first-child { font-style: normal; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); }
+.gram-tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 16px; flex-shrink: 0; overflow-x: auto; }
+.gram-tabs::-webkit-scrollbar { height: 0; }
+.gram-tab { padding: 10px 14px; font-family: var(--ff-body); font-size: 14px; color: var(--ink-light); background: none; border: none; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.gram-tab.active { color: var(--ink); border-bottom-color: var(--gold); }
+.decl-table-wrap { overflow-x: auto; margin-bottom: 14px; }
+.decl-table { border-collapse: collapse; font-size: 13px; min-width: 300px; }
+.decl-table th { background: var(--ink); color: var(--gold-light); font-family: var(--ff-serif); font-weight: 500; padding: 7px 12px; text-align: left; }
+.decl-table td { padding: 7px 12px; border: 1px solid var(--border); font-family: var(--ff-serif); font-style: italic; color: var(--ink-mid); }
+.decl-table td.label { font-style: normal; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-light); background: var(--parchment-dark); }
+.gram-note { background: var(--gold-pale); border-left: 3px solid var(--gold); padding: 10px 12px; font-size: 14px; color: var(--ink-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; line-height: 1.55; margin-bottom: 12px; font-style: italic; }
+.gram-para { font-size: 15px; color: var(--ink-mid); line-height: 1.65; margin-bottom: 12px; }
+.quiz-setup { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 14px; }
+.quiz-opt { width: 100%; max-width: 320px; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 15px 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: background 0.1s; font-family: var(--ff-body); font-size: 16px; color: var(--ink); }
+.quiz-opt:active { background: var(--parchment-mid); }
+.quiz-opt-icon { font-size: 24px; }
+.quiz-active { flex: 1; display: none; flex-direction: column; padding: 16px; gap: 12px; }
+.quiz-active.show { display: flex; }
+.qz-progress { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.qz-prog-text { font-size: 13px; color: var(--ink-light); }
+.qz-score { font-family: var(--ff-serif); font-size: 15px; color: var(--green-accent); }
+.qz-bar-wrap { width: 100%; height: 4px; background: var(--parchment-mid); border-radius: 2px; }
+.qz-bar { height: 4px; background: var(--gold); border-radius: 2px; transition: width 0.3s; }
+.qz-question { background: var(--ink); border-radius: var(--radius); padding: 20px; text-align: center; min-height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.qz-q-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 8px; }
+.qz-q-text { font-family: var(--ff-serif); font-size: 28px; font-style: italic; color: var(--gold-light); }
+.qz-q-sub { font-size: 14px; color: rgba(245,240,232,0.6); margin-top: 6px; }
+.qz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.qz-opt-btn { background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 14px 10px; font-family: var(--ff-serif); font-size: 15px; color: var(--ink); cursor: pointer; transition: background 0.1s; text-align: center; line-height: 1.35; }
+.qz-opt-btn:active { background: var(--parchment-mid); }
+.qz-opt-btn.correct { background: #d8f0d4; border-color: rgba(42,74,46,0.5); color: var(--green-accent); }
+.qz-opt-btn.wrong { background: #f0d8d4; border-color: rgba(122,46,26,0.4); color: var(--red-accent); }
+.qz-feedback { background: var(--gold-pale); border: 1px solid rgba(154,124,63,0.3); border-radius: var(--radius); padding: 12px 14px; display: none; }
+.qz-feedback.show { display: block; }
+.qz-fb-title { font-family: var(--ff-serif); font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
+.qz-fb-text { font-size: 14px; color: var(--ink-mid); line-height: 1.5; font-style: italic; }
+.qz-next-btn { background: var(--ink); color: var(--gold-light); border: none; border-radius: var(--radius); padding: 14px; font-family: var(--ff-serif); font-size: 16px; cursor: pointer; width: 100%; display: none; }
+.qz-next-btn.show { display: block; }
+.qz-results { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 28px; gap: 16px; text-align: center; }
+.qz-results.show { display: flex; }
+.qz-res-score { font-family: var(--ff-serif); font-size: 52px; color: var(--gold); }
+.qz-res-title { font-family: var(--ff-serif); font-size: 22px; color: var(--ink); }
+.qz-res-sub { font-size: 15px; color: var(--ink-light); }
+.qz-res-btn { background: var(--ink); color: var(--gold-light); border: none; border-radius: var(--radius); padding: 14px 32px; font-family: var(--ff-serif); font-size: 16px; cursor: pointer; margin-top: 8px; }
+.qz-input { width: 100%; background: var(--parchment-dark); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 12px; font-family: var(--ff-serif); font-size: 18px; font-style: italic; color: var(--ink); text-align: center; }
+.qz-submit { background: var(--ink); color: var(--gold-light); border: none; border-radius: var(--radius); padding: 12px; width: 100%; font-family: var(--ff-serif); font-size: 15px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <div>
+      <div class="title">Proto-Indo-European</div>
+      <div class="subtitle">A Study Companion</div>
+    </div>
+    <div id="streak-badge">&#x1F525; <span id="streak-count">0</span></div>
+  </div>
+
+  <!-- HOME -->
+  <div id="home-screen" class="screen active">
+    <div class="scroll-area">
+      <div class="section-title">Progress</div>
+      <div class="home-stat-row">
+        <div class="stat-card"><div class="stat-num" id="stat-learned">0</div><div class="stat-label">Roots learned</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-due">0</div><div class="stat-label">Due for review</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-sessions">0</div><div class="stat-label">Sessions</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-accuracy">&#8212;</div><div class="stat-label">Accuracy</div></div>
+      </div>
+      <div class="section-title">Study Modules</div>
+      <div class="home-module-list">
+        <button class="home-module-btn" onclick="switchScreen('fc')"><div class="module-icon flash">&#9889;</div><div><div class="module-text-main">Flashcards</div><div class="module-text-sub">Spaced repetition &middot; 30+ roots</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('rb')"><div class="module-icon browse">&#x1F4D6;</div><div><div class="module-text-main">Root Browser</div><div class="module-text-sub">Full lexicon &middot; etymology &middot; daughter forms</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('sl')"><div class="module-icon sound">&#12316;</div><div><div class="module-text-main">Sound Laws</div><div class="module-text-sub">Grimm&rsquo;s, Verner&rsquo;s, ablaut, laryngeals</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('gr')"><div class="module-icon grammar">&#8734;</div><div><div class="module-text-main">Grammar</div><div class="module-text-sub">Declensions &middot; verb system &middot; morphology</div></div></button>
+        <button class="home-module-btn" onclick="switchScreen('qz')"><div class="module-icon quiz">&#10022;</div><div><div class="module-text-main">Quizzes</div><div class="module-text-sub">Multiple choice &middot; fill-in &middot; daughter match</div></div></button>
+      </div>
+      <div class="section-title" style="margin-top:20px;">What is Proto-Indo-European?</div>
+      <p style="font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:12px;">Proto-Indo-European (PIE) is the reconstructed ancestor of the Indo-European language family &mdash; a group that includes Sanskrit, Greek, Latin, Germanic, Celtic, Slavic, Baltic, Iranian, Armenian, Albanian, and more.</p>
+      <p style="font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:12px;">Spoken approximately 4,500&ndash;3,500 BCE, PIE left no written records; it is reconstructed through the <em>comparative method</em>, comparing regular correspondences across daughter languages.</p>
+      <p style="font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:20px;">Reconstructed forms are conventionally marked with an asterisk: <em style="font-family:var(--ff-serif);">*p&#x1E53;ds</em> &ldquo;foot.&rdquo;</p>
+    </div>
+  </div>
+
+  <!-- FLASHCARDS -->
+  <div id="fc-screen" class="screen">
+    <div class="fc-controls">
+      <select id="fc-category" onchange="initFlashcards()">
+        <option value="all">All categories</option>
+        <option value="body">Body &amp; person</option>
+        <option value="nature">Nature &amp; cosmos</option>
+        <option value="family">Kinship</option>
+        <option value="animals">Animals</option>
+        <option value="verbs">Core verbs</option>
+        <option value="numbers">Numbers</option>
+      </select>
+      <select id="fc-mode">
+        <option value="srs">SRS review</option>
+        <option value="new">New only</option>
+        <option value="all">All cards</option>
+      </select>
+    </div>
+    <div class="fc-area">
+      <div class="fc-progress-text" id="fc-progress">Card 1 of 20</div>
+      <div class="fc-card" id="fc-card" onclick="flipCard()">
+        <div class="fc-inner" id="fc-inner">
+          <div class="fc-face fc-front">
+            <div class="fc-root" id="fc-root">*d&#x1E97;&#x0301;gw&#x02B0;-</div>
+            <div class="fc-pos" id="fc-pos">verb root</div>
+            <div class="fc-tap-hint">tap to reveal</div>
+          </div>
+          <div class="fc-face fc-back">
+            <div class="fc-meaning" id="fc-meaning">to burn</div>
+            <div class="fc-notes" id="fc-notes">cf. day, dawn; fire imagery</div>
+            <div class="fc-daughters" id="fc-daughters"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-btns fc-hidden" id="fc-btns">
+        <button class="fc-btn again" onclick="rateCard(1)">Again</button>
+        <button class="fc-btn hard"  onclick="rateCard(2)">Hard</button>
+        <button class="fc-btn good"  onclick="rateCard(3)">Good</button>
+        <button class="fc-btn easy"  onclick="rateCard(4)">Easy</button>
+      </div>
+      <div class="fc-srs-info" id="fc-srs-info"></div>
+    </div>
+  </div>
+
+  <!-- ROOT BROWSER -->
+  <div id="rb-screen" class="screen">
+    <div id="rb-controls">
+      <input type="search" id="rb-search" placeholder="Search roots, meanings&#x2026;" oninput="filterRoots()" autocomplete="off">
+      <div class="rb-filter-row">
+        <button class="rb-filter active" onclick="setRbFilter('all',this)">All</button>
+        <button class="rb-filter" onclick="setRbFilter('body',this)">Body</button>
+        <button class="rb-filter" onclick="setRbFilter('nature',this)">Nature</button>
+        <button class="rb-filter" onclick="setRbFilter('family',this)">Kinship</button>
+        <button class="rb-filter" onclick="setRbFilter('animals',this)">Animals</button>
+        <button class="rb-filter" onclick="setRbFilter('verbs',this)">Verbs</button>
+        <button class="rb-filter" onclick="setRbFilter('numbers',this)">Numbers</button>
+      </div>
+    </div>
+    <div class="scroll-area"><div class="rb-list" id="rb-list"></div></div>
+    <div id="root-modal" onclick="closeRootModal(event)">
+      <div id="root-modal-inner">
+        <button class="rm-close" onclick="closeRootModalBtn()">&#x2715;</button>
+        <div class="rm-root" id="rm-root"></div>
+        <div class="rm-pos" id="rm-pos"></div>
+        <div class="rm-meaning" id="rm-meaning"></div>
+        <div class="rm-section-title">Notes</div>
+        <div class="rm-notes" id="rm-notes"></div>
+        <div class="rm-section-title">Daughter Language Reflexes</div>
+        <div class="rm-daughters" id="rm-daughters"></div>
+        <div class="rm-section-title" id="rm-related-title" style="display:none">Related Roots</div>
+        <div class="rm-related" id="rm-related"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOUND LAWS -->
+  <div id="sl-screen" class="screen">
+    <div class="scroll-area">
+      <div class="section-title">Consonant Shifts</div>
+      <div id="sl-list"></div>
+      <div class="section-title">Ablaut (Vowel Alternation)</div>
+      <div class="sl-card">
+        <div class="sl-header" onclick="toggleSl(this)">
+          <div><div class="sl-name">The Ablaut System</div><div class="sl-subtitle">Inherited vowel gradation patterns</div></div>
+          <div class="sl-arrow">&#9662;</div>
+        </div>
+        <div class="sl-body">
+          <div class="gram-note">Ablaut is a systematic vowel alternation inherited from PIE, still visible in English <em>sing / sang / sung</em> and Greek <em>le&iacute;p- / loip- / lip-</em>.</div>
+          <table class="ablaut-table">
+            <tr><th>Grade</th><th>Vowel</th><th>Example (*peth&#x2082;-)</th><th>Gloss</th></tr>
+            <tr><td>Full (e-grade)</td><td>e</td><td>*p&eacute;th&#x2082;-</td><td>to fly (pres.)</td></tr>
+            <tr><td>O-grade</td><td>o</td><td>*poth&#x2082;-</td><td>to fly (perf.)</td></tr>
+            <tr><td>Zero grade</td><td>&#8709;</td><td>*pth&#x2082;-</td><td>to fly (aor.)</td></tr>
+            <tr><td>Lengthened e</td><td>&#275;</td><td>*p&#275;th&#x2082;-</td><td>(derived nouns)</td></tr>
+            <tr><td>Lengthened o</td><td>&#333;</td><td>*p&#333;th&#x2082;-</td><td>(derived nouns)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="section-title">Laryngeal Theory</div>
+      <div class="sl-card">
+        <div class="sl-header" onclick="toggleSl(this)">
+          <div><div class="sl-name">The Three Laryngeals</div><div class="sl-subtitle">h&#x2081;, h&#x2082;, h&#x2083; &mdash; lost consonants with lasting effects</div></div>
+          <div class="sl-arrow">&#9662;</div>
+        </div>
+        <div class="sl-body">
+          <div class="gram-note">PIE had three &ldquo;laryngeal&rdquo; consonants (h&#x2081;, h&#x2082;, h&#x2083;) that disappeared in most daughter languages but left traces &mdash; coloring adjacent vowels and lengthening them when adjacent to *e.</div>
+          <div class="sl-examples">
+            <div class="sl-example"><div><span class="sl-ex-pie">h&#x2082;</span> colors *e &rarr; *a: <em>*h&#x2082;&aacute;nti</em> &ldquo;in front&rdquo; &rarr; Latin <em>ante</em></div></div>
+            <div class="sl-example"><div><span class="sl-ex-pie">h&#x2083;</span> colors *e &rarr; *o: <em>*h&#x2083;r&#x1e96;&eacute;&#x01B5;s</em> &ldquo;king&rdquo; &rarr; Latin <em>r&#275;x</em></div></div>
+            <div class="sl-example"><div>Preserved in Hittite: <em>*h&#x2082;ster-</em> &ldquo;star&rdquo; appears as Hittite <em>&#x1e25;asterz</em></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAMMAR -->
+  <div id="gr-screen" class="screen">
+    <div class="gram-tabs">
+      <button class="gram-tab active" onclick="switchGramTab('overview',this)">Overview</button>
+      <button class="gram-tab" onclick="switchGramTab('nouns',this)">Nouns</button>
+      <button class="gram-tab" onclick="switchGramTab('pronouns',this)">Pronouns</button>
+      <button class="gram-tab" onclick="switchGramTab('verbs',this)">Verbs</button>
+      <button class="gram-tab" onclick="switchGramTab('numbers',this)">Numbers</button>
+    </div>
+    <div class="scroll-area" id="gram-content"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="qz-screen" class="screen">
+    <div class="quiz-setup" id="quiz-setup">
+      <h2 style="font-family:var(--ff-serif)">Choose a Quiz</h2>
+      <button class="quiz-opt" onclick="startQuiz('mc')"><span class="quiz-opt-icon">&#x1F4DD;</span><div><div style="font-weight:500;">Multiple Choice</div><div style="font-size:13px;color:var(--ink-light);">10 questions &middot; root &rarr; meaning</div></div></button>
+      <button class="quiz-opt" onclick="startQuiz('reverse')"><span class="quiz-opt-icon">&#x1F501;</span><div><div style="font-weight:500;">Reverse Quiz</div><div style="font-size:13px;color:var(--ink-light);">Given meaning &rarr; identify root</div></div></button>
+      <button class="quiz-opt" onclick="startQuiz('fillin')"><span class="quiz-opt-icon">&#x270D;&#xFE0F;</span><div><div style="font-weight:500;">Fill-in-the-blank</div><div style="font-size:13px;color:var(--ink-light);">Type the PIE root</div></div></button>
+      <button class="quiz-opt" onclick="startQuiz('daughter')"><span class="quiz-opt-icon">&#x1F333;</span><div><div style="font-weight:500;">Daughter Match</div><div style="font-size:13px;color:var(--ink-light);">Match daughter form to PIE root</div></div></button>
+    </div>
+    <div class="quiz-active" id="quiz-active">
+      <div class="qz-progress">
+        <span class="qz-prog-text" id="qz-prog-text">1 / 10</span>
+        <span class="qz-score" id="qz-score-disp">Score: 0</span>
+      </div>
+      <div class="qz-bar-wrap"><div class="qz-bar" id="qz-bar" style="width:10%"></div></div>
+      <div class="qz-question">
+        <div class="qz-q-label" id="qz-label">Root</div>
+        <div class="qz-q-text" id="qz-q-text">*h&#x2081;eg&#x02B0;&#x02B0;-</div>
+        <div class="qz-q-sub" id="qz-q-sub"></div>
+      </div>
+      <div class="qz-options" id="qz-options"></div>
+      <div id="qz-fillin-area" style="display:none;flex-direction:column;gap:8px;">
+        <input class="qz-input" id="qz-input" placeholder="Type the root&#x2026;" autocomplete="off">
+        <button class="qz-submit" onclick="submitFillIn()">Submit</button>
+      </div>
+      <div class="qz-feedback" id="qz-feedback">
+        <div class="qz-fb-title" id="qz-fb-title">Correct!</div>
+        <div class="qz-fb-text" id="qz-fb-text"></div>
+      </div>
+      <button class="qz-next-btn" id="qz-next-btn" onclick="nextQuestion()">Next &rarr;</button>
+    </div>
+    <div class="qz-results" id="qz-results">
+      <div class="qz-res-score" id="qz-res-score">8/10</div>
+      <div class="qz-res-title" id="qz-res-title">Well done!</div>
+      <div class="qz-res-sub" id="qz-res-sub">Your study is bearing fruit.</div>
+      <button class="qz-res-btn" onclick="resetQuiz()">Study Again</button>
+    </div>
+  </div>
+
+  <nav id="nav">
+    <button class="nav-btn active" onclick="switchScreen('home')" data-screen="home">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nav-btn" onclick="switchScreen('fc')" data-screen="fc">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      Cards
+    </button>
+    <button class="nav-btn" onclick="switchScreen('rb')" data-screen="rb">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      Roots
+    </button>
+    <button class="nav-btn" onclick="switchScreen('sl')" data-screen="sl">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Sound
+    </button>
+    <button class="nav-btn" onclick="switchScreen('gr')" data-screen="gr">
+      <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="17" y2="18"/></svg>
+      Grammar
+    </button>
+    <button class="nav-btn" onclick="switchScreen('qz')" data-screen="qz">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Quiz
+    </button>
+  </nav>
+</div>
+<script>
+var ROOTS=[
+{root:'*h\u2081\u00e9smi',pos:'verb',gloss:'to be',cat:'verbs',notes:'The PIE verb "to be" \u2014 one of the most widespread roots across all IE languages.',daughters:[{lang:'Sanskrit',form:'\u00e1smi',gloss:'I am'},{lang:'Greek',form:'eim\u00ed',gloss:'I am'},{lang:'Latin',form:'sum',gloss:'I am'},{lang:'English',form:'am',gloss:'I am'}],related:[]},
+{root:'*p\u1e53ds',pos:'noun (m.)',gloss:'foot',cat:'body',notes:'Gives Latin p\u0113s/pedis, Greek po\u00fas, English foot via Germanic.',daughters:[{lang:'Sanskrit',form:'p\u0101da-',gloss:'foot'},{lang:'Greek',form:'po\u00fas',gloss:'foot'},{lang:'Latin',form:'p\u0113s',gloss:'foot'},{lang:'English',form:'foot',gloss:'foot'}],related:['*ped-']},
+{root:'*h\u2081\u1e54k\u02b7s',pos:'noun (m.)',gloss:'eye',cat:'body',notes:'From *h\u2081ok\u02b7- "to see"; the dual form was common for paired body parts.',daughters:[{lang:'Sanskrit',form:'\u00e1k\u1e63i',gloss:'eye'},{lang:'Greek',form:'\u00f3sse',gloss:'eyes (dual)'},{lang:'Latin',form:'oculus',gloss:'eye'},{lang:'English',form:'eye',gloss:'eye'}],related:[]},
+{root:'*k\u00e9rd',pos:'noun (n.)',gloss:'heart',cat:'body',notes:'PIE *kerd- gives Greek kard\u00ed\u0101 (cardiac), Latin cor/cordis (cordial), English heart.',daughters:[{lang:'Sanskrit',form:'\u015brad-',gloss:'heart, trust'},{lang:'Greek',form:'kard\u00ed\u0101',gloss:'heart'},{lang:'Latin',form:'cor',gloss:'heart'},{lang:'English',form:'heart',gloss:'heart'}],related:[]},
+{root:'*d\u00f3nts',pos:'noun (m.)',gloss:'tooth',cat:'body',notes:'Participle of *h\u2081ed- "to eat"; the tooth as "the biting one."',daughters:[{lang:'Sanskrit',form:'d\u00e1nt-',gloss:'tooth'},{lang:'Greek',form:'odo\u00fas',gloss:'tooth'},{lang:'Latin',form:'d\u0113ns',gloss:'tooth'},{lang:'English',form:'tooth',gloss:'tooth'}],related:['*h\u2081ed-']},
+{root:'*ph\u2082t\u1e17r',pos:'noun (m.)',gloss:'father',cat:'family',notes:'Among the most stable PIE roots; kinship terms formed a remarkably consistent paradigm.',daughters:[{lang:'Sanskrit',form:'pit\u0101\u0301',gloss:'father'},{lang:'Greek',form:'pat\u1e17r',gloss:'father'},{lang:'Latin',form:'pater',gloss:'father'},{lang:'English',form:'father',gloss:'father'},{lang:'Persian',form:'pedar',gloss:'father'}],related:['*m\u00e9h\u2082t\u0113r']},
+{root:'*m\u00e9h\u2082t\u0113r',pos:'noun (f.)',gloss:'mother',cat:'family',notes:'Likely a nursery word (*m\u0101-) elevated into the formal kinship system.',daughters:[{lang:'Sanskrit',form:'m\u0101t\u0101\u0301',gloss:'mother'},{lang:'Greek',form:'m\u1e17t\u0113r',gloss:'mother'},{lang:'Latin',form:'m\u0101ter',gloss:'mother'},{lang:'English',form:'mother',gloss:'mother'}],related:['*ph\u2082t\u1e17r']},
+{root:'*b\u02b0r\u00e9h\u2082t\u0113r',pos:'noun (m.)',gloss:'brother',cat:'family',notes:'Possibly from *b\u02b0er- "to carry"; the "one who carries (the family burden)."',daughters:[{lang:'Sanskrit',form:'b\u02b0r\u0101\u0301t\u0101',gloss:'brother'},{lang:'Greek',form:'p\u02b0r\u00e1t\u0113r',gloss:'kinsman'},{lang:'Latin',form:'fr\u0101ter',gloss:'brother'},{lang:'English',form:'brother',gloss:'brother'},{lang:'Russian',form:'brat',gloss:'brother'}],related:[]},
+{root:'*sw\u00e9s\u014fr',pos:'noun (f.)',gloss:'sister',cat:'family',notes:'Possibly related to *s(w)e- (reflexive), the "one of the self/family group."',daughters:[{lang:'Sanskrit',form:'sv\u00e1sar-',gloss:'sister'},{lang:'Latin',form:'soror',gloss:'sister'},{lang:'English',form:'sister',gloss:'sister'},{lang:'Russian',form:'sestra',gloss:'sister'}],related:[]},
+{root:'*dy\u1e17ws',pos:'noun (m.)',gloss:'sky, day',cat:'nature',notes:'The sky-god; gives Zeus, Jupiter (Dy\u0113us-ph\u2082t\u0113r "sky-father"), Sanskrit Dy\u0101u\u1e63, Latvian Dievs.',daughters:[{lang:'Sanskrit',form:'Dy\u0101u\u1e63',gloss:'sky-god'},{lang:'Greek',form:'Ze\u00fas',gloss:'Zeus'},{lang:'Latin',form:'di\u0113s',gloss:'day'},{lang:'Latvian',form:'Dievs',gloss:'God'}],related:[]},
+{root:'*h\u2082ster-',pos:'noun (n.)',gloss:'star',cat:'nature',notes:'Preserved in Hittite as \u1e25asterz; gives Greek ast\u1e17r (astronomy), Latin stella.',daughters:[{lang:'Hittite',form:'\u1e25asterz',gloss:'star'},{lang:'Sanskrit',form:'st\u00e1r-',gloss:'star'},{lang:'Greek',form:'ast\u1e17r',gloss:'star'},{lang:'Latin',form:'stella',gloss:'star'},{lang:'English',form:'star',gloss:'star'}],related:[]},
+{root:'*seh\u2082wl\u0325',pos:'noun (n.)',gloss:'sun',cat:'nature',notes:'The PIE sun was grammatically neuter; solar deity worship is attested across IE cultures.',daughters:[{lang:'Sanskrit',form:'s\u016brya-',gloss:'sun'},{lang:'Greek',form:'h\u1e17lios',gloss:'sun'},{lang:'Latin',form:'s\u014fl',gloss:'sun'},{lang:'English',form:'sun',gloss:'sun'}],related:[]},
+{root:'*p\u00e9h\u2082wr\u0325',pos:'noun (n.)',gloss:'fire',cat:'nature',notes:'PIE had two fire words: *p\u00e9h\u2082wr\u0325 (material fire) and *h\u2081ng\u02b7nis (fire as deity/force).',daughters:[{lang:'Hittite',form:'pa\u1e25\u1e25ur',gloss:'fire'},{lang:'Greek',form:'p\u00fbr',gloss:'fire'},{lang:'Armenian',form:'hur',gloss:'fire'}],related:['*h\u2081ng\u02b7nis']},
+{root:'*h\u2081ng\u02b7nis',pos:'noun (m.)',gloss:'fire, fire-deity',cat:'nature',notes:'The animate "fire" \u2014 often deified. Sanskrit Agni is still worshipped; Latin ignis is his reflex.',daughters:[{lang:'Sanskrit',form:'agn\u00ed-',gloss:'fire, Agni'},{lang:'Latin',form:'ignis',gloss:'fire'},{lang:'Lithuanian',form:'ugnis',gloss:'fire'},{lang:'Russian',form:'ogon\'',gloss:'fire'}],related:['*p\u00e9h\u2082wr\u0325']},
+{root:'*wl\u0325\u0301k\u02b7os',pos:'noun (m.)',gloss:'wolf',cat:'animals',notes:'One of the most geographically widespread PIE words, attested from India to Iceland.',daughters:[{lang:'Sanskrit',form:'vr\u0325ka-',gloss:'wolf'},{lang:'Greek',form:'l\u00fakos',gloss:'wolf'},{lang:'Latin',form:'lupus',gloss:'wolf'},{lang:'English',form:'wolf',gloss:'wolf'},{lang:'Russian',form:'volk',gloss:'wolf'}],related:[]},
+{root:'*h\u2081\u00e9k\u02b7os',pos:'noun (m.)',gloss:'horse',cat:'animals',notes:'The PIE horse was central to IE expansion. The Kurgan hypothesis links horse domestication to PIE spread.',daughters:[{lang:'Sanskrit',form:'\u00e1\u015bva-',gloss:'horse'},{lang:'Greek',form:'h\u00edppos',gloss:'horse'},{lang:'Latin',form:'equus',gloss:'horse'},{lang:'Gaulish',form:'epos',gloss:'horse'}],related:[]},
+{root:'*g\u02b7\u1e40ws',pos:'noun (m./f.)',gloss:'cow, ox',cat:'animals',notes:'Key to PIE economy; the word for "wealth" (*peku-) originally meant "cattle."',daughters:[{lang:'Sanskrit',form:'g\u00e1u-',gloss:'cow'},{lang:'Greek',form:'bo\u00fbs',gloss:'ox'},{lang:'Latin',form:'b\u014fs',gloss:'ox'},{lang:'English',form:'cow',gloss:'cow'}],related:[]},
+{root:'*\u00f3wis',pos:'noun (m./f.)',gloss:'sheep',cat:'animals',notes:'Among the earliest domesticated animals; the root is remarkably stable across IE.',daughters:[{lang:'Sanskrit',form:'\u00e1vi-',gloss:'sheep'},{lang:'Greek',form:'o\u00efs',gloss:'sheep'},{lang:'Latin',form:'ovis',gloss:'sheep'},{lang:'English',form:'ewe',gloss:'female sheep'}],related:[]},
+{root:'*g\u02b7em-',pos:'verb',gloss:'to go, come',cat:'verbs',notes:'Gives English "come," Greek ba\u00edn\u014d (with metathesis), Latin ven\u012bre.',daughters:[{lang:'Sanskrit',form:'g\u00e1cchati',gloss:'goes'},{lang:'Greek',form:'ba\u00edn\u014d',gloss:'go'},{lang:'Latin',form:'veni\u014d',gloss:'come'},{lang:'English',form:'come',gloss:'come'}],related:[]},
+{root:'*b\u02b0er-',pos:'verb',gloss:'to carry, bear',cat:'verbs',notes:'Extremely productive root: English bear/birth/burden, Latin ferre/fertile, Greek ph\u00e9r\u014d.',daughters:[{lang:'Sanskrit',form:'b\u02b0\u00e1rati',gloss:'carries'},{lang:'Greek',form:'ph\u00e9r\u014d',gloss:'carry'},{lang:'Latin',form:'fer\u014d',gloss:'carry'},{lang:'English',form:'bear',gloss:'carry'}],related:[]},
+{root:'*deh\u2083-',pos:'verb',gloss:'to give',cat:'verbs',notes:'Root of Latin d\u014fnum "gift," Greek d\u014dron, English donate/data.',daughters:[{lang:'Sanskrit',form:'d\u00e1d\u0101ti',gloss:'gives'},{lang:'Greek',form:'d\u00edd\u014dmi',gloss:'give'},{lang:'Latin',form:'d\u014d',gloss:'give'},{lang:'Russian',form:'dat\'',gloss:'give'}],related:[]},
+{root:'*h\u2081ed-',pos:'verb',gloss:'to eat',cat:'verbs',notes:'English eat, Latin ed\u014d (edible), Greek \u00e9d\u014d \u2014 and *d\u00f3nts "tooth" is its participle.',daughters:[{lang:'Sanskrit',form:'\u00e1dmi',gloss:'I eat'},{lang:'Greek',form:'\u00e9d\u014d',gloss:'eat'},{lang:'Latin',form:'ed\u014d',gloss:'eat'},{lang:'English',form:'eat',gloss:'eat'}],related:['*d\u00f3nts']},
+{root:'*\u00f3ynos',pos:'numeral',gloss:'one',cat:'numbers',notes:'Latin \u016bnus, Greek o\u00eenos (on a die), English one/only/once.',daughters:[{lang:'Latin',form:'\u016bnus',gloss:'one'},{lang:'Greek',form:'o\u00eenos',gloss:'one (on dice)'},{lang:'English',form:'one',gloss:'one'},{lang:'Lithuanian',form:'vienas',gloss:'one'}],related:[]},
+{root:'*dw\u00f3h\u2081',pos:'numeral',gloss:'two',cat:'numbers',notes:'One of the most stable PIE words; the dual number category in grammar reflects its importance.',daughters:[{lang:'Sanskrit',form:'dv\u0101',gloss:'two'},{lang:'Greek',form:'d\u00fao',gloss:'two'},{lang:'Latin',form:'duo',gloss:'two'},{lang:'English',form:'two',gloss:'two'},{lang:'Russian',form:'dva',gloss:'two'}],related:[]},
+{root:'*tr\u00e9yes',pos:'numeral',gloss:'three',cat:'numbers',notes:'Gives English three, Latin tr\u0113s, Greek tre\u00efs, Sanskrit tr\u012b\u1e47i.',daughters:[{lang:'Sanskrit',form:'tr\u012b\u1e47i',gloss:'three'},{lang:'Greek',form:'tre\u00efs',gloss:'three'},{lang:'Latin',form:'tr\u0113s',gloss:'three'},{lang:'English',form:'three',gloss:'three'}],related:[]},
+{root:'*k\u02b7etw\u00f3res',pos:'numeral',gloss:'four',cat:'numbers',notes:'The labiovelar *k\u02b7 gives Latin qu- (quattuor), Greek t- (t\u00e9ttares), Germanic f- (four).',daughters:[{lang:'Sanskrit',form:'catv\u0101ras',gloss:'four'},{lang:'Greek',form:'t\u00e9ttares',gloss:'four'},{lang:'Latin',form:'quattuor',gloss:'four'},{lang:'English',form:'four',gloss:'four'}],related:[]},
+{root:'*p\u00e9nk\u02b7e',pos:'numeral',gloss:'five',cat:'numbers',notes:'Gives Greek p\u00e9nte (pentagon), Latin qu\u012bnque, Sanskrit pa\u00f1ca, English five.',daughters:[{lang:'Sanskrit',form:'pa\u00f1ca',gloss:'five'},{lang:'Greek',form:'p\u00e9nte',gloss:'five'},{lang:'Latin',form:'qu\u012bnque',gloss:'five'},{lang:'English',form:'five',gloss:'five'}],related:[]},
+{root:'*d\u00e9k\u0329mt\u0325',pos:'numeral',gloss:'ten',cat:'numbers',notes:'Gives Greek d\u00e9ka (decade), Latin decem (December), Sanskrit d\u00e1\u015ba, English ten.',daughters:[{lang:'Sanskrit',form:'d\u00e1\u015ba',gloss:'ten'},{lang:'Greek',form:'d\u00e9ka',gloss:'ten'},{lang:'Latin',form:'decem',gloss:'ten'},{lang:'English',form:'ten',gloss:'ten'}],related:[]}
+];
+
+var SOUND_LAWS=[
+{name:"Grimm's Law",subtitle:"PIE stops \u2192 Germanic consonants",rule:"*p t k \u2192 f \u03b8 x (voiceless stops \u2192 fricatives)",desc:"Jacob Grimm (1822) identified a systematic shift of all PIE voiceless stops to fricatives in Proto-Germanic. This is why English has f/th/h where Latin and Greek have p/t/c.",examples:[{pie:"*p\u1e53ds",daughter:"English foot (f < PIE *p)",gloss:"versus Latin p\u0113s, Greek po\u00fas"},{pie:"*tr\u00e9yes",daughter:"English three (th < PIE *t)",gloss:"versus Latin tr\u0113s, Greek tre\u00efs"}]},
+{name:"Verner's Law",subtitle:"Exceptions to Grimm's, explained by accent",rule:"Grimm's fricatives voiced when PIE accent followed",desc:"Karl Verner (1875) explained apparent exceptions to Grimm's Law: when the PIE accent fell on the following syllable, the fricatives became voiced. This accounts for alternations like English was/were.",examples:[{pie:"*ph\u2082t\u1e17r",daughter:"father (d, not th, accent was on -t\u1e17r)",gloss:"accent shifted before Grimm's shift applied"}]},
+{name:"Grassmann's Law",subtitle:"Dissimilation of aspirates in Greek & Sanskrit",rule:"Two aspirates in successive syllables: the first loses aspiration",desc:"Hermann Grassmann (1863) described how Greek and Sanskrit independently eliminated a sequence of two aspirated consonants by de-aspirating the first one.",examples:[{pie:"*b\u02b0eud\u02b0-",daughter:"Greek pe\u00fathomai (b de-aspirated)",gloss:"to learn"},{pie:"*d\u02b0i-d\u02b0eh\u2081-",daughter:"Greek t\u00edt\u02b0\u0113mi (first aspiration lost)",gloss:"to place"}]},
+{name:"Palatalization (Centum / Satem)",subtitle:"IE velars split into three series",rule:"*k\u02b7 / *k / *k\u0301 \u2192 different outcomes in centum vs satem branches",desc:"PIE had three dorsal stops: plain velars *k, labiovelars *k\u02b7 (with lip rounding), and palatovelars *k\u0301. In satem languages (Indo-Iranian, Slavic, Baltic) *k\u0301 became a sibilant; in centum languages (Greek, Latin, Germanic, Celtic) palatovelars merged with plain velars.",examples:[{pie:"*k\u0301m\u0329t\u00f3m",daughter:"Latin centum vs Avestan sat\u0259m",gloss:'one hundred \u2014 gives the centum/satem division its name'},{pie:"*k\u02b7etw\u00f3res",daughter:"Greek t\u00e9ttares (k\u02b7 \u2192 t before front vowel)",gloss:"four"}]}
+];
+
+var GRAM_PANELS={
+overview:'<div class="section-title">The PIE Language</div><p class="gram-para">Proto-Indo-European was a richly inflected synthetic language. Nouns, pronouns, and adjectives were declined for <em>eight cases</em>, three genders (masculine, feminine, neuter), and three numbers (singular, dual, plural). Verbs were conjugated for person, number, tense, aspect, mood, and voice.</p><div class="gram-note">PIE reconstruction uses conventional symbols: *asterisk marks a reconstructed form, \u2081\u2082\u2083 subscripts mark laryngeals, and diacritics mark accent (acute \u00b4) and length (macron \u00af).</div><div class="section-title">The Eight Cases</div><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Function</th><th>Example meaning</th></tr><tr><td class="label">Nominative</td><td>Subject</td><td>The wolf sees</td></tr><tr><td class="label">Accusative</td><td>Direct object</td><td>sees the wolf</td></tr><tr><td class="label">Genitive</td><td>Possession / source</td><td>the wolf&#x2019;s howl</td></tr><tr><td class="label">Dative</td><td>Indirect object</td><td>give to the wolf</td></tr><tr><td class="label">Instrumental</td><td>Means / accompaniment</td><td>with a wolf</td></tr><tr><td class="label">Ablative</td><td>Separation / origin</td><td>away from the wolf</td></tr><tr><td class="label">Locative</td><td>Location</td><td>in/at the wolf</td></tr><tr><td class="label">Vocative</td><td>Direct address</td><td>O wolf!</td></tr></table></div><div class="section-title">Three Genders</div><p class="gram-para">PIE distinguished masculine, feminine, and neuter. The feminine may have developed from a collective/abstract suffix *-h\u2082. Neuter nouns have identical nominative and accusative forms.</p><div class="section-title">Word Order</div><p class="gram-para">PIE was likely SOV (Subject\u2013Object\u2013Verb) with modifiers preceding their heads, as reconstructed from the oldest attested daughters (Vedic, Hittite, Tocharian). Word order was relatively free due to the heavy case system.</p>',
+nouns:'<div class="section-title">Thematic Stems (*-o/e-)</div><p class="gram-para">The most productive PIE noun class. Masculine and neuter nouns formed with the thematic vowel *-o-. Most Latin second declension and Greek omicron-stem nouns derive from here.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Masc. *wl\u0325\u0301k\u02b7o-s</th><th>Neut. *yug\u00f3m</th></tr><tr><td class="label">Nom.</td><td>*wl\u0325\u0301k\u02b7os</td><td>*yug\u00f3m</td></tr><tr><td class="label">Acc.</td><td>*wl\u0325\u0301k\u02b7om</td><td>*yug\u00f3m</td></tr><tr><td class="label">Gen.</td><td>*wl\u0325\u0301k\u02b7osyo</td><td>*yug\u00f3syo</td></tr><tr><td class="label">Dat.</td><td>*wl\u0325\u0301k\u02b7\u014fi</td><td>*yug\u1e51i</td></tr><tr><td class="label">Inst.</td><td>*wl\u0325\u0301k\u02b7oh\u2081</td><td>*yug\u00e9h\u2081</td></tr><tr><td class="label">Abl.</td><td>*wl\u0325\u0301k\u02b7\u014fd</td><td>*yug\u1e51d</td></tr><tr><td class="label">Loc.</td><td>*wl\u0325\u0301k\u02b7ei</td><td>*yug\u00e9i</td></tr><tr><td class="label">Voc.</td><td>*wl\u0325\u0301k\u02b7e</td><td>*yug\u00f3m</td></tr></table></div><div class="section-title">Athematic (Root) Nouns</div><p class="gram-para">Many ancient PIE nouns were formed directly from the root without a thematic vowel. These show ablaut alternations in the case paradigm.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>*p\u1e53ds &ldquo;foot&rdquo;</th></tr><tr><td class="label">Nom.</td><td>*p\u1e53ds</td></tr><tr><td class="label">Acc.</td><td>*p\u00f3dm\u0325</td></tr><tr><td class="label">Gen.</td><td>*ped\u00f3s</td></tr><tr><td class="label">Dat.</td><td>*ped\u00e9i</td></tr><tr><td class="label">Loc.</td><td>*p\u00e9di</td></tr></table></div><div class="gram-note">Note the ablaut alternation: *p\u1e53d- (lengthened o-grade) in nominative, *pod- (o-grade) in accusative, *ped- (e-grade) in oblique cases.</div>',
+pronouns:'<div class="section-title">Personal Pronouns</div><p class="gram-para">PIE personal pronouns were suppletive (built from different roots for different forms, like English I / me / my). There was no third-person pronoun; demonstratives (*so, *t\u00f3-) filled that role.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>1sg &ldquo;I&rdquo;</th><th>2sg &ldquo;you&rdquo;</th><th>1pl &ldquo;we&rdquo;</th></tr><tr><td class="label">Nom.</td><td>*\u00e9g\u02b0\u2082</td><td>*t\u00fah\u2082</td><td>*w\u00e9y</td></tr><tr><td class="label">Acc.</td><td>*m\u00e9/m\u0325</td><td>*tw\u00e9/m\u0325</td><td>*n\u0325sm\u00e9</td></tr><tr><td class="label">Gen.</td><td>*m\u00e9ne</td><td>*t\u00e9we</td><td>*n\u0325s\u00f3m</td></tr><tr><td class="label">Dat.</td><td>*m\u00e9g\u02b0io</td><td>*t\u00e9b\u02b0io</td><td>*n\u0325sm\u00f3i</td></tr></table></div><div class="section-title">Demonstrative *so / *t\u00f3-</div><p class="gram-para">The demonstrative *so (masc. nom. sg.) / *seh\u2082 (fem.) / *t\u00f3d (neut.) gave rise to the definite article in Greek and to pronouns in Germanic (English that/the/they).</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Case</th><th>Masc.</th><th>Fem.</th><th>Neut.</th></tr><tr><td class="label">Nom.</td><td>*so</td><td>*seh\u2082</td><td>*t\u00f3d</td></tr><tr><td class="label">Acc.</td><td>*t\u00f3m</td><td>*t\u0101\u0301m</td><td>*t\u00f3d</td></tr><tr><td class="label">Gen.</td><td>*t\u00f3syo</td><td>*t\u00f3syeh\u2082s</td><td>*t\u00f3syo</td></tr></table></div>',
+verbs:'<div class="section-title">The PIE Verb System</div><p class="gram-para">PIE verbs were conjugated for <em>person</em> (1st/2nd/3rd), <em>number</em> (sg/dual/pl), <em>tense/aspect</em> (present, aorist, perfect), <em>mood</em> (indicative, subjunctive, optative, imperative), and <em>voice</em> (active, middle-passive).</p><div class="section-title">Present Active Endings (Thematic)</div><div class="decl-table-wrap"><table class="decl-table"><tr><th>Person</th><th>Singular</th><th>Plural</th></tr><tr><td class="label">1st</td><td>*-oh\u2082</td><td>*-omos</td></tr><tr><td class="label">2nd</td><td>*-esi</td><td>*-ete</td></tr><tr><td class="label">3rd</td><td>*-eti</td><td>*-onti</td></tr></table></div><div class="gram-note">Example: *b\u02b0er- &ldquo;to carry&rdquo; \u2192 *b\u02b0\u00e9roh\u2082 &ldquo;I carry&rdquo;, *b\u02b0\u00e9resi &ldquo;you carry&rdquo;, *b\u02b0\u00e9reti &ldquo;he/she carries&rdquo;</div><div class="section-title">Aspect: The Three Stems</div><p class="gram-para">PIE distinguished three aspectual bases: the <em>present</em> (ongoing action), the <em>aorist</em> (simple/punctual), and the <em>perfect</em> (state resulting from action).</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>Stem</th><th>Example (*b\u02b0er-)</th><th>Meaning</th></tr><tr><td class="label">Present</td><td>*b\u02b0\u00e9reti</td><td>is carrying</td></tr><tr><td class="label">Aorist</td><td>*\u00e9-b\u02b0r\u0325-t</td><td>carried (once)</td></tr><tr><td class="label">Perfect</td><td>*b\u02b0eb\u02b0\u00f3re</td><td>has carried (result)</td></tr></table></div><div class="section-title">Middle Voice</div><p class="gram-para">The PIE middle voice expressed actions affecting the subject themselves. Greek -mai, Sanskrit -e, and Latin deponent verbs reflect this system.</p>',
+numbers:'<div class="section-title">The PIE Numeral System</div><p class="gram-para">PIE had a fully developed decimal numeral system with unique forms for 1\u201310, a separate word for 100 (*k\u0301m\u0329t\u00f3m), and compounds for higher numbers.</p><div class="decl-table-wrap"><table class="decl-table"><tr><th>#</th><th>PIE</th><th>Sanskrit</th><th>Greek</th><th>Latin</th><th>English</th></tr><tr><td class="label">1</td><td>*\u00f3ynos</td><td>\u00e9ka</td><td>h\u00e9is</td><td>\u016bnus</td><td>one</td></tr><tr><td class="label">2</td><td>*dw\u00f3h\u2081</td><td>dv\u0101</td><td>d\u00fao</td><td>duo</td><td>two</td></tr><tr><td class="label">3</td><td>*tr\u00e9yes</td><td>tr\u012b\u1e47i</td><td>tre\u00efs</td><td>tr\u0113s</td><td>three</td></tr><tr><td class="label">4</td><td>*k\u02b7etw\u00f3res</td><td>catv\u0101ras</td><td>t\u00e9ttares</td><td>quattuor</td><td>four</td></tr><tr><td class="label">5</td><td>*p\u00e9nk\u02b7e</td><td>pa\u00f1ca</td><td>p\u00e9nte</td><td>qu\u012bnque</td><td>five</td></tr><tr><td class="label">6</td><td>*sw\u00e9k\u0301s</td><td>\u1e63\u00e1\u1e6d</td><td>h\u00e9x</td><td>sex</td><td>six</td></tr><tr><td class="label">7</td><td>*septm\u0325\u0301</td><td>sapt\u00e1</td><td>hept\u00e1</td><td>septem</td><td>seven</td></tr><tr><td class="label">8</td><td>*ok\u0301t\u1e51w</td><td>a\u1e63\u1e6d\u0101\u0301u</td><td>okt\u1e51</td><td>oct\u014f</td><td>eight</td></tr><tr><td class="label">9</td><td>*h\u2081newn\u0325</td><td>n\u00e1va</td><td>enn\u00e9a</td><td>novem</td><td>nine</td></tr><tr><td class="label">10</td><td>*d\u00e9k\u0329mt\u0325</td><td>d\u00e1\u015ba</td><td>d\u00e9ka</td><td>decem</td><td>ten</td></tr><tr><td class="label">100</td><td>*k\u0301m\u0329t\u00f3m</td><td>\u015bat\u00e1m</td><td>hekat\u00f3n</td><td>centum</td><td>(hundred)</td></tr></table></div><div class="gram-note">The centum/satem isogloss takes its name from the word for 100: Latin <em>centum</em> (velar c) vs. Avestan <em>sat\u0259m</em> (sibilant s), reflecting the treatment of PIE palatovelars.</div>'
+};
+
+var state={currentScreen:'home',streak:0,sessions:0,totalCorrect:0,totalAnswered:0,cardData:{}};
+function loadState(){try{var s=localStorage.getItem('pie_state');if(s)state=Object.assign(state,JSON.parse(s));}catch(e){}}
+function saveState(){try{localStorage.setItem('pie_state',JSON.stringify(state));}catch(e){}}
+loadState();
+
+var screenMap={home:'home-screen',fc:'fc-screen',rb:'rb-screen',sl:'sl-screen',gr:'gr-screen',qz:'qz-screen'};
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(screenMap[id]).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.screen===id);});
+  state.currentScreen=id;
+  if(id==='rb')renderRootBrowser();
+  if(id==='sl')renderSoundLaws();
+  if(id==='gr')renderGrammar();
+  if(id==='home')updateHomeStats();
+}
+
+function updateHomeStats(){
+  var now=Date.now();
+  var learned=Object.values(state.cardData).filter(function(c){return c.reps>0;}).length;
+  var due=ROOTS.filter(function(r){var cd=state.cardData[r.root];if(!cd)return false;return cd.due<=now;}).length;
+  document.getElementById('stat-learned').textContent=learned;
+  document.getElementById('stat-due').textContent=due;
+  document.getElementById('stat-sessions').textContent=state.sessions;
+  var acc=state.totalAnswered>0?Math.round(100*state.totalCorrect/state.totalAnswered)+'%':'—';
+  document.getElementById('stat-accuracy').textContent=acc;
+  document.getElementById('streak-count').textContent=state.streak;
+}
+
+var fcDeck=[],fcIndex=0,fcFlipped=false;
+function getCardData(root){if(!state.cardData[root])state.cardData[root]={interval:1,ease:2.5,due:0,reps:0};return state.cardData[root];}
+function initFlashcards(){
+  var cat=document.getElementById('fc-category').value;
+  var mode=document.getElementById('fc-mode').value;
+  var now=Date.now();
+  var pool=cat==='all'?ROOTS.slice():ROOTS.filter(function(r){return r.cat===cat;});
+  if(mode==='srs'){
+    var filtered=pool.filter(function(r){var cd=getCardData(r.root);return cd.reps===0||cd.due<=now;});
+    if(filtered.length>0)pool=filtered;
+  }else if(mode==='new'){
+    var filtered2=pool.filter(function(r){return getCardData(r.root).reps===0;});
+    if(filtered2.length>0)pool=filtered2;
+  }
+  fcDeck=pool.sort(function(){return Math.random()-0.5;}).slice(0,20);
+  fcIndex=0;fcFlipped=false;
+  renderFCCard();
+  state.sessions++;saveState();
+}
+function renderFCCard(){
+  if(fcIndex>=fcDeck.length){
+    document.getElementById('fc-root').textContent='✓ Session complete';
+    document.getElementById('fc-pos').textContent=fcDeck.length+' cards reviewed';
+    document.getElementById('fc-progress').textContent='Done!';
+    document.getElementById('fc-btns').classList.add('fc-hidden');
+    document.getElementById('fc-srs-info').textContent='Great work! Check Home for stats.';
+    document.getElementById('fc-card').classList.remove('flipped');
+    return;
+  }
+  var card=fcDeck[fcIndex];
+  var cd=getCardData(card.root);
+  document.getElementById('fc-root').textContent=card.root;
+  document.getElementById('fc-pos').textContent=card.pos;
+  document.getElementById('fc-meaning').textContent=card.gloss;
+  document.getElementById('fc-notes').textContent=card.notes;
+  var dEl=document.getElementById('fc-daughters');dEl.innerHTML='';
+  (card.daughters||[]).slice(0,4).forEach(function(d){var span=document.createElement('span');span.className='fc-daughter';span.textContent=d.lang+': '+d.form;dEl.appendChild(span);});
+  document.getElementById('fc-progress').textContent='Card '+(fcIndex+1)+' of '+fcDeck.length;
+  var nt=cd.reps>0?'Due in '+cd.interval+' day'+(cd.interval!==1?'s':''):'New card';
+  document.getElementById('fc-srs-info').textContent=nt;
+  document.getElementById('fc-card').classList.remove('flipped');
+  document.getElementById('fc-btns').classList.add('fc-hidden');
+  fcFlipped=false;
+}
+function flipCard(){if(fcIndex>=fcDeck.length)return;if(!fcFlipped){document.getElementById('fc-card').classList.add('flipped');document.getElementById('fc-btns').classList.remove('fc-hidden');fcFlipped=true;}}
+function rateCard(rating){
+  if(fcIndex>=fcDeck.length)return;
+  var card=fcDeck[fcIndex];var cd=getCardData(card.root);var DAY=86400000;
+  if(rating===1){cd.interval=1;cd.ease=Math.max(1.3,cd.ease-0.2);}
+  else if(rating===2){cd.interval=Math.max(1,cd.interval-1);cd.ease=Math.max(1.3,cd.ease-0.15);}
+  else if(rating===3){cd.interval=cd.reps===0?1:Math.round(cd.interval*cd.ease);}
+  else{cd.interval=cd.reps===0?4:Math.round(cd.interval*cd.ease*1.3);cd.ease=Math.min(3.5,cd.ease+0.15);}
+  cd.interval=Math.min(cd.interval,365);cd.due=Date.now()+cd.interval*DAY;cd.reps++;
+  fcIndex++;fcFlipped=false;saveState();renderFCCard();
+}
+
+var rbFilter='all';
+function setRbFilter(f,btn){rbFilter=f;document.querySelectorAll('.rb-filter').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');filterRoots();}
+function filterRoots(){
+  var q=(document.getElementById('rb-search').value||'').toLowerCase();
+  var list=ROOTS.filter(function(r){
+    var catOk=rbFilter==='all'||r.cat===rbFilter;
+    var searchOk=!q||r.root.toLowerCase().includes(q)||r.gloss.toLowerCase().includes(q)||r.notes.toLowerCase().includes(q);
+    return catOk&&searchOk;
+  });
+  renderRootList(list);
+}
+function renderRootBrowser(){filterRoots();}
+function renderRootList(roots){
+  var el=document.getElementById('rb-list');el.innerHTML='';
+  if(roots.length===0){el.innerHTML='<p style="color:var(--ink-light);font-size:15px;padding:12px 0;">No roots found.</p>';return;}
+  roots.forEach(function(r){
+    var div=document.createElement('div');div.className='rb-item';
+    div.innerHTML='<div class="rb-root">'+r.root+'</div><div class="rb-gloss">'+r.gloss+' <span style="color:var(--ink-light);font-size:13px;"> · '+r.pos+'</span></div><div class="rb-tags">'+
+      (r.daughters||[]).slice(0,4).map(function(d){return '<span class="rb-tag">'+d.lang+'</span>';}).join('')+'</div>';
+    div.addEventListener('click',function(){openRootModal(r);});
+    el.appendChild(div);
+  });
+}
+function openRootModal(r){
+  document.getElementById('rm-root').textContent=r.root;
+  document.getElementById('rm-pos').textContent=r.pos;
+  document.getElementById('rm-meaning').textContent=r.gloss;
+  document.getElementById('rm-notes').textContent=r.notes;
+  var dEl=document.getElementById('rm-daughters');dEl.innerHTML='';
+  (r.daughters||[]).forEach(function(d){
+    var row=document.createElement('div');row.className='rm-daughter-row';
+    row.innerHTML='<span class="rm-lang">'+d.lang+'</span><span class="rm-form">'+d.form+'</span><span class="rm-form-gloss">'+(d.gloss?' — '+d.gloss:'')+'</span>';
+    dEl.appendChild(row);
+  });
+  var relEl=document.getElementById('rm-related');var relTitle=document.getElementById('rm-related-title');relEl.innerHTML='';
+  if(r.related&&r.related.length>0){
+    relTitle.style.display='';
+    r.related.forEach(function(rel){
+      var chip=document.createElement('div');chip.className='rm-related-chip';chip.textContent=rel;
+      var found=ROOTS.find(function(x){return x.root===rel;});
+      if(found)chip.addEventListener('click',function(){openRootModal(found);});
+      relEl.appendChild(chip);
+    });
+  }else{relTitle.style.display='none';}
+  document.getElementById('root-modal').classList.add('open');
+}
+function closeRootModal(e){if(e.target===document.getElementById('root-modal'))document.getElementById('root-modal').classList.remove('open');}
+function closeRootModalBtn(){document.getElementById('root-modal').classList.remove('open');}
+
+var slRendered=false;
+function renderSoundLaws(){
+  if(slRendered)return;slRendered=true;
+  var el=document.getElementById('sl-list');
+  SOUND_LAWS.forEach(function(sl){
+    var div=document.createElement('div');div.className='sl-card';
+    var exHtml=sl.examples.map(function(ex){return '<div class="sl-example"><div><span class="sl-ex-pie">'+ex.pie+'</span> &rarr; <span class="sl-ex-daughter">'+ex.daughter+'</span></div><div class="sl-ex-gloss">'+ex.gloss+'</div></div>';}).join('');
+    div.innerHTML='<div class="sl-header" onclick="toggleSl(this)"><div><div class="sl-name">'+sl.name+'</div><div class="sl-subtitle">'+sl.subtitle+'</div></div><div class="sl-arrow">&#9662;</div></div><div class="sl-body"><div class="sl-rule">'+sl.rule+'</div><div class="sl-desc">'+sl.desc+'</div><div class="sl-examples">'+exHtml+'</div></div>';
+    el.appendChild(div);
+  });
+}
+function toggleSl(header){header.closest('.sl-card').classList.toggle('open');}
+
+var currentGramTab='overview';
+function renderGrammar(){document.getElementById('gram-content').innerHTML=GRAM_PANELS[currentGramTab]||'';}
+function switchGramTab(tab,btn){currentGramTab=tab;document.querySelectorAll('.gram-tab').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderGrammar();}
+
+var qzType='',qzQuestions=[],qzCurrent=0,qzScore=0,qzAnswered=false;
+function startQuiz(type){
+  qzType=type;qzQuestions=buildQuestions(type);qzCurrent=0;qzScore=0;qzAnswered=false;
+  document.getElementById('quiz-setup').style.display='none';
+  document.getElementById('quiz-active').classList.add('show');
+  document.getElementById('qz-results').classList.remove('show');
+  renderQzQuestion();
+}
+function buildQuestions(type){
+  var pool=ROOTS.slice().sort(function(){return Math.random()-0.5;}).slice(0,10);
+  return pool.map(function(r){
+    if(type==='mc'){
+      var dist=ROOTS.filter(function(x){return x.root!==r.root;}).sort(function(){return Math.random()-0.5;}).slice(0,3);
+      var opts=[r.gloss].concat(dist.map(function(d){return d.gloss;})).sort(function(){return Math.random()-0.5;});
+      return{q:r.root,qLabel:'Root',qSub:'('+r.pos+')',correct:r.gloss,opts:opts,feedback:r.notes,answer:r};
+    }else if(type==='reverse'){
+      var dist=ROOTS.filter(function(x){return x.root!==r.root;}).sort(function(){return Math.random()-0.5;}).slice(0,3);
+      var opts=[r.root].concat(dist.map(function(d){return d.root;})).sort(function(){return Math.random()-0.5;});
+      return{q:r.gloss,qLabel:'Meaning',qSub:'('+r.pos+')',correct:r.root,opts:opts,feedback:r.notes,answer:r};
+    }else if(type==='fillin'){
+      return{q:r.gloss,qLabel:'Meaning',qSub:'Type the PIE root',correct:r.root,opts:null,feedback:'The root is '+r.root+'. '+r.notes,answer:r};
+    }else{
+      var daughters=r.daughters||[];
+      var d=daughters.length>0?daughters[Math.floor(Math.random()*daughters.length)]:{form:r.root,lang:'PIE'};
+      var dist=ROOTS.filter(function(x){return x.root!==r.root;}).sort(function(){return Math.random()-0.5;}).slice(0,3);
+      var opts=[r.root].concat(dist.map(function(x){return x.root;})).sort(function(){return Math.random()-0.5;});
+      return{q:d.form+' ('+d.lang+')',qLabel:'Daughter form',qSub:'Which PIE root?',correct:r.root,opts:opts,feedback:d.form+' reflects PIE '+r.root+'. '+r.notes,answer:r};
+    }
+  });
+}
+function renderQzQuestion(){
+  if(qzCurrent>=qzQuestions.length){showResults();return;}
+  var q=qzQuestions[qzCurrent];qzAnswered=false;
+  document.getElementById('qz-label').textContent=q.qLabel;
+  document.getElementById('qz-q-text').textContent=q.q;
+  document.getElementById('qz-q-sub').textContent=q.qSub||'';
+  document.getElementById('qz-prog-text').textContent=(qzCurrent+1)+' / '+qzQuestions.length;
+  document.getElementById('qz-score-disp').textContent='Score: '+qzScore;
+  document.getElementById('qz-bar').style.width=(((qzCurrent+1)/qzQuestions.length)*100)+'%';
+  document.getElementById('qz-feedback').classList.remove('show');
+  document.getElementById('qz-next-btn').classList.remove('show');
+  var optEl=document.getElementById('qz-options');var fillEl=document.getElementById('qz-fillin-area');
+  if(qzType==='fillin'){
+    optEl.style.display='none';fillEl.style.display='flex';
+    document.getElementById('qz-input').value='';document.getElementById('qz-input').disabled=false;
+  }else{
+    optEl.style.display='grid';fillEl.style.display='none';optEl.innerHTML='';
+    q.opts.forEach(function(opt){
+      var btn=document.createElement('button');btn.className='qz-opt-btn';btn.textContent=opt;
+      btn.addEventListener('click',function(){handleAnswer(opt,btn);});optEl.appendChild(btn);
+    });
+  }
+}
+function handleAnswer(selected,btn){
+  if(qzAnswered)return;qzAnswered=true;
+  var q=qzQuestions[qzCurrent];var correct=selected===q.correct;
+  if(correct){qzScore++;btn.classList.add('correct');state.totalCorrect++;}
+  else{btn.classList.add('wrong');document.querySelectorAll('.qz-opt-btn').forEach(function(b){if(b.textContent===q.correct)b.classList.add('correct');});}
+  state.totalAnswered++;
+  document.getElementById('qz-fb-title').textContent=correct?'✓ Correct':'✗ Incorrect — '+q.correct;
+  document.getElementById('qz-fb-text').textContent=q.feedback;
+  document.getElementById('qz-feedback').classList.add('show');
+  document.getElementById('qz-next-btn').classList.add('show');
+  saveState();
+}
+function submitFillIn(){
+  if(qzAnswered)return;
+  var val=(document.getElementById('qz-input').value||'').trim();
+  var q=qzQuestions[qzCurrent];
+  var correct=val.toLowerCase().replace(/\*/g,'')===q.correct.toLowerCase().replace(/\*/g,'');
+  qzAnswered=true;document.getElementById('qz-input').disabled=true;
+  if(correct){qzScore++;state.totalCorrect++;document.getElementById('qz-fb-title').textContent='✓ Correct!';}
+  else{document.getElementById('qz-fb-title').textContent='✗ The answer was '+q.correct;}
+  state.totalAnswered++;
+  document.getElementById('qz-fb-text').textContent=q.feedback;
+  document.getElementById('qz-feedback').classList.add('show');
+  document.getElementById('qz-next-btn').classList.add('show');
+  saveState();
+}
+function nextQuestion(){qzCurrent++;renderQzQuestion();}
+function showResults(){
+  document.getElementById('quiz-active').classList.remove('show');
+  document.getElementById('qz-results').classList.add('show');
+  var pct=Math.round(qzScore/qzQuestions.length*100);
+  document.getElementById('qz-res-score').textContent=qzScore+'/'+qzQuestions.length;
+  var results=[[90,'Excellent scholarship!','Your command of PIE is impressive.'],[70,'Good progress!','The roots are taking shape.'],[50,'Keep studying!','Regular review will build fluency.'],[0,'A good beginning.','Every linguist starts from scratch.']];
+  var found=results.find(function(t){return pct>=t[0];});
+  document.getElementById('qz-res-title').textContent=found[1];
+  document.getElementById('qz-res-sub').textContent=found[2];
+  state.streak++;document.getElementById('streak-count').textContent=state.streak;saveState();
+}
+function resetQuiz(){
+  document.getElementById('qz-results').classList.remove('show');
+  document.getElementById('quiz-active').classList.remove('show');
+  document.getElementById('quiz-setup').style.display='';
+}
+
+updateHomeStats();
+initFlashcards();
+renderGrammar();
+</script>
+</body>
+</html>
